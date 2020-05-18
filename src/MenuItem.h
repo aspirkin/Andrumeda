@@ -6,15 +6,15 @@
 class MenuItem
 {
 protected:
-  String _name;
+  String* _name;
   bool _isHidden;
   MenuItem* _parent;
 public:
-  MenuItem(String name);
+  MenuItem(String* name);
   void hide();
   void unHide();
   MenuItem* getParent();
-  String getName();
+  String* getName();
   void setParent(MenuItem* parent);
 };
 

@@ -1,6 +1,6 @@
 #include <Menu.h>
 
-Menu::Menu(String name) : MenuItem(name) {
+Menu::Menu(String* name) : MenuItem(name) {
 
 }
 

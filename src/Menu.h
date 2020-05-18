@@ -9,7 +9,7 @@ private:
   // MenuItem* _children[];
   // MenuItem* _currentChild;
 public:
-  Menu(String name);
+  Menu(String* name);
   // void enterCurrentChild();
   // MenuItem* previousChild();
   // MenuItem* nextChild();

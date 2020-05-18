@@ -33,6 +33,21 @@ void TestMusicNode::activate() {}
 
 void TestMusicNode::deactivate() {}
 
+void TestMusicNode::setWf1Amplitude(float value) {
+  _wf1Amp = value;
+  if (_isActive) _waveform1->amplitude(_wf1Amp);
+}
+
+void TestMusicNode::setWf2Amplitude(float value) {
+  _wf2Amp = value;
+  if (_isActive) _waveform2->amplitude(_wf2Amp);
+}
+
+void TestMusicNode::setPinkAmplitude(float value) {
+  _pinkAmp = value;
+  if (_isActive) _noisePink->amplitude(_pinkAmp);
+}
+
 void TestMusicNode::setAmp(float value, int index) {
 
   switch (index)

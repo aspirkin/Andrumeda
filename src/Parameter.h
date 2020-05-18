@@ -12,7 +12,7 @@ protected:
   int _step = 5;
   float _multiplier = 0.01;
 public:
-  Parameter(String name);
+  Parameter(String* name);
   virtual void increase();
   virtual void decrease();
 };

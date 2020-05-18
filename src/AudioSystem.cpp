@@ -1,7 +1,7 @@
 #include <AudioSystem.h>
 
-AudioSystem::AudioSystem(Controls* ptrControls) {
-  _ptrControls = ptrControls;
+AudioSystem::AudioSystem() {
+  // _ptrControls = ptrControls;
 }
 
 MusicNode* AudioSystem::getMusicNode(int index) {

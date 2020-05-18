@@ -1,10 +1,10 @@
 #include <MenuItem.h>
 
-MenuItem::MenuItem(String name) {
+MenuItem::MenuItem(String* name) {
   _name = name;
 }
 
-String MenuItem::getName() {
+String* MenuItem::getName() {
   return _name;
 }
 

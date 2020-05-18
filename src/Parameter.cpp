@@ -1,6 +1,6 @@
 #include <Parameter.h>
 
-Parameter::Parameter(String name) : MenuItem(name) {
+Parameter::Parameter(String* name) : MenuItem(name) {
 
 }
 

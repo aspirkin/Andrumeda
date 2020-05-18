@@ -10,8 +10,9 @@ class ParamAmplitude : public Parameter
 private:
   TestAudioSystem* _audioSystem;
   int _oscIndex;
+  void (TestAudioSystem::* setValueFunctionPtr)(float);
 public:
-  ParamAmplitude(String name, TestAudioSystem* audioSystem, int oscIndex);
+  ParamAmplitude(String* name, TestAudioSystem* audioSystem, void (TestAudioSystem::* setValueFunction)(float));
   void increase();
   void decrease();
 };
