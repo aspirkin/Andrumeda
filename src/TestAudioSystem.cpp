@@ -1,4 +1,5 @@
 #include <TestAudioSystem.h>
+#include <AudioObjects.h>
 
 TestAudioSystem::TestAudioSystem() : AudioSystem(){
   setupConnections();
@@ -19,42 +20,6 @@ TestAudioSystem::TestAudioSystem() : AudioSystem(){
 }
 
 void TestAudioSystem::setupConnections() {
-  AudioConnection          patchCord1(pink8, 0, mixer8, 2);
-  AudioConnection          patchCord2(pink7, 0, mixer7, 2);
-  AudioConnection          patchCord3(pink6, 0, mixer6, 2);
-  AudioConnection          patchCord4(waveform15, 0, mixer8, 0);
-  AudioConnection          patchCord5(waveform16, 0, mixer8, 1);
-  AudioConnection          patchCord6(pink4, 0, mixer4, 2);
-  AudioConnection          patchCord7(pink5, 0, mixer5, 2);
-  AudioConnection          patchCord8(waveform13, 0, mixer7, 0);
-  AudioConnection          patchCord9(waveform14, 0, mixer7, 1);
-  AudioConnection          patchCord10(pink3, 0, mixer3, 2);
-  AudioConnection          patchCord11(waveform11, 0, mixer6, 0);
-  AudioConnection          patchCord12(waveform12, 0, mixer6, 1);
-  AudioConnection          patchCord13(pink2, 0, mixer2, 2);
-  AudioConnection          patchCord14(waveform7, 0, mixer4, 0);
-  AudioConnection          patchCord15(waveform8, 0, mixer4, 1);
-  AudioConnection          patchCord16(waveform9, 0, mixer5, 0);
-  AudioConnection          patchCord17(waveform10, 0, mixer5, 1);
-  AudioConnection          patchCord18(pink1, 0, mixer1, 2);
-  AudioConnection          patchCord19(waveform5, 0, mixer3, 0);
-  AudioConnection          patchCord20(waveform6, 0, mixer3, 1);
-  AudioConnection          patchCord21(waveform3, 0, mixer2, 0);
-  AudioConnection          patchCord22(waveform4, 0, mixer2, 1);
-  AudioConnection          patchCord23(waveform1, 0, mixer1, 0);
-  AudioConnection          patchCord24(waveform2, 0, mixer1, 1);
-  AudioConnection          patchCord25(mixer8, 0, mixer10, 3);
-  AudioConnection          patchCord26(mixer7, 0, mixer10, 2);
-  AudioConnection          patchCord27(mixer6, 0, mixer10, 1);
-  AudioConnection          patchCord28(mixer4, 0, mixer9, 3);
-  AudioConnection          patchCord29(mixer5, 0, mixer10, 0);
-  AudioConnection          patchCord30(mixer3, 0, mixer9, 2);
-  AudioConnection          patchCord31(mixer2, 0, mixer9, 1);
-  AudioConnection          patchCord32(mixer1, 0, mixer9, 0);
-  AudioConnection          patchCord33(mixer10, 0, mixer11, 1);
-  AudioConnection          patchCord34(mixer9, 0, mixer11, 0);
-  AudioConnection          patchCord35(mixer11, 0, i2s1, 0);
-  AudioConnection          patchCord36(mixer11, 0, i2s1, 1);
 }
 
 void TestAudioSystem::setupSGTL5000() {
