@@ -1,11 +1,14 @@
 #include <Arduino.h>
+#include <TestAudioSystem.h>
 #include <Controls.h>
 #include <parameters/ParamAmplitude.h>
 #include <Menu.h>
+#include <functional>
 
 Controls* _ptrControls;
 TestAudioSystem* _ptrAudioSystem;
 
+typedef std::function<void(float)> floatSetterFunction;
 
 void setup() {
   Serial.begin(115200);
@@ -14,8 +17,10 @@ void setup() {
   _ptrControls = new Controls(8);
   _ptrAudioSystem = new TestAudioSystem();
 
+  
+
   Menu* root = new Menu(new String("main"));
-  ParamAmplitude* pa = new ParamAmplitude(new String("wf1 amp"), _ptrAudioSystem, &TestAudioSystem::setWf1Amplitude);
+  ParamAmplitude* pa = new ParamAmplitude(new String("wf1 amp"), _ptrAudioSystem, std::bind(&TestAudioSystem::setWf1Amplitude, _ptrAudioSystem, std::placeholders::_1));
   root->addChild(pa);
   _ptrControls->getEncoderHandler(0)->setParameter(pa);
   /*Parameter* _ptrParameter;

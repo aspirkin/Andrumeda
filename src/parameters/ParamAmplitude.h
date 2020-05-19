@@ -4,15 +4,18 @@
 #include <Parameter.h>
 #include <Audio.h>
 #include <TestAudioSystem.h>
+#include <functional>
+
+typedef std::function<void(float)> floatSetterFunction;
 
 class ParamAmplitude : public Parameter
 {
 private:
   TestAudioSystem* _audioSystem;
   int _oscIndex;
-  void (TestAudioSystem::* setValueFunctionPtr)(float);
+  floatSetterFunction setParameterFloatValueFunction;
 public:
-  ParamAmplitude(String* name, TestAudioSystem* audioSystem, void (TestAudioSystem::* setValueFunction)(float));
+  ParamAmplitude(String* name, TestAudioSystem* audioSystem, floatSetterFunction setterFunction);
   void increase();
   void decrease();
 };

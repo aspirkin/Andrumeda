@@ -1,16 +1,16 @@
 #include <parameters\ParamAmplitude.h>
 
-ParamAmplitude::ParamAmplitude(String* name, TestAudioSystem * audioSystem, void (TestAudioSystem::* setValueFunction)(float)) : Parameter(name) {
+ParamAmplitude::ParamAmplitude(String* name, TestAudioSystem * audioSystem, floatSetterFunction setterFunction) : Parameter(name) {
   _audioSystem = audioSystem;
-  void (TestAudioSystem::*setValueFunctionPtr)(float) { setValueFunction };
+  setParameterFloatValueFunction = setterFunction;
 }
 
 void ParamAmplitude::increase() {
   Parameter::increase();
-  ((*_audioSystem).*setValueFunctionPtr)(_value * _multiplier);
+  setParameterFloatValueFunction(_value * _multiplier);
 }
 
 void ParamAmplitude::decrease() {
   Parameter::decrease();
-  ((*_audioSystem).*setValueFunctionPtr)(_value * _multiplier);
+  setParameterFloatValueFunction(_value * _multiplier);
 }
