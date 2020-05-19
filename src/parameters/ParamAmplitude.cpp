@@ -8,6 +8,7 @@ ParamAmplitude::ParamAmplitude(String* name, TestAudioSystem * audioSystem, floa
 void ParamAmplitude::increase() {
   Parameter::increase();
   setParameterFloatValueFunction(_value * _multiplier);
+  Serial.println(_value);
 }
 
 void ParamAmplitude::decrease() {

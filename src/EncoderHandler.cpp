@@ -40,7 +40,7 @@ void EncoderHandler::update() {
       if ((counter / 2) != _position) {
         // process encoder 1 rotation behavior here. probably using  if ((counter / 2) > _position)
         // Serial.print("Encoder 1 is at ");
-        Serial.println(counter / 2);
+        //Serial.println(counter / 2);
         if ((counter / 2) > _position) {
           rotateClockwise();
         } else {

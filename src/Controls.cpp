@@ -27,7 +27,7 @@ EncoderHandler* Controls::getEncoderHandler(int index) {
 }
 
 void Controls::update() {
-  // Serial.println("controls update");
+  //Serial.println("controls update");
   for (int i = 0; i < _numberOfNodes; i++)
   {
     _ptrMusicSensorHandlers[i]->update();

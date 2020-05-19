@@ -12,7 +12,6 @@ class ParamAmplitude : public Parameter
 {
 private:
   TestAudioSystem* _audioSystem;
-  int _oscIndex;
   floatSetterFunction setParameterFloatValueFunction;
 public:
   ParamAmplitude(String* name, TestAudioSystem* audioSystem, floatSetterFunction setterFunction);

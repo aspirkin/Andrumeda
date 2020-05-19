@@ -15,7 +15,7 @@ protected:
 public:
   SensorHandler(int pin);
   void update();
-  void setNode(MusicNode &node);
+  void setNode(MusicNode* node);
 };
 
 #endif //Sensor_h_

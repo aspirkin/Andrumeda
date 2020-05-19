@@ -66,7 +66,6 @@ public:
   void activateSampler();
   void activateSynth();
 
-  //void setAmp(float value, int index);
   void setWf1Amplitude(float value);
   void setWf2Amplitude(float value);
   void setPinkAmplitude(float value);

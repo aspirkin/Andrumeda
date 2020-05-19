@@ -7,16 +7,14 @@ TestMusicNode::TestMusicNode(AudioSynthWaveform &nodeWaveform1,
   _waveform2 = &nodeWaveform2;
   _noisePink = &nodeNoisePink;
 
-  noteOff();
+  //noteOff();
 }
 
 void TestMusicNode::noteOn() {
   _isActive = true;
   printAmps();
   _waveform1->amplitude(_wf1Amp);
-  _waveform1->pulseWidth(_pulseWidth);
   _waveform2->amplitude(_wf2Amp);
-  _waveform2->pulseWidth(_pulseWidth);
   _noisePink->amplitude(_pinkAmp);
 }
 
@@ -36,6 +34,7 @@ void TestMusicNode::deactivate() {}
 void TestMusicNode::setWf1Amplitude(float value) {
   _wf1Amp = value;
   if (_isActive) _waveform1->amplitude(_wf1Amp);
+  //printAmps();
 }
 
 void TestMusicNode::setWf2Amplitude(float value) {
@@ -48,37 +47,6 @@ void TestMusicNode::setPinkAmplitude(float value) {
   if (_isActive) _noisePink->amplitude(_pinkAmp);
 }
 
-void TestMusicNode::setAmp(float value, int index) {
-
-  switch (index)
-  {
-  case 0:
-    _wf1Amp = value;
-    break;
-  case 1:
-    _wf2Amp = value;
-    break;
-  case 2:
-    _pinkAmp = value;
-    break;
-  case 3:
-    _pulseWidth = value;
-    break;
-  default:
-    break;
-  }
-
-  if (_isActive) {
-    _waveform1->amplitude(_wf1Amp);
-    _waveform1->pulseWidth(_pulseWidth);
-    _waveform2->amplitude(_wf2Amp);
-    _waveform2->pulseWidth(_pulseWidth);
-    _noisePink->amplitude(_pinkAmp);
-  }
-
-  printAmps();
-}
-
 void TestMusicNode::printAmps() {
   Serial.print("_wf1Amp = ");
   Serial.print(_wf1Amp);
@@ -86,6 +54,4 @@ void TestMusicNode::printAmps() {
   Serial.print(_wf2Amp);
   Serial.print("; _pinkAmp = ");
   Serial.print(_pinkAmp);
-  Serial.print("; _pulseWidth = ");
-  Serial.println(_pulseWidth);
 }

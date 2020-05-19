@@ -21,9 +21,14 @@ void setup() {
 
   Menu* root = new Menu(new String("main"));
   ParamAmplitude* pa = new ParamAmplitude(new String("wf1 amp"), _ptrAudioSystem, std::bind(&TestAudioSystem::setWf1Amplitude, _ptrAudioSystem, std::placeholders::_1));
+
   root->addChild(pa);
   _ptrControls->getEncoderHandler(0)->setParameter(pa);
-  /*Parameter* _ptrParameter;
+  _ptrControls->getEncoderHandler(1)->setParameter(pa);
+  _ptrControls->getEncoderHandler(2)->setParameter(pa);
+  _ptrControls->getEncoderHandler(3)->setParameter(pa);
+  /*_ptrControls->getEncoderHandler(4)->setParameter(pa);
+  Parameter* _ptrParameter;
   _ptrParameter = new ParamAmplitude("wf1 amp", (TestAudioSystem*)_ptrAudioSystem, 0);
   _ptrControls->getEncoder(0)->setParameter(_ptrParameter);
   _ptrParameter = new ParamAmplitude("wf2 amp", (TestAudioSystem*)_ptrAudioSystem, 1);
@@ -35,11 +40,12 @@ void setup() {
 
   for (int i = 0; i < 8; i++)
   {
+    _ptrControls->getMusicSensorHandler(i)->setNode(_ptrAudioSystem->getMusicNode(i));
   }
 
 }
 
 void loop() {
-  // Serial.println("main update");
+  //Serial.println("main update");
   _ptrControls->update();
 }

@@ -113,44 +113,28 @@ void TestAudioSystem::setupMixers() {
 void TestAudioSystem::setupWaveforms() {
   int i = 0;
   waveform1.begin(0.5, NOTE_FREQS[KEY_NOTE + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform1.pulseWidth(0.15);
   waveform2.begin(0.5, NOTE_FREQS[KEY_NOTE + KEY_STEP + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform2.pulseWidth(0.15);
   i = 1;
   waveform3.begin(0.5, NOTE_FREQS[KEY_NOTE + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform3.pulseWidth(0.15);
   waveform4.begin(0.5, NOTE_FREQS[KEY_NOTE + KEY_STEP + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform4.pulseWidth(0.15);
   i = 2;
   waveform5.begin(0.5, NOTE_FREQS[KEY_NOTE + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform5.pulseWidth(0.15);
   waveform6.begin(0.5, NOTE_FREQS[KEY_NOTE + KEY_STEP + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform6.pulseWidth(0.15);
   i = 3;
   waveform7.begin(0.5, NOTE_FREQS[KEY_NOTE + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform7.pulseWidth(0.15);
   waveform8.begin(0.5, NOTE_FREQS[KEY_NOTE + KEY_STEP + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform8.pulseWidth(0.15);
   i = 4;
   waveform9.begin(0.5, NOTE_FREQS[KEY_NOTE + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform9.pulseWidth(0.15);
   waveform10.begin(0.5, NOTE_FREQS[KEY_NOTE + KEY_STEP + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform10.pulseWidth(0.15);
   i = 5;
   waveform11.begin(0.5, NOTE_FREQS[KEY_NOTE + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform11.pulseWidth(0.15);
   waveform12.begin(0.5, NOTE_FREQS[KEY_NOTE + KEY_STEP + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform12.pulseWidth(0.15);
   i = 6;
   waveform13.begin(0.5, NOTE_FREQS[KEY_NOTE + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform13.pulseWidth(0.15);
   waveform14.begin(0.5, NOTE_FREQS[KEY_NOTE + KEY_STEP + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform14.pulseWidth(0.15);
   i = 7;
   waveform15.begin(0.5, NOTE_FREQS[KEY_NOTE + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform15.pulseWidth(0.15);
   waveform16.begin(0.5, NOTE_FREQS[KEY_NOTE + KEY_STEP + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform16.pulseWidth(0.15);
 }
 
 void TestAudioSystem::setWf1Amplitude(float value) {
