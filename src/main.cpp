@@ -19,24 +19,19 @@ void setup() {
 
   
 
-  Menu* root = new Menu(new String("main"));
-  ParamAmplitude* pa = new ParamAmplitude(new String("wf1 amp"), _ptrAudioSystem, std::bind(&TestAudioSystem::setWf1Amplitude, _ptrAudioSystem, std::placeholders::_1));
+  ParamAmplitude* pa1 = new ParamAmplitude(new String("waveform 1 amp"), _ptrAudioSystem, std::bind(&TestAudioSystem::setWf1Amplitude, _ptrAudioSystem, std::placeholders::_1));
+  ParamAmplitude* pa2 = new ParamAmplitude(new String("waveform 2 amp"), _ptrAudioSystem, std::bind(&TestAudioSystem::setWf2Amplitude, _ptrAudioSystem, std::placeholders::_1));
+  ParamAmplitude* pa3 = new ParamAmplitude(new String("pink noise amp"), _ptrAudioSystem, std::bind(&TestAudioSystem::setPinkAmplitude, _ptrAudioSystem, std::placeholders::_1));
 
-  root->addChild(pa);
-  _ptrControls->getEncoderHandler(0)->setParameter(pa);
-  _ptrControls->getEncoderHandler(1)->setParameter(pa);
-  _ptrControls->getEncoderHandler(2)->setParameter(pa);
-  _ptrControls->getEncoderHandler(3)->setParameter(pa);
-  /*_ptrControls->getEncoderHandler(4)->setParameter(pa);
-  Parameter* _ptrParameter;
-  _ptrParameter = new ParamAmplitude("wf1 amp", (TestAudioSystem*)_ptrAudioSystem, 0);
-  _ptrControls->getEncoder(0)->setParameter(_ptrParameter);
-  _ptrParameter = new ParamAmplitude("wf2 amp", (TestAudioSystem*)_ptrAudioSystem, 1);
-  _ptrControls->getEncoder(1)->setParameter(_ptrParameter);
-  _ptrParameter = new ParamAmplitude("noise amp", (TestAudioSystem*)_ptrAudioSystem, 2);
-  _ptrControls->getEncoder(2)->setParameter(_ptrParameter);
-  _ptrParameter = new ParamAmplitude("pulse width", (TestAudioSystem*)_ptrAudioSystem, 3);
-  _ptrControls->getEncoder(3)->setParameter(_ptrParameter);*/
+  Menu* root = new Menu(new String("main"));
+  root->addChild(pa1);
+  root->addChild(pa2);
+  root->addChild(pa3);
+
+  _ptrControls->getEncoderHandler(0)->setParameter(pa1);
+  _ptrControls->getEncoderHandler(1)->setParameter(pa2);
+  _ptrControls->getEncoderHandler(2)->setParameter(pa3);
+  _ptrControls->getEncoderHandler(3)->setParameter(pa3);
 
   for (int i = 0; i < 8; i++)
   {

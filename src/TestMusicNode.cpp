@@ -7,7 +7,7 @@ TestMusicNode::TestMusicNode(AudioSynthWaveform &nodeWaveform1,
   _waveform2 = &nodeWaveform2;
   _noisePink = &nodeNoisePink;
 
-  //noteOff();
+  noteOff();
 }
 
 void TestMusicNode::noteOn() {
