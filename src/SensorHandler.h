@@ -1,11 +1,11 @@
 #ifndef Sensor_h_
 #define Sensor_h_
 
-#include <Controller.h>
+#include <ControllerHandler.h>
 #include <MusicNode.h>
 #include <Arduino.h>
 
-class Sensor : public Controller
+class SensorHandler : public ControllerHandler
 {
 protected:
   int _pin;
@@ -13,7 +13,7 @@ protected:
   MusicNode* _synthNode;
   //static const int SENSOR_THRESHOLD = ;
 public:
-  Sensor(int pin);
+  SensorHandler(int pin);
   void update();
   void setNode(MusicNode &node);
 };

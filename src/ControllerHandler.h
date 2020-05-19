@@ -1,7 +1,7 @@
-#ifndef Controller_h_
-#define Controller_h_
+#ifndef ControllerHandler_h_
+#define ControllerHandler_h_
 
-class Controller
+class ControllerHandler
 {
 protected:
   bool _isPressed;
@@ -9,8 +9,8 @@ protected:
   void (ptrReleaseFunction) (void);
   void (ptrClickFunction) (void);
 public:
-  Controller();
+  ControllerHandler();
   virtual void update();
 };
 
-#endif //Controller_h_
+#endif //ControllerHandler_h_

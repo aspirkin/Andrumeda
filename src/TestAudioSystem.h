@@ -80,11 +80,11 @@ AudioConnection          patchCord36(mixer11, 0, i2s1, 1);
 AudioControlSGTL5000     sgtl5000_1;     //xy=1218,356
 // GUItool: end automatically generated code
 
-enum class ParameterTag : int {
+/*enum class ParameterTag : int {
   PARAM_WF1_AMP,
   PARAM_WF2_AMP,
   PARAM_PINK_AMP
-};
+};*/
 
 class TestAudioSystem : public AudioSystem
 {

@@ -1,6 +1,6 @@
-#include <Encoder.h>
+#include <EncoderHandler.h>
 
-Encoder::Encoder(int pinS, int pinB, int pinA) {
+EncoderHandler::EncoderHandler(int pinS, int pinB, int pinA) {
   _pinA = pinA;
   _pinB = pinB;
   _pinS = pinS;
@@ -9,19 +9,19 @@ Encoder::Encoder(int pinS, int pinB, int pinA) {
   pinMode(_pinS, INPUT_PULLUP);
 }
 
-void Encoder::setParameter(Parameter* parameter) {
+void EncoderHandler::setParameter(Parameter* parameter) {
   _parameter = parameter;
 }
 
-void Encoder::rotateClockwise() {
+void EncoderHandler::rotateClockwise() {
   _parameter->increase();
 }
 
-void Encoder::rotateCounterclockwise() {
+void EncoderHandler::rotateCounterclockwise() {
   _parameter->decrease();
 }
 
-void Encoder::update() {
+void EncoderHandler::update() {
   if (encoderProcessingDelayCounter > 0) {
     encoderProcessingDelayCounter--;
     return;

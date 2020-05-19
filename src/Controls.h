@@ -1,19 +1,19 @@
 #ifndef Controls_h_
 #define Controls_h_
 
-#include <Encoder.h>
-#include <Sensor.h>
+#include <EncoderHandler.h>
+#include <SensorHandler.h>
 
 class Controls
 {
 protected:
   int _numberOfNodes;
-  Sensor* _ptrMusicSensors[20];
-  Encoder* _ptrEncoders[5];
+  SensorHandler* _ptrMusicSensorHandlers[20];
+  EncoderHandler* _ptrEncoderHandlers[5];
 public:
   Controls(int numberOfNodes);
-  Sensor* getMusicSensor(int index);
-  Encoder* getEncoder(int index);
+  SensorHandler* getMusicSensorHandler(int index);
+  EncoderHandler* getEncoderHandler(int index);
   void update();
   // void encoder1cw();
   // void encoder1ccw();

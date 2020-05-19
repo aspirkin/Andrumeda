@@ -1,12 +1,12 @@
-#ifndef Encoder_h_
-#define Encoder_h_
+#ifndef EncoderHandler_h_
+#define EncoderHandler_h_
 
 #include <Arduino.h>
 #include <MusicNode.h>
 #include <Parameter.h>
 // #include <parameters\ParamAmplitude.h>
 
-class Encoder
+class EncoderHandler
 {
 private:
   int _pinA;
@@ -27,9 +27,9 @@ private:
   void rotateClockwise();
   void rotateCounterclockwise();
 public:
-  Encoder(int pinS, int pinA, int pinB);
+  EncoderHandler(int pinS, int pinA, int pinB);
   void update();
   void setParameter(Parameter* parameter);
 };
 
-#endif //Encoder_h_
+#endif //EncoderHandler_h_

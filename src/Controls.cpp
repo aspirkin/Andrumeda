@@ -3,38 +3,38 @@
 Controls::Controls(int numberOfNodes) {
   // _ptrMusicSensors.reserve(_numberOfNodes);
   _numberOfNodes = numberOfNodes;
-  _ptrMusicSensors[0] = new Sensor(16);
-  _ptrMusicSensors[1] = new Sensor(15);
-  _ptrMusicSensors[2] = new Sensor(14);
-  _ptrMusicSensors[3] = new Sensor(49);
-  _ptrMusicSensors[4] = new Sensor(50);
-  _ptrMusicSensors[5] = new Sensor(39);
-  _ptrMusicSensors[6] = new Sensor(38);
-  _ptrMusicSensors[7] = new Sensor(37);
+  _ptrMusicSensorHandlers[0] = new SensorHandler(16);
+  _ptrMusicSensorHandlers[1] = new SensorHandler(15);
+  _ptrMusicSensorHandlers[2] = new SensorHandler(14);
+  _ptrMusicSensorHandlers[3] = new SensorHandler(49);
+  _ptrMusicSensorHandlers[4] = new SensorHandler(50);
+  _ptrMusicSensorHandlers[5] = new SensorHandler(39);
+  _ptrMusicSensorHandlers[6] = new SensorHandler(38);
+  _ptrMusicSensorHandlers[7] = new SensorHandler(37);
 
-  _ptrEncoders[0] = new Encoder(2, 1, 0);
-  _ptrEncoders[1] = new Encoder(8, 7, 6);
-  _ptrEncoders[2] = new Encoder(5, 4, 3);
-  _ptrEncoders[3] = new Encoder(27, 26, 25);
+  _ptrEncoderHandlers[0] = new EncoderHandler(2, 1, 0);
+  _ptrEncoderHandlers[1] = new EncoderHandler(8, 7, 6);
+  _ptrEncoderHandlers[2] = new EncoderHandler(5, 4, 3);
+  _ptrEncoderHandlers[3] = new EncoderHandler(27, 26, 25);
 }
 
-Sensor* Controls::getMusicSensor(int index) {
-  return _ptrMusicSensors[index];
+SensorHandler* Controls::getMusicSensorHandler(int index) {
+  return _ptrMusicSensorHandlers[index];
 }
 
-Encoder* Controls::getEncoder(int index) {
-  return _ptrEncoders[index];
+EncoderHandler* Controls::getEncoderHandler(int index) {
+  return _ptrEncoderHandlers[index];
 }
 
 void Controls::update() {
   // Serial.println("controls update");
   for (int i = 0; i < _numberOfNodes; i++)
   {
-    _ptrMusicSensors[i]->update();
+    _ptrMusicSensorHandlers[i]->update();
   }
 
   for (int i = 0; i < 4; i++)
   {
-    _ptrEncoders[i]->update();
+    _ptrEncoderHandlers[i]->update();
   }
 }
