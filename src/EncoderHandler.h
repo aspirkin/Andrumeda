@@ -3,8 +3,7 @@
 
 #include <Arduino.h>
 #include <MusicNode.h>
-#include <Parameter.h>
-// #include <parameters\ParamAmplitude.h>
+#include <AbstractParameter.h>
 
 class EncoderHandler
 {
@@ -23,13 +22,13 @@ private:
   int encoderProcessingDelayCounter = 0;
   const int ENCODER_PROCESSING_DELAY = 1;
 
-  Parameter* _parameter;
+  AbstractParameter* _parameter;
   void rotateClockwise();
   void rotateCounterclockwise();
 public:
   EncoderHandler(int pinS, int pinA, int pinB);
   void update();
-  void setParameter(Parameter* parameter);
+  void setParameter(AbstractParameter* parameter);
 };
 
 #endif //EncoderHandler_h_

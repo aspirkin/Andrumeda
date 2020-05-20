@@ -16,18 +16,18 @@ private:
   const int SCALE[8] = {0, 2, 4, 5, 7, 9, 11, 12};
   const int KEY_NOTE = 20;
   const int KEY_STEP = 7;
+  
   void setupWaveforms();
   void setupMixers();
   void setupSGTL5000();
-  void setupConnections();
 public:
   TestAudioSystem();
   void activateSampler();
   void activateSynth();
 
-  void setWf1Amplitude(float value);
-  void setWf2Amplitude(float value);
-  void setPinkAmplitude(float value);
+  void setWaveform1Amplitude(float value);
+  void setWaveform2Amplitude(float value);
+  void setPinkNoiseAmplitude(float value);
 };
 
 #endif //TestAudioSystem_h_

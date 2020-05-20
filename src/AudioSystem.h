@@ -3,7 +3,7 @@
 
 #include <MusicNode.h>
 #include <Audio.h>
-#include <Parameter.h>
+#include <AbstractParameter.h>
 
 class AudioSystem
 {

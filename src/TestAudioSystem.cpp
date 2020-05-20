@@ -2,7 +2,6 @@
 #include <AudioObjects.h>
 
 TestAudioSystem::TestAudioSystem() : AudioSystem(){
-  setupConnections();
   setupSGTL5000();
   setupMixers();
   setupWaveforms();
@@ -19,13 +18,11 @@ TestAudioSystem::TestAudioSystem() : AudioSystem(){
   //ParamAmplitude* p = new ParamAmplitude(new String("waveform 1 amplitude"), setWf1Amplitude);
 }
 
-void TestAudioSystem::setupConnections() {
-}
-
 void TestAudioSystem::setupSGTL5000() {
   AudioMemory(512);
   sgtl5000_1.enable();
   sgtl5000_1.volume(0.5);
+  sgtl5000_1.lineOutLevel(31);
 }
 
 void TestAudioSystem::setupMixers() {
@@ -102,21 +99,21 @@ void TestAudioSystem::setupWaveforms() {
   waveform16.begin(0.5, NOTE_FREQS[KEY_NOTE + KEY_STEP + SCALE[i]], WAVEFORM_SAWTOOTH);
 }
 
-void TestAudioSystem::setWf1Amplitude(float value) {
+void TestAudioSystem::setWaveform1Amplitude(float value) {
   for (int i = 0; i < 8; i++)
   {
     ((TestMusicNode*)_ptrSynthMusicNodes[i])->setWf1Amplitude(value);
   }
 }
 
-void TestAudioSystem::setWf2Amplitude(float value) {
+void TestAudioSystem::setWaveform2Amplitude(float value) {
   for (int i = 0; i < 8; i++)
   {
     ((TestMusicNode*)_ptrSynthMusicNodes[i])->setWf2Amplitude(value);
   }
 }
 
-void TestAudioSystem::setPinkAmplitude(float value) {
+void TestAudioSystem::setPinkNoiseAmplitude(float value) {
   for (int i = 0; i < 8; i++)
   {
     ((TestMusicNode*)_ptrSynthMusicNodes[i])->setPinkAmplitude(value);

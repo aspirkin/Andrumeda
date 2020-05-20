@@ -1,22 +1,37 @@
 #ifndef ParamAmplitude_h_
 #define ParamAmplitude_h_
 
-#include <Parameter.h>
+#include <AbstractParameter.h>
 #include <Audio.h>
 #include <TestAudioSystem.h>
 #include <functional>
 
 typedef std::function<void(float)> floatSetterFunction;
 
-class ParamAmplitude : public Parameter
+class ParamAmplitude : public AbstractParameter
 {
 private:
   TestAudioSystem* _audioSystem;
   floatSetterFunction setParameterFloatValueFunction;
 public:
-  ParamAmplitude(String* name, TestAudioSystem* audioSystem, floatSetterFunction setterFunction);
-  void increase();
-  void decrease();
+  ParamAmplitude(String* name, TestAudioSystem* audioSystem, floatSetterFunction setterFunction) : AbstractParameter(name) {
+      _value = 50;
+      _limitTop = 100;
+      _limitBottom = 0;
+      _step = 5;
+      _multiplier = 0.01;
+
+    _audioSystem = audioSystem;
+    setParameterFloatValueFunction = setterFunction;
+  };
+  void increase() {
+    AbstractParameter::increase();
+    setParameterFloatValueFunction(_value * _multiplier);
+  };
+  void decrease() {
+    AbstractParameter::decrease();
+    setParameterFloatValueFunction(_value * _multiplier);
+  };
 };
 
 #endif // ParamAmplitude_h_

@@ -6,6 +6,7 @@
 class Menu : public MenuItem
 {
 private:
+  //  TODO: Make arrays work & make it add children and retrieve them
   // MenuItem* _children[];
   // MenuItem* _currentChild;
 public:

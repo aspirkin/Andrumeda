@@ -15,8 +15,6 @@ public:
   SensorHandler* getMusicSensorHandler(int index);
   EncoderHandler* getEncoderHandler(int index);
   void update();
-  // void encoder1cw();
-  // void encoder1ccw();
 };
 
 #endif //Controls_h_
