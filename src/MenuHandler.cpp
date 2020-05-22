@@ -23,17 +23,22 @@ void MenuHandler::redraw() {
 }
 
 void MenuHandler::drawMenuPath() {
-  String result = "";
-  result = *_currentMenu->getName() + result;
+  String result = "/";
+  Menu* printingMenu = _currentMenu;
+  while (printingMenu != _rootMenu) {
+    result ="/" + *printingMenu->getName() + result;
+    printingMenu = (Menu*) printingMenu->getParent();
+  }
   
-  display.setCursor(1, 1);
+  display.setCursor(1, 2);
   display.setTextColor(WHITE);
   display.setTextSize(1);
   display.print(result);
 }
 
 void MenuHandler::enterCurrentChild() {
-  _currentMenu->getChild(0);
+  //  TODO: Check if current child is a Menu
+  _currentMenu = (Menu*) _currentMenu->getChild(0);
   redraw();
 }
 

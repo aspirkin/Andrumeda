@@ -2,6 +2,7 @@
 
 AudioSystem::AudioSystem(int numberOfMusicNodes) {
   _numberOfMusicNodes = numberOfMusicNodes;
+  _ptrSynthMusicNodes.reserve(_numberOfMusicNodes);
 }
 
 MusicNode* AudioSystem::getMusicNode(int index) {

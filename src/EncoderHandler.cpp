@@ -4,9 +4,13 @@ EncoderHandler::EncoderHandler(int pinS, int pinB, int pinA) {
   _pinA = pinA;
   _pinB = pinB;
   _pinS = pinS;
+
   pinMode(_pinA, INPUT_PULLUP);
   pinMode(_pinB, INPUT_PULLUP);
   pinMode(_pinS, INPUT_PULLUP);
+
+  _valueAPrev = digitalRead(_pinA);
+  _valueSPrev = digitalRead(_pinS);
 }
 
 void EncoderHandler::setParameter(AbstractParameter* parameter) {

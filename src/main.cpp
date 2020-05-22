@@ -14,7 +14,7 @@ TestAudioSystem* _ptrAudioSystem;
 void setup() {
   Serial.begin(115200);
 
-  _ptrControls = new Controls(8, 4);
+  _ptrControls = new Controls(8, 2);
   _ptrControls->addMusicSensor(16);
   _ptrControls->addMusicSensor(15);
   _ptrControls->addMusicSensor(14);
@@ -47,9 +47,9 @@ void setup() {
   MenuHandler* menuHandler = new MenuHandler(root);
 
   _ptrControls->getEncoderHandler(0)->setParameter(waveform1AmplitudeParam);
-  //_ptrControls->getEncoderHandler(0)->setClickFunction(std::bind(&MenuHandler::escapeToParent, menuHandler));
+  _ptrControls->getEncoderHandler(0)->setClickFunction(std::bind(&MenuHandler::escapeToParent, menuHandler));
   _ptrControls->getEncoderHandler(1)->setParameter(waveform2AmplitudeParam);
-  //_ptrControls->getEncoderHandler(1)->setClickFunction(std::bind(&MenuHandler::enterCurrentChild, menuHandler));
+  _ptrControls->getEncoderHandler(1)->setClickFunction(std::bind(&MenuHandler::enterCurrentChild, menuHandler));
   _ptrControls->getEncoderHandler(2)->setParameter(pinkNoiseAmplitudeParam);
   _ptrControls->getEncoderHandler(3)->setParameter(pinkNoiseAmplitudeParam);
 
