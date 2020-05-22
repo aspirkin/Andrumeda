@@ -14,8 +14,20 @@ TestAudioSystem* _ptrAudioSystem;
 void setup() {
   Serial.begin(115200);
 
-  //  TODO: insert actual number of nodes here
-  _ptrControls = new Controls(8);
+  _ptrControls = new Controls(8, 4);
+  _ptrControls->addMusicSensor(16);
+  _ptrControls->addMusicSensor(15);
+  _ptrControls->addMusicSensor(14);
+  _ptrControls->addMusicSensor(49);
+  _ptrControls->addMusicSensor(50);
+  _ptrControls->addMusicSensor(39);
+  _ptrControls->addMusicSensor(38);
+  _ptrControls->addMusicSensor(37);
+  _ptrControls->addEncoder(2, 1, 0);
+  _ptrControls->addEncoder(8, 7, 6);
+  _ptrControls->addEncoder(5, 4, 3);
+  _ptrControls->addEncoder(27, 26, 25);
+
   _ptrAudioSystem = new TestAudioSystem();
 
   ParamAmplitude* waveform1AmplitudeParam = new ParamAmplitude(new String("waveform 1 amp"), _ptrAudioSystem, std::bind(&TestAudioSystem::setWaveform1Amplitude, _ptrAudioSystem, std::placeholders::_1));

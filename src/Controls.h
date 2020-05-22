@@ -3,17 +3,21 @@
 
 #include <EncoderHandler.h>
 #include <SensorHandler.h>
+#include <vector>
 
 class Controls
 {
 protected:
-  int _numberOfNodes;
-  SensorHandler* _ptrMusicSensorHandlers[20];
-  EncoderHandler* _ptrEncoderHandlers[5];
+  int _numberOfMusicNodes;
+  int _numberOfEncoders;
+  std::vector <SensorHandler*> _ptrMusicSensorHandlers;
+  std::vector <EncoderHandler*> _ptrEncoderHandlers;
 public:
-  Controls(int numberOfNodes);
+  Controls(int numberOfMusicNodes, int numberOfEncoders);
   SensorHandler* getMusicSensorHandler(int index);
   EncoderHandler* getEncoderHandler(int index);
+  void addMusicSensor(int pin);
+  void addEncoder(int pinA, int pinB, int pinS);
   void update();
 };
 
