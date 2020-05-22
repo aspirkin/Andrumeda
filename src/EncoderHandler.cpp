@@ -21,6 +21,15 @@ void EncoderHandler::rotateCounterclockwise() {
   _parameter->decrease();
 }
 
+void EncoderHandler::click() {
+  _clickFunction();
+}
+
+void EncoderHandler::setClickFunction(activationFunction clickFunction) {
+  _clickFunction = clickFunction;
+}
+
+
 void EncoderHandler::update() {
   if (encoderProcessingDelayCounter > 0) {
     encoderProcessingDelayCounter--;
@@ -54,6 +63,8 @@ void EncoderHandler::update() {
     // process encoder 1 button behavior here
     if (_valueS) {
       Serial.println("Encoder 1 is released");
+      //  TODO: make distinction between click, press and release
+      click();
     } else {
       Serial.println("Encoder 1 is pushed down");
     }

@@ -25,9 +25,19 @@ void MenuHandler::redraw() {
 void MenuHandler::drawMenuPath() {
   String result = "";
   result = *_currentMenu->getName() + result;
-  //  TODO: Make cyclic
+  
   display.setCursor(1, 1);
   display.setTextColor(WHITE);
   display.setTextSize(1);
   display.print(result);
+}
+
+void MenuHandler::enterCurrentChild() {
+  _currentMenu->getChild(0);
+  redraw();
+}
+
+void MenuHandler::escapeToParent() {
+  if (_currentMenu != _rootMenu) _currentMenu = (Menu*) _currentMenu->getParent();
+  redraw();
 }

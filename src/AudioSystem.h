@@ -4,12 +4,14 @@
 #include <MusicNode.h>
 #include <Audio.h>
 #include <AbstractParameter.h>
+#include <vector>
 
 class AudioSystem
 {
 protected:
-  MusicNode* _ptrSynthMusicNodes[20];
-  //Controls* _ptrControls;
+  std::vector <MusicNode*> _ptrSynthMusicNodes;
+  int _numberOfMusicNodes;
+
   const float NOTE_FREQS[88] = {27.5, 29.1353, 30.8677, 32.7032,  34.6479, 36.7081, 38.8909, 41.2035, 43.6536, 46.2493, 48.9995, 51.913,
                                 55,   58.2705, 61.7354, 65.4064,  69.2957, 73.4162, 77.7817, 82.4069, 87.3071, 92.4986, 97.9989, 103.826,
                                 110,  116.541, 123.471, 130.813,  138.591, 146.832, 155.563, 164.814, 174.614, 184.997, 195.998, 207.652,
@@ -20,11 +22,10 @@ protected:
                                 3520, 3729.31, 3951.07, 4186.01};
 
 public:
-  static const int NUMBER_OF_MUSIC_NODES = 8;
   // vector <MusicNode*> _ptrActiveMusicNodes;
   // vector <MusicNode*> _ptrSamplerMusicNodes;
 
-  AudioSystem();
+  AudioSystem(int numberOfMusicNodes);
   MusicNode* getMusicNode(int index);
   virtual void activateSampler() = 0;
   virtual void activateSynth() = 0;

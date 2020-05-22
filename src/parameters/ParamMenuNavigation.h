@@ -8,7 +8,13 @@ class ParamMenuNavigation : public AbstractParameter
 private:
 
 public:
+  ParamMenuNavigation();
+  void increase() {
+    
+  };
+  void decrease() {
 
+  };
 };
 
 #endif  //ParamMenuNavigation_h_

@@ -28,7 +28,7 @@ void setup() {
   _ptrControls->addEncoder(5, 4, 3);
   _ptrControls->addEncoder(27, 26, 25);
 
-  _ptrAudioSystem = new TestAudioSystem();
+  _ptrAudioSystem = new TestAudioSystem(8);
 
   ParamAmplitude* waveform1AmplitudeParam = new ParamAmplitude(new String("waveform 1 amp"), _ptrAudioSystem, std::bind(&TestAudioSystem::setWaveform1Amplitude, _ptrAudioSystem, std::placeholders::_1));
   ParamAmplitude* waveform2AmplitudeParam = new ParamAmplitude(new String("waveform 2 amp"), _ptrAudioSystem, std::bind(&TestAudioSystem::setWaveform2Amplitude, _ptrAudioSystem, std::placeholders::_1));
@@ -44,10 +44,12 @@ void setup() {
     synth->addChild(pinkNoiseAmplitudeParam);
   root->addChild(sampler);
 
-  new MenuHandler(root);
+  MenuHandler* menuHandler = new MenuHandler(root);
 
   _ptrControls->getEncoderHandler(0)->setParameter(waveform1AmplitudeParam);
+  //_ptrControls->getEncoderHandler(0)->setClickFunction(std::bind(&MenuHandler::escapeToParent, menuHandler));
   _ptrControls->getEncoderHandler(1)->setParameter(waveform2AmplitudeParam);
+  //_ptrControls->getEncoderHandler(1)->setClickFunction(std::bind(&MenuHandler::enterCurrentChild, menuHandler));
   _ptrControls->getEncoderHandler(2)->setParameter(pinkNoiseAmplitudeParam);
   _ptrControls->getEncoderHandler(3)->setParameter(pinkNoiseAmplitudeParam);
 

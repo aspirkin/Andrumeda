@@ -20,8 +20,9 @@ private:
   void setupWaveforms();
   void setupMixers();
   void setupSGTL5000();
+  void setupMusicNodes();
 public:
-  TestAudioSystem();
+  TestAudioSystem(int numberOfMusicNodes);
   void activateSampler();
   void activateSynth();
 

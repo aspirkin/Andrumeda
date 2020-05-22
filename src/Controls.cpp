@@ -2,7 +2,7 @@
 
 Controls::Controls(int numberOfMusicNodes, int numberOfEncoders) {
   _numberOfMusicNodes = numberOfMusicNodes;
-  _ptrMusicSensorHandlers.reserve(_numberOfMusicNodes);
+  //_ptrMusicSensorHandlers.reserve(_numberOfMusicNodes);
   _numberOfEncoders = numberOfEncoders;
 }
 

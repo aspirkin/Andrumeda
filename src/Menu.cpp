@@ -5,7 +5,10 @@ Menu::Menu(String* name) : MenuItem(name) {
 }
 
 void Menu::addChild(MenuItem* child) {
-  //  TODO: add child to array
-
+  _children.push_back(child);
   child->setParent(this);
+}
+
+MenuItem* Menu::getChild(int index) {
+  return _children[index];
 }

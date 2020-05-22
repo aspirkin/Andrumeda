@@ -4,6 +4,9 @@
 #include <Arduino.h>
 #include <MusicNode.h>
 #include <AbstractParameter.h>
+#include <functional>
+
+typedef std::function<void()> activationFunction;
 
 class EncoderHandler
 {
@@ -22,13 +25,17 @@ private:
   int encoderProcessingDelayCounter = 0;
   const int ENCODER_PROCESSING_DELAY = 1;
 
+  activationFunction _clickFunction;
+
   AbstractParameter* _parameter;
   void rotateClockwise();
   void rotateCounterclockwise();
+  void click();
 public:
   EncoderHandler(int pinS, int pinA, int pinB);
   void update();
   void setParameter(AbstractParameter* parameter);
+  void setClickFunction(activationFunction clickFunction);
 };
 
 #endif //EncoderHandler_h_

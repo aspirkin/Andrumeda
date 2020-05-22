@@ -1,21 +1,22 @@
 #include <TestAudioSystem.h>
 #include <AudioObjects.h>
 
-TestAudioSystem::TestAudioSystem() : AudioSystem(){
+TestAudioSystem::TestAudioSystem(int numberOfMusicNodes) : AudioSystem(numberOfMusicNodes){
   setupSGTL5000();
   setupMixers();
   setupWaveforms();
+  setupMusicNodes();
+}
 
-  _ptrSynthMusicNodes[0] = new TestMusicNode(waveform1, waveform2, pink1);
-  _ptrSynthMusicNodes[1] = new TestMusicNode(waveform3, waveform4, pink2);
-  _ptrSynthMusicNodes[2] = new TestMusicNode(waveform5, waveform6, pink3);
-  _ptrSynthMusicNodes[3] = new TestMusicNode(waveform7, waveform8, pink4);
-  _ptrSynthMusicNodes[4] = new TestMusicNode(waveform9, waveform10, pink5);
-  _ptrSynthMusicNodes[5] = new TestMusicNode(waveform11, waveform12, pink6);
-  _ptrSynthMusicNodes[6] = new TestMusicNode(waveform13, waveform14, pink7);
-  _ptrSynthMusicNodes[7] = new TestMusicNode(waveform15, waveform16, pink8);
-
-  //ParamAmplitude* p = new ParamAmplitude(new String("waveform 1 amplitude"), setWf1Amplitude);
+void TestAudioSystem::setupMusicNodes() {
+  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform1, waveform2, pink1));
+  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform3, waveform4, pink2));
+  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform5, waveform6, pink3));
+  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform7, waveform8, pink4));
+  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform9, waveform10, pink5));
+  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform11, waveform12, pink6));
+  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform13, waveform14, pink7));
+  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform15, waveform16, pink8));
 }
 
 void TestAudioSystem::setupSGTL5000() {
@@ -100,21 +101,21 @@ void TestAudioSystem::setupWaveforms() {
 }
 
 void TestAudioSystem::setWaveform1Amplitude(float value) {
-  for (int i = 0; i < 8; i++)
+  for (int i = 0; i < _numberOfMusicNodes; i++)
   {
     ((TestMusicNode*)_ptrSynthMusicNodes[i])->setWf1Amplitude(value);
   }
 }
 
 void TestAudioSystem::setWaveform2Amplitude(float value) {
-  for (int i = 0; i < 8; i++)
+  for (int i = 0; i < _numberOfMusicNodes; i++)
   {
     ((TestMusicNode*)_ptrSynthMusicNodes[i])->setWf2Amplitude(value);
   }
 }
 
 void TestAudioSystem::setPinkNoiseAmplitude(float value) {
-  for (int i = 0; i < 8; i++)
+  for (int i = 0; i < _numberOfMusicNodes; i++)
   {
     ((TestMusicNode*)_ptrSynthMusicNodes[i])->setPinkAmplitude(value);
   }

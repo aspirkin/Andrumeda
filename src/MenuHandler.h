@@ -14,7 +14,7 @@ private:
   void drawChildren();
 public:
   MenuHandler(Menu* rootMenu);
-  void enterChild();
+  void enterCurrentChild();
   void escapeToParent();
   void nextChild();
   void previousChild();

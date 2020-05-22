@@ -2,18 +2,19 @@
 #define Menu_h_
 
 #include <MenuItem.h>
+#include <vector>
 
 class Menu : public MenuItem
 {
 private:
   //  TODO: Make arrays work & make it add children and retrieve them
-  // MenuItem* _children[];
+  std::vector <MenuItem*> _children;
+  int _currentChildIndex;
   // MenuItem* _currentChild;
 public:
   Menu(String* name);
   // void enterCurrentChild();
-  // MenuItem* previousChild();
-  // MenuItem* nextChild();
+  MenuItem* getChild(int index);
   void addChild(MenuItem* child);
 };
 

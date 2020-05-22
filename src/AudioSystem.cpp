@@ -1,7 +1,7 @@
 #include <AudioSystem.h>
 
-AudioSystem::AudioSystem() {
-  // _ptrControls = ptrControls;
+AudioSystem::AudioSystem(int numberOfMusicNodes) {
+  _numberOfMusicNodes = numberOfMusicNodes;
 }
 
 MusicNode* AudioSystem::getMusicNode(int index) {
@@ -9,11 +9,11 @@ MusicNode* AudioSystem::getMusicNode(int index) {
 }
 
 int AudioSystem::getNumberOfMusicNodes() {
-  return NUMBER_OF_MUSIC_NODES;
+  return _numberOfMusicNodes;
 }
 
 void AudioSystem::activateSampler() {
-  for (int i = 0; i < NUMBER_OF_MUSIC_NODES; i++)
+  for (int i = 0; i < _numberOfMusicNodes; i++)
   {
     // _ptrActiveMusicNodes[i]->deactivate();
     // _ptrActiveMusicNodes[i] = _ptrSamplerMusicNodes[i];
@@ -23,7 +23,7 @@ void AudioSystem::activateSampler() {
 }
 
 void AudioSystem::activateSynth() {
-  for (int i = 0; i < NUMBER_OF_MUSIC_NODES; i++)
+  for (int i = 0; i < _numberOfMusicNodes; i++)
   {
     // _ptrActiveMusicNodes[i]->deactivate();
     // _ptrActiveMusicNodes[i] = _ptrSynthMusicNodes[i];

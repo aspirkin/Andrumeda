@@ -12,7 +12,7 @@ class ParamAmplitude : public AbstractParameter
 {
 private:
   TestAudioSystem* _audioSystem;
-  floatSetterFunction setParameterFloatValueFunction;
+  floatSetterFunction _setParameterFloatValueFunction;
 public:
   ParamAmplitude(String* name, TestAudioSystem* audioSystem, floatSetterFunction setterFunction) : AbstractParameter(name) {
       _value = 50;
@@ -22,15 +22,15 @@ public:
       _multiplier = 0.01;
 
     _audioSystem = audioSystem;
-    setParameterFloatValueFunction = setterFunction;
+    _setParameterFloatValueFunction = setterFunction;
   };
   void increase() {
     AbstractParameter::increase();
-    setParameterFloatValueFunction(_value * _multiplier);
+    _setParameterFloatValueFunction(_value * _multiplier);
   };
   void decrease() {
     AbstractParameter::decrease();
-    setParameterFloatValueFunction(_value * _multiplier);
+    _setParameterFloatValueFunction(_value * _multiplier);
   };
 };
 
