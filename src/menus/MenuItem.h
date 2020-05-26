@@ -7,15 +7,17 @@ class MenuItem
 {
 protected:
   String* _name;
-  bool _isHidden;
   MenuItem* _parent;
+  bool _isHidden;
+  bool _isMenu = false;
 public:
   MenuItem(String* name);
-  void hide();
-  void unHide();
   MenuItem* getParent();
   String* getName();
   void setParent(MenuItem* parent);
+  bool isMenu();
+  void hide();
+  void unHide();
 };
 
 #endif //MenuItem_h_

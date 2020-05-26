@@ -1,8 +1,9 @@
 #include <Arduino.h>
 #include <TestAudioSystem.h>
 #include <Controls.h>
-#include <parameters/ParamAmplitude.h>
-#include <Menu.h>
+#include <parameters/FloatParameter.h>
+#include <parameters/StatelessParameter.h>
+#include <menus/MenuBranch.h>
 #include <functional>
 #include <MenuHandler.h>
 
@@ -30,28 +31,37 @@ void setup() {
 
   _ptrAudioSystem = new TestAudioSystem(8);
 
-  ParamAmplitude* waveform1AmplitudeParam = new ParamAmplitude(new String("waveform 1 amp"), _ptrAudioSystem, std::bind(&TestAudioSystem::setWaveform1Amplitude, _ptrAudioSystem, std::placeholders::_1));
-  ParamAmplitude* waveform2AmplitudeParam = new ParamAmplitude(new String("waveform 2 amp"), _ptrAudioSystem, std::bind(&TestAudioSystem::setWaveform2Amplitude, _ptrAudioSystem, std::placeholders::_1));
-  ParamAmplitude* pinkNoiseAmplitudeParam = new ParamAmplitude(new String("pink noise amp"), _ptrAudioSystem, std::bind(&TestAudioSystem::setPinkNoiseAmplitude, _ptrAudioSystem, std::placeholders::_1));
+  FloatParameter* waveform1AmplitudeParam = new FloatParameter(new String("waveform 1"), std::bind(&TestAudioSystem::setWaveform1Amplitude, _ptrAudioSystem, std::placeholders::_1));
+  FloatParameter* waveform2AmplitudeParam = new FloatParameter(new String("waveform 2"), std::bind(&TestAudioSystem::setWaveform2Amplitude, _ptrAudioSystem, std::placeholders::_1));
+  FloatParameter* pinkNoiseAmplitudeParam = new FloatParameter(new String("pink noise"), std::bind(&TestAudioSystem::setPinkNoiseAmplitude, _ptrAudioSystem, std::placeholders::_1));
 
-  Menu* root = new Menu(new String("/"));
-  Menu* synth = new Menu(new String("synth"));
-  Menu* sampler = new Menu(new String("sampler"));
+  MenuBranch* root = new MenuBranch(new String("/"));
+  MenuBranch* synth = new MenuBranch(new String("synth"));
+  MenuBranch* synthOscillators = new MenuBranch(new String("oscillators"));
+  MenuBranch* synthMixer = new MenuBranch(new String("mixer"));
+  MenuBranch* synthADSR = new MenuBranch(new String("ADSR"));
 
   root->addChild(synth);
-    synth->addChild(waveform1AmplitudeParam);
-    synth->addChild(waveform2AmplitudeParam);
-    synth->addChild(pinkNoiseAmplitudeParam);
-  root->addChild(sampler);
+    synth->addChild(synthOscillators);
+    synth->addChild(synthMixer);
+      synthMixer->addChild(waveform1AmplitudeParam);
+      synthMixer->addChild(waveform2AmplitudeParam);
+      synthMixer->addChild(pinkNoiseAmplitudeParam);
+    synth->addChild(synthADSR);
 
-  MenuHandler* menuHandler = new MenuHandler(root);
+  MenuHandler* menuHandler = new MenuHandler(root, _ptrControls->getEncoderHandler(1));
 
-  _ptrControls->getEncoderHandler(0)->setParameter(waveform1AmplitudeParam);
+  StatelessParameter* paramMenuChildrenNavigation =
+    new StatelessParameter(std::bind(&MenuHandler::selectNextChild, menuHandler),
+                           std::bind(&MenuHandler::selectPreviousChild, menuHandler));
+
+
+  _ptrControls->getEncoderHandler(0)->setParameter(paramMenuChildrenNavigation);
   _ptrControls->getEncoderHandler(0)->setClickFunction(std::bind(&MenuHandler::escapeToParent, menuHandler));
   _ptrControls->getEncoderHandler(1)->setParameter(waveform2AmplitudeParam);
   _ptrControls->getEncoderHandler(1)->setClickFunction(std::bind(&MenuHandler::enterCurrentChild, menuHandler));
   _ptrControls->getEncoderHandler(2)->setParameter(pinkNoiseAmplitudeParam);
-  _ptrControls->getEncoderHandler(3)->setParameter(pinkNoiseAmplitudeParam);
+  _ptrControls->getEncoderHandler(3)->setParameter(waveform1AmplitudeParam);
 
   for (int i = 0; i < 8; i++)
   {

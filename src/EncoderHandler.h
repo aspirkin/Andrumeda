@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include <MusicNode.h>
-#include <AbstractParameter.h>
+#include <parameters/AbstractParameter.h>
 #include <functional>
 
 typedef std::function<void()> activationFunction;

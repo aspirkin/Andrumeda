@@ -1,4 +1,8 @@
-#include <MenuItem.h>
+#include <menus/MenuItem.h>
+
+bool MenuItem::isMenu() {
+  return _isMenu;
+}
 
 MenuItem::MenuItem(String* name) {
   _name = name;

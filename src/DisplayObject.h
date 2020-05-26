@@ -10,19 +10,19 @@
 #define TFT_SCLK   20   // set these to be whatever pins you like!
 #define TFT_MOSI   21   // set these to be whatever pins you like!
 
-#define BLACK   0x0000
-#define BLUE    0x001F
-#define RED     0xF800
-#define GREEN   0x07E0
-#define CYAN    0x07FF
-#define MAGENTA 0xF81F
-#define YELLOW  0xFFE0
-#define WHITE   0xFFFF
+// #define BLACK   0x0000
+// #define BLUE    0x001F
+// #define RED     0xF800
+// #define GREEN   0x07E0
+// #define CYAN    0x07FF
+// #define MAGENTA 0xF81F
+// #define YELLOW  0xFFE0
+// #define WHITE   0xFFFF
 
-#define OPERATOR1_COLOR RED
-#define OPERATOR2_COLOR GREEN
-#define OPERATOR3_COLOR BLUE
-#define OPERATOR4_COLOR YELLOW
+// #define OPERATOR1_COLOR RED
+// #define OPERATOR2_COLOR GREEN
+// #define OPERATOR3_COLOR BLUE
+// #define OPERATOR4_COLOR YELLOW
 
 Adafruit_ST7735 display = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 
