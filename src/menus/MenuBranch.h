@@ -9,15 +9,33 @@ class MenuBranch : public MenuItem
 private:
   std::vector <MenuItem*> _children;
   int _currentChildIndex = 0;
+
 public:
-  MenuBranch(String* name);
-  MenuItem* getChild(int index);
-  void addChild(MenuItem* child);
-  MenuItem* getCurrentChild();
-  void selectNextChild();
-  void selectPreviousChild();
-  int getNumberOfChildren();
-  int getCurrentChildIndex();
+  MenuBranch(String name) : MenuItem(name) {
+    _isMenu = true;
+    _currentChildIndex = 0;
+  };
+
+  void addChild(MenuItem* child) {
+    child->setParent(this);
+    _children.push_back(child);
+  };
+
+  MenuItem* getChild(int index) {return _children[index];};
+  int getNumberOfChildren() {return _children.size();};
+
+  MenuItem* getCurrentChild() {return getChild(_currentChildIndex);};
+  int getCurrentChildIndex() {return _currentChildIndex;};
+
+  void selectNextChild() {
+    _currentChildIndex++;
+    if ((_currentChildIndex + 1) > _children.size()) _currentChildIndex = 0;
+  };
+
+  void selectPreviousChild() {
+    _currentChildIndex--;
+    if (_currentChildIndex < 0) _currentChildIndex = _children.size() - 1;
+  };
 };
 
 

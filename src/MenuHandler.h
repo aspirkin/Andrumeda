@@ -2,7 +2,9 @@
 #define MenuHandler_h_
 
 #include <menus/MenuBranch.h>
+#include <menus/MenuLeaf.h>
 #include <parameters/AbstractParameter.h>
+#include <parameters/StatefulParameter.h>
 #include <EncoderHandler.h>
 
 class MenuHandler
@@ -44,9 +46,10 @@ private:
   void drawMenuItem(MenuItem* item,int xPos, int yPos, bool isSelected);
   void drawValue(MenuItem* item, int xPos, int yPos, bool isSelected);
 
-  AbstractParameter* _parameterMock = new AbstractParameter(new String());
+  AbstractParameter* _parameterMock = new AbstractParameter();
   EncoderHandler* _encoderHandler;
   void setEncoderParameter(MenuItem* item);
+
 public:
   MenuHandler(MenuBranch* rootMenu, EncoderHandler* encoderHandler);
   void enterCurrentChild();

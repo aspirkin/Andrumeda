@@ -1,34 +1,42 @@
 #ifndef FloatParameter_h_
 #define FloatParameter_h_
 
-#include <parameters/AbstractParameter.h>
+#include <parameters/StatefulParameter.h>
 #include <Audio.h>
 #include <TestAudioSystem.h>
 #include <functional>
 
 typedef std::function<void(float)> floatSetterFunction;
 
-class FloatParameter : public AbstractParameter
+class FloatParameter : public StatefulParameter
 {
 private:
-  floatSetterFunction _setParameterFloatValueFunction;
-public:
-  FloatParameter(String* name, floatSetterFunction setterFunction) : AbstractParameter(name) {
-      _value = 50;
-      _limitTop = 100;
-      _limitBottom = 0;
-      _step = 5;
-      _multiplier = 0.01;
+  floatSetterFunction _setterFunction;
+  float _multiplier;
 
-    _setParameterFloatValueFunction = setterFunction;
+public:
+  FloatParameter(
+    floatSetterFunction setterFunction,
+    int limitBottom,
+    int initialValue,
+    int limitTop,
+    float multiplier,
+    int step = 1,
+    String units = "")
+    : StatefulParameter(limitBottom, initialValue, limitTop, step, units)
+  {
+    _multiplier = multiplier;
+    _setterFunction = setterFunction;
   };
+
   void increase() {
-    AbstractParameter::increase();
-    _setParameterFloatValueFunction(_value * _multiplier);
+    StatefulParameter::increase();
+    _setterFunction(_value * _multiplier);
   };
+
   void decrease() {
-    AbstractParameter::decrease();
-    _setParameterFloatValueFunction(_value * _multiplier);
+    StatefulParameter::decrease();
+    _setterFunction(_value * _multiplier);
   };
 };
 

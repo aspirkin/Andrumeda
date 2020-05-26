@@ -42,7 +42,7 @@ void MenuHandler::setEncoderParameter(MenuItem* item) {
   if (item->isMenu()) {
     _encoderHandler->setParameter(_parameterMock);
   } else {
-    _encoderHandler->setParameter((AbstractParameter*)item);
+    _encoderHandler->setParameter(((MenuLeaf*)item)->getParameter());
   }
 }
 
@@ -54,7 +54,7 @@ void MenuHandler::drawMenuItem(MenuItem* item, int xPos, int yPos, bool isSelect
   }
 
   display.setCursor(xPos, yPos);
-  display.print(*item->getName());
+  display.print(item->getName());
 
   drawValue(item, _menuChildrenValueXPos, yPos, isSelected);
 }
@@ -70,7 +70,7 @@ void MenuHandler::drawValue(MenuItem* item, int xPos, int yPos, bool isSelected)
   if (item->isMenu()) {
     display.print("->");
   } else {
-    display.print(((AbstractParameter*)item)->getValue());
+    display.print(((MenuLeaf*)item)->getParameter()->getValue());
   }
 }
 
@@ -79,7 +79,7 @@ void MenuHandler::drawMenuPath() {
   MenuBranch* printingMenu = _currentMenu;
 
   while (printingMenu != _rootMenu) {
-    result ="/" + *printingMenu->getName() + result;
+    result ="/" + printingMenu->getName() + result;
     printingMenu = (MenuBranch*) printingMenu->getParent();
   }
   

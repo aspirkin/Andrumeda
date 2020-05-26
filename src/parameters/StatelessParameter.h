@@ -12,7 +12,7 @@ private:
   activationFunction _increaseFunction;
   activationFunction _decreaseFunction;
 public:
-  StatelessParameter(activationFunction increaseFunction, activationFunction decreaseFunction) : AbstractParameter(new String()) {
+  StatelessParameter(activationFunction increaseFunction, activationFunction decreaseFunction) : AbstractParameter() {
     _increaseFunction = increaseFunction;
     _decreaseFunction = decreaseFunction;
   };

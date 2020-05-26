@@ -6,18 +6,21 @@
 class MenuItem
 {
 protected:
-  String* _name;
+  String _name;
   MenuItem* _parent;
-  bool _isHidden;
+  bool _isHidden = false;
   bool _isMenu = false;
+
 public:
-  MenuItem(String* name);
-  MenuItem* getParent();
-  String* getName();
-  void setParent(MenuItem* parent);
-  bool isMenu();
-  void hide();
-  void unHide();
+  MenuItem(String name) { _name = name; };
+
+  String getName() {return _name;};
+  void setParent(MenuItem* parent) {_parent = parent;};
+  MenuItem* getParent() {return _parent;};
+
+  bool isMenu() {return _isMenu;};
+  void hide() {_isHidden = true;};
+  void unHide() {_isHidden = false;};
 };
 
 #endif //MenuItem_h_
