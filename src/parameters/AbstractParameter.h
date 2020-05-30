@@ -5,7 +5,6 @@ class AbstractParameter
 {
 public:
   AbstractParameter() {};
-  // virtual ~AbstractParameter() {};
   virtual void increase() {};
   virtual void decrease() {};
 };

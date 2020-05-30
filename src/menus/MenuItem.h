@@ -7,7 +7,7 @@ class MenuItem
 {
 protected:
   String _name;
-  MenuItem* _parent;
+  MenuItem* _parent = nullptr;
   bool _isHidden = false;
   bool _isMenu = false;
 

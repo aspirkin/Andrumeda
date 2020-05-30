@@ -32,7 +32,7 @@ void setup() {
 
   _ptrAudioSystem = new TestAudioSystem(8);
 
-
+  
   MenuLeaf* wf1Amplitude = new MenuLeaf(
     "waveform 1", new FloatParameter(
     std::bind(&TestAudioSystem::setWaveform1Amplitude, _ptrAudioSystem, std::placeholders::_1),
@@ -62,8 +62,9 @@ void setup() {
       synthMixer->addChild(pinkNoiseAmplitude);
     synth->addChild(synthADSR);
 
+  
   MenuHandler* menuHandler = new MenuHandler(root, _ptrControls->getEncoderHandler(1));
-
+  
   StatelessParameter* paramMenuChildrenNavigation =
     new StatelessParameter(std::bind(&MenuHandler::selectNextChild, menuHandler),
                            std::bind(&MenuHandler::selectPreviousChild, menuHandler));
@@ -71,16 +72,13 @@ void setup() {
 
   _ptrControls->getEncoderHandler(0)->setParameter(paramMenuChildrenNavigation);
   _ptrControls->getEncoderHandler(0)->setClickFunction(std::bind(&MenuHandler::escapeToParent, menuHandler));
-  // _ptrControls->getEncoderHandler(1)->setParameter(waveform2AmplitudeParam);
   _ptrControls->getEncoderHandler(1)->setClickFunction(std::bind(&MenuHandler::enterCurrentChild, menuHandler));
-  // _ptrControls->getEncoderHandler(2)->setParameter(pinkNoiseAmplitudeParam);
-  // _ptrControls->getEncoderHandler(3)->setParameter(waveform1AmplitudeParam);
 
   for (int i = 0; i < 8; i++)
   {
     _ptrControls->getMusicSensorHandler(i)->setNode(_ptrAudioSystem->getMusicNode(i));
   }
-
+  
 }
 
 void loop() {

@@ -24,17 +24,25 @@ public:
   MenuItem* getChild(int index) {return _children[index];};
   int getNumberOfChildren() {return _children.size();};
 
-  MenuItem* getCurrentChild() {return getChild(_currentChildIndex);};
-  int getCurrentChildIndex() {return _currentChildIndex;};
-
-  void selectNextChild() {
-    _currentChildIndex++;
-    if ((_currentChildIndex + 1) > _children.size()) _currentChildIndex = 0;
+  MenuItem* getCurrentChild() {
+    if (_children.size() == 0) return nullptr;
+    return getChild(_currentChildIndex);
   };
 
-  void selectPreviousChild() {
+  int getCurrentChildIndex() {return _currentChildIndex;};
+
+  bool selectNextChild() {
+    if (_children.size() == 0) return false;
+    _currentChildIndex++;
+    if ((_currentChildIndex + 1) > (int)_children.size()) _currentChildIndex = 0;
+    return true;
+  };
+
+  bool selectPreviousChild() {
+    if (_children.size() == 0) return false;
     _currentChildIndex--;
     if (_currentChildIndex < 0) _currentChildIndex = _children.size() - 1;
+    return true;
   };
 };
 
