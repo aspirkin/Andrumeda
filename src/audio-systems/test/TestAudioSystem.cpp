@@ -1,5 +1,5 @@
-#include <TestAudioSystem.h>
-#include <AudioObjects.h>
+#include <audio-systems/test/TestAudioSystem.h>
+#include <audio-systems/test/AudioObjects.h>
 
 TestAudioSystem::TestAudioSystem(int numberOfMusicNodes) : AudioSystem(numberOfMusicNodes){
   setupSGTL5000();

@@ -1,8 +1,8 @@
 #ifndef TestAudioSystem_h_
 #define TestAudioSystem_h_
 
-#include <AudioSystem.h>
-#include <TestMusicNode.h>
+#include <audio-systems/AudioSystem.h>
+#include <audio-systems/test/TestMusicNode.h>
 
 /*enum class ParameterTag : int {
   PARAM_WF1_AMP,

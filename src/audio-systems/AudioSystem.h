@@ -1,7 +1,7 @@
 #ifndef AudioSystem_h_
 #define AudioSystem_h_
 
-#include <MusicNode.h>
+#include <audio-systems/MusicNode.h>
 #include <Audio.h>
 #include <parameters/AbstractParameter.h>
 #include <vector>

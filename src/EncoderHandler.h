@@ -2,7 +2,7 @@
 #define EncoderHandler_h_
 
 #include <Arduino.h>
-#include <MusicNode.h>
+#include <audio-systems/MusicNode.h>
 #include <parameters/AbstractParameter.h>
 #include <functional>
 

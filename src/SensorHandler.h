@@ -2,7 +2,7 @@
 #define Sensor_h_
 
 #include <ControllerHandler.h>
-#include <MusicNode.h>
+#include <audio-systems/MusicNode.h>
 #include <Arduino.h>
 
 class SensorHandler : public ControllerHandler

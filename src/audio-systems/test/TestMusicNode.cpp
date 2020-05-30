@@ -1,8 +1,8 @@
-#include <TestMusicNode.h>
+#include <audio-systems/test/TestMusicNode.h>
 
 TestMusicNode::TestMusicNode(AudioSynthWaveform &nodeWaveform1,
                              AudioSynthWaveform &nodeWaveform2,
-                             AudioSynthNoisePink &nodeNoisePink) {
+                             AudioSynthNoisePink &nodeNoisePink) : MusicNode(){
   _waveform1 = &nodeWaveform1;
   _waveform2 = &nodeWaveform2;
   _noisePink = &nodeNoisePink;

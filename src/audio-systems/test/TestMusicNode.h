@@ -1,7 +1,7 @@
 #ifndef TestMusicNode_h_
 #define TestMusicNode_h_
 
-#include <MusicNode.h>
+#include <audio-systems/MusicNode.h>
 #include <Audio.h>
 
 class TestMusicNode : public MusicNode

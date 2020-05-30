@@ -3,7 +3,7 @@
 
 #include <parameters/StatefulParameter.h>
 #include <Audio.h>
-#include <TestAudioSystem.h>
+#include <audio-systems/test/TestAudioSystem.h>
 #include <functional>
 
 typedef std::function<void(float)> floatSetterFunction;

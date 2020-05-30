@@ -16,7 +16,7 @@ EncoderHandler::EncoderHandler(int pinS, int pinB, int pinA) {
 void EncoderHandler::setParameter(AbstractParameter* parameter) {
   _parameter = parameter;
 }
-
+//  TODO: make encoder update display on parameter change
 void EncoderHandler::rotateClockwise() {
   _parameter->increase();
 }

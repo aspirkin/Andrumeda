@@ -6,7 +6,7 @@ class MusicNode
 protected:
   bool _isActive = false;
 public:
-  MusicNode();
+  MusicNode() {};
   virtual void noteOn();
   virtual void noteOff();
   virtual void setVelocity(int velocity);
