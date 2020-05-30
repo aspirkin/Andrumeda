@@ -15,7 +15,6 @@ void ST7735_DisplayHandler::drawMenuPath(MenuBranch* menu) {
 }
 
 void ST7735_DisplayHandler::drawMenuChildren(MenuBranch* menu) {
-  Serial.println("- drawMenuChildren");
   int yPos = _initYPos + _menuChildrenYPos;
   MenuItem* currentChild;
   bool isSelected;
@@ -26,12 +25,10 @@ void ST7735_DisplayHandler::drawMenuChildren(MenuBranch* menu) {
     isSelected = (i == menu->getCurrentChildIndex());
     drawMenuChild(currentChild, _menuChildrenXPos, yPos, isSelected);
     yPos += _menuChildrenYStep;
-    // if (isSelected) setEncoderParameter(currentChild);
   }
 };
 
 void ST7735_DisplayHandler::drawMenuChild(MenuItem* item, int xPos, int yPos, bool isSelected) {
-  Serial.println("- drawMenuChild");
   if (isSelected) display.setTextColor(_menuChildrenSelectedColor); else display.setTextColor(_menuChildrenColor);
   display.setCursor(xPos, yPos);
   display.print(item->getName());
@@ -39,7 +36,6 @@ void ST7735_DisplayHandler::drawMenuChild(MenuItem* item, int xPos, int yPos, bo
 };
 
 void ST7735_DisplayHandler::drawMenuChildValue(MenuItem* item, int xPos, int yPos, bool isSelected) {
-  Serial.println("- drawMenuChildValue");
   if (isSelected) display.setTextColor(_menuChildrenValueSelectedColor); else display.setTextColor(_menuChildrenValueColor);
   display.setCursor(xPos, yPos);
   if (item->isMenu()) {

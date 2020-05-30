@@ -6,29 +6,14 @@
 #include <menus/MenuBranch.h>
 #include <menus/MenuLeaf.h>
 #include <functional>
-#include <MenuHandler.h>
 
 Controls* _ptrControls;
 TestAudioSystem* _ptrAudioSystem;
 
-//typedef std::function<void(float)> floatSetterFunction;
+//enum class EncoderType;
 
 void setup() {
   Serial.begin(115200);
-
-  _ptrControls = new Controls(8, 2);
-  _ptrControls->addMusicSensor(16);
-  _ptrControls->addMusicSensor(15);
-  _ptrControls->addMusicSensor(14);
-  _ptrControls->addMusicSensor(49);
-  _ptrControls->addMusicSensor(50);
-  _ptrControls->addMusicSensor(39);
-  _ptrControls->addMusicSensor(38);
-  _ptrControls->addMusicSensor(37);
-  _ptrControls->addEncoder(2, 1, 0);
-  _ptrControls->addEncoder(8, 7, 6);
-  _ptrControls->addEncoder(5, 4, 3);
-  _ptrControls->addEncoder(27, 26, 25);
 
   _ptrAudioSystem = new TestAudioSystem(8);
 
@@ -62,17 +47,19 @@ void setup() {
       synthMixer->addChild(pinkNoiseAmplitude);
     synth->addChild(synthADSR);
 
-  
-  MenuHandler* menuHandler = new MenuHandler(root, _ptrControls->getEncoderHandler(1));
-  
-  StatelessParameter* paramMenuChildrenNavigation =
-    new StatelessParameter(std::bind(&MenuHandler::selectNextChild, menuHandler),
-                           std::bind(&MenuHandler::selectPreviousChild, menuHandler));
-
-
-  _ptrControls->getEncoderHandler(0)->setParameter(paramMenuChildrenNavigation);
-  _ptrControls->getEncoderHandler(0)->setClickFunction(std::bind(&MenuHandler::escapeToParent, menuHandler));
-  _ptrControls->getEncoderHandler(1)->setClickFunction(std::bind(&MenuHandler::enterCurrentChild, menuHandler));
+  _ptrControls = new Controls(8, 2, root, new ST7735_DisplayHandler());
+  _ptrControls->addMusicSensor(16);
+  _ptrControls->addMusicSensor(15);
+  _ptrControls->addMusicSensor(14);
+  _ptrControls->addMusicSensor(49);
+  _ptrControls->addMusicSensor(50);
+  _ptrControls->addMusicSensor(39);
+  _ptrControls->addMusicSensor(38);
+  _ptrControls->addMusicSensor(37);
+  _ptrControls->addEncoder(2, 1, 0, Controls::EncoderType::MENU_NAVIGATION);
+  _ptrControls->addEncoder(8, 7, 6, Controls::EncoderType::PARAMETER_CHANGE);
+  _ptrControls->addEncoder(5, 4, 3, Controls::EncoderType::HOT_FUNCTION);
+  _ptrControls->addEncoder(27, 26, 25, Controls::EncoderType::HOT_FUNCTION);
 
   for (int i = 0; i < 8; i++)
   {
