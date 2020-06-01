@@ -56,10 +56,10 @@ void setup() {
   _ptrControls->addMusicSensor(39);
   _ptrControls->addMusicSensor(38);
   _ptrControls->addMusicSensor(37);
-  _ptrControls->addEncoder(2, 1, 0, Controls::EncoderType::MENU_NAVIGATION);
-  _ptrControls->addEncoder(8, 7, 6, Controls::EncoderType::PARAMETER_CHANGE);
-  _ptrControls->addEncoder(5, 4, 3, Controls::EncoderType::HOT_FUNCTION);
-  _ptrControls->addEncoder(27, 26, 25, Controls::EncoderType::HOT_FUNCTION);
+  _ptrControls->addNavigationEncoder(2, 1, 0);
+  _ptrControls->addConfigurationEncoder(8, 7, 6);
+  _ptrControls->addCommonEncoder(5, 4, 3);
+  _ptrControls->addCommonEncoder(27, 26, 25);
 
   for (int i = 0; i < 8; i++)
   {

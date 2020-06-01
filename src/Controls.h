@@ -23,29 +23,40 @@ protected:
   MenuBranch* _rootMenu;
   MenuBranch* _currentMenu;
   AbstractDisplayHandler* _displayHandler;
+
   AbstractParameter* _parameterMock = new AbstractParameter();
-  EncoderHandler* _parameterEncoderHandler;
+  AbstractParameter* _configurableParameter;
+  StatelessParameter* _navigationParameter = new StatelessParameter(
+    std::bind(&Controls::selectNextChild, this),
+    std::bind(&Controls::selectPreviousChild, this)
+  );
+  StatelessParameter* _configurationParameter = new StatelessParameter(
+    std::bind(&Controls::increaseParameter, this),
+    std::bind(&Controls::decreaseParameter, this)
+  );
+
+  EncoderHandler* _configurationEncoderHandler;
   EncoderHandler* _navigationEncoderHandler;
-  void setEncoderParameter(MenuItem* item);
-  void updateDisplay();
+
+  void setConfigurableParameter(MenuItem* item);
+  // void updateDisplay();
 
 public:
-  enum class EncoderType {
-    MENU_NAVIGATION,
-    PARAMETER_CHANGE,
-    HOT_FUNCTION
-  };
   Controls(int numberOfMusicNodes, int numberOfEncoders, MenuBranch* rootMenu, AbstractDisplayHandler* displayHandler);
   SensorHandler* getMusicSensorHandler(int index);
   EncoderHandler* getEncoderHandler(int index);
   void addMusicSensor(int pin);
-  void addEncoder(int pinA, int pinB, int pinS, EncoderType encoderType);
+  void addNavigationEncoder(int pinA, int pinB, int pinS);
+  void addConfigurationEncoder(int pinA, int pinB, int pinS);
+  EncoderHandler* addCommonEncoder(int pinA, int pinB, int pinS);
   void update();
 
   void enterCurrentChild();
   void escapeToParent();
   void selectNextChild();
   void selectPreviousChild();
+  void increaseParameter();
+  void decreaseParameter();
 };
 
 #endif //Controls_h_

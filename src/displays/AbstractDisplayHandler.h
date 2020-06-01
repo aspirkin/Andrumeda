@@ -12,6 +12,8 @@ protected:
   virtual void drawMenuChildValue(MenuItem* item, int xPos, int yPos, bool isSelected);
 public:
   virtual void displayMenu(MenuBranch* menu) {};
+  virtual void redisplayMenuChildren() {};
+  virtual void redisplaySelectedChildValue() {};
 };
 
 #endif  //AbstractDisplayHandler_h_

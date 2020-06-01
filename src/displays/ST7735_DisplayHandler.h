@@ -34,6 +34,12 @@ private:
   const int _menuChildrenValueColor = WHITE;
   const int _menuChildrenValueSelectedColor = GREEN;
 
+  const int _menuChildrenValueWidth = 28;
+  const int _menuChildrenValueHeight = 8;
+  int _menuChildrenValueYPos;
+  MenuBranch* _currentMenu;
+  MenuItem* _currentChild;
+
   void drawMenuPath(MenuBranch* menu);
   void drawMenuChildren(MenuBranch* menu);
   void drawMenuChild(MenuItem* item, int xPos, int yPos, bool isSelected);
@@ -42,6 +48,8 @@ private:
 public:
   ST7735_DisplayHandler();
   void displayMenu(MenuBranch* menu);
+  void redisplayMenuChildren();
+  void redisplaySelectedChildValue();
 };
 
 #endif  //ST7735_DisplayHandler_h_

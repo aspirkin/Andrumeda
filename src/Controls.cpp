@@ -11,24 +11,23 @@ Controls::Controls(int numberOfMusicNodes, int numberOfEncoders, MenuBranch* roo
   _displayHandler->displayMenu(_currentMenu);
 }
 
-void Controls::addEncoder(int pinS, int pinA, int pinB, EncoderType encoderType){
+void Controls::addNavigationEncoder(int pinS, int pinA, int pinB){
+  _navigationEncoderHandler = addCommonEncoder(pinS, pinA, pinB);
+  _navigationEncoderHandler->setClickFunction(std::bind(&Controls::escapeToParent, this));
+  _navigationEncoderHandler->setParameter(_navigationParameter);
+}
+
+void Controls::addConfigurationEncoder(int pinS, int pinA, int pinB){
+  _configurationEncoderHandler = addCommonEncoder(pinS, pinA, pinB);
+  _configurationEncoderHandler->setClickFunction(std::bind(&Controls::enterCurrentChild, this));
+  _configurationEncoderHandler->setParameter(_configurationParameter);
+}
+
+EncoderHandler* Controls::addCommonEncoder(int pinS, int pinA, int pinB){
   EncoderHandler* newEncoderHandler = new EncoderHandler(pinS, pinA, pinB);
   _ptrEncoderHandlers.push_back(newEncoderHandler);
+  return newEncoderHandler;
 
-  if (encoderType == EncoderType::PARAMETER_CHANGE) {
-    _parameterEncoderHandler = newEncoderHandler;
-    _parameterEncoderHandler->setClickFunction(std::bind(&Controls::enterCurrentChild, this));
-  } else if (encoderType == EncoderType::MENU_NAVIGATION) {
-    _navigationEncoderHandler = newEncoderHandler;
-    _navigationEncoderHandler->setClickFunction(std::bind(&Controls::escapeToParent, this));
-
-    StatelessParameter* paramMenuChildrenNavigation =
-      new StatelessParameter(
-        std::bind(&Controls::selectNextChild, this),
-        std::bind(&Controls::selectPreviousChild, this)
-      );
-    _navigationEncoderHandler->setParameter(paramMenuChildrenNavigation);
-  }
 }
 
 void Controls::addMusicSensor(int pin) {
@@ -56,40 +55,57 @@ void Controls::update() {
   }
 }
 
-void Controls::setEncoderParameter(MenuItem* item) {
+void Controls::setConfigurableParameter(MenuItem* item) {
   if (item == nullptr) {
-    _parameterEncoderHandler->setParameter(_parameterMock);
+    _configurableParameter = _parameterMock;
   } else if (item->isMenu()) {
-    _parameterEncoderHandler->setParameter(_parameterMock);
+    _configurableParameter = _parameterMock;
   } else {
-    _parameterEncoderHandler->setParameter(((MenuLeaf*)item)->getParameter());
+   _configurableParameter = ((MenuLeaf*)item)->getParameter();
   }
 }
 
-void Controls::updateDisplay() {
-  _displayHandler->displayMenu(_currentMenu);
-  setEncoderParameter(_currentMenu->getCurrentChild());
-}
+// void Controls::updateDisplay() {
+//   _displayHandler->displayMenu(_currentMenu);
+// }
 
 void Controls::selectNextChild() {
-  if (_currentMenu->selectNextChild()) updateDisplay();
+  if (_currentMenu->selectNextChild()) {
+    setConfigurableParameter(_currentMenu->getCurrentChild());
+    _displayHandler->redisplayMenuChildren();
+  }
 }
 
 void Controls::selectPreviousChild() {
-  if (_currentMenu->selectPreviousChild()) updateDisplay();
+  if (_currentMenu->selectPreviousChild()) {
+    setConfigurableParameter(_currentMenu->getCurrentChild());
+    _displayHandler->redisplayMenuChildren();
+  }
+}
+
+void Controls::increaseParameter() {
+  _configurableParameter->increase();
+  _displayHandler->redisplaySelectedChildValue();
+}
+
+void Controls::decreaseParameter() {
+  _configurableParameter->decrease();
+  _displayHandler->redisplaySelectedChildValue();
 }
 
 void Controls::enterCurrentChild() {
   if (_currentMenu->getCurrentChild() == nullptr) return;
   if (_currentMenu->getCurrentChild()->isMenu()) {
     _currentMenu = (MenuBranch*) _currentMenu->getCurrentChild();
-    updateDisplay();
+    _displayHandler->displayMenu(_currentMenu);
+    setConfigurableParameter(_currentMenu->getCurrentChild());
   }
 }
 
 void Controls::escapeToParent() {
   if (_currentMenu != _rootMenu) {
     _currentMenu = (MenuBranch*) _currentMenu->getParent();
-    updateDisplay();
+    _displayHandler->displayMenu(_currentMenu);
+    setConfigurableParameter(_currentMenu->getCurrentChild());
   }
 }
