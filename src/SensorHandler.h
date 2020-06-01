@@ -11,7 +11,13 @@ protected:
   int _pin;
   int _value;
   MusicNode* _synthNode;
-  //static const int SENSOR_THRESHOLD = ;
+
+  int _cooldownCounter = 0;
+  int _valueTop = 0;
+  const int SENSOR_THRESHOLD = 150;
+  const int SENSOR_COOLDOWN_LIMIT = 300;
+  int _volumeToSet = 0;
+  
 public:
   SensorHandler(int pin);
   void update();

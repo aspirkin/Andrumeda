@@ -9,14 +9,14 @@ TestAudioSystem::TestAudioSystem(int numberOfMusicNodes) : AudioSystem(numberOfM
 }
 
 void TestAudioSystem::setupMusicNodes() {
-  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform1, waveform2, pink1));
-  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform3, waveform4, pink2));
-  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform5, waveform6, pink3));
-  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform7, waveform8, pink4));
-  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform9, waveform10, pink5));
-  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform11, waveform12, pink6));
-  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform13, waveform14, pink7));
-  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform15, waveform16, pink8));
+  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform1, waveform2, pink1, envelope1));
+  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform3, waveform4, pink2, envelope2));
+  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform5, waveform6, pink3, envelope3));
+  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform7, waveform8, pink4, envelope4));
+  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform9, waveform10, pink5, envelope5));
+  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform11, waveform12, pink6, envelope6));
+  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform13, waveform14, pink7, envelope7));
+  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform15, waveform16, pink8, envelope8));
 }
 
 void TestAudioSystem::setupSGTL5000() {
@@ -118,6 +118,33 @@ void TestAudioSystem::setPinkNoiseAmplitude(float value) {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
     ((TestMusicNode*)_ptrSynthMusicNodes[i])->setPinkAmplitude(value);
+  }
+}
+void TestAudioSystem::setAttack(int value) {
+  for (int i = 0; i < _numberOfMusicNodes; i++)
+  {
+    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setAttack(value);
+  }
+}
+
+void TestAudioSystem::setDecay(int value) {
+  for (int i = 0; i < _numberOfMusicNodes; i++)
+  {
+    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setDecay(value);
+  }
+}
+
+void TestAudioSystem::setSustain(float value) {
+  for (int i = 0; i < _numberOfMusicNodes; i++)
+  {
+    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setSustain(value);
+  }
+}
+
+void TestAudioSystem::setRelease(int value) {
+  for (int i = 0; i < _numberOfMusicNodes; i++)
+  {
+    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setRelease(value);
   }
 }
 

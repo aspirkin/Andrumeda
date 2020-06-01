@@ -29,6 +29,11 @@ public:
   void setWaveform1Amplitude(float value);
   void setWaveform2Amplitude(float value);
   void setPinkNoiseAmplitude(float value);
+
+  void setAttack(int value);
+  void setDecay(int value);
+  void setSustain(float value);
+  void setRelease(int value);
 };
 
 #endif //TestAudioSystem_h_

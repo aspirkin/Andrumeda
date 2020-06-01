@@ -39,7 +39,6 @@ protected:
   EncoderHandler* _navigationEncoderHandler;
 
   void setConfigurableParameter(MenuItem* item);
-  // void updateDisplay();
 
 public:
   Controls(int numberOfMusicNodes, int numberOfEncoders, MenuBranch* rootMenu, AbstractDisplayHandler* displayHandler);

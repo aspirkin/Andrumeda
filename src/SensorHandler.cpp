@@ -8,18 +8,40 @@ SensorHandler::SensorHandler(int pin) {
 void SensorHandler::update() {
   //Serial.println("sensor update");
   _value = 1023 - analogRead(_pin);
-  if (_value > 150 && !_isPressed)
+
+  if (_cooldownCounter > 0)
   {
-    _synthNode->noteOn();
-    Serial.println("note on");
-    _isPressed = true;
+    _cooldownCounter--;
   }
-  else if (_value < 150 && _isPressed)
+  else
   {
-    _synthNode->noteOff();
-    Serial.println("note off");
-    _isPressed = false;
+    if (_value > SENSOR_THRESHOLD)
+    {
+      if (_valueTop == 0)
+      {
+        _synthNode->noteOn();
+        _cooldownCounter = SENSOR_COOLDOWN_LIMIT;
+      }
+      if (_value > _valueTop)
+      {
+        _valueTop = _value;
+        _volumeToSet = _valueTop;
+      }
+    }
+    else if (_valueTop > 0)
+    {
+      _valueTop = 0;
+      _synthNode->noteOff();
+      _cooldownCounter = SENSOR_COOLDOWN_LIMIT;
+    }
   }
+
+  // if (_valueTop > 0 && _value > _valueTop && _value > SENSOR_THRESHOLD)
+  // {
+  //   _valueTop = _value;
+  //   _volumeToSet = _valueTop;
+  // }
+  //set volume
 }
 
 void SensorHandler::setNode(MusicNode * node) {

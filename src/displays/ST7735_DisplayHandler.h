@@ -30,11 +30,11 @@ private:
   const int _menuChildrenColor = WHITE;
   const int _menuChildrenSelectedColor = YELLOW;
 
-  const int _menuChildrenValueXPos = 100;
+  const int _menuChildrenValueXPos = 80;
   const int _menuChildrenValueColor = WHITE;
   const int _menuChildrenValueSelectedColor = GREEN;
 
-  const int _menuChildrenValueWidth = 28;
+  const int _menuChildrenValueWidth = 29;
   const int _menuChildrenValueHeight = 8;
   int _menuChildrenValueYPos;
   MenuBranch* _currentMenu;

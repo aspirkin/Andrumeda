@@ -4,6 +4,9 @@ Controls::Controls(int numberOfMusicNodes, int numberOfEncoders, MenuBranch* roo
   _numberOfMusicNodes = numberOfMusicNodes;
   _numberOfEncoders = numberOfEncoders;
 
+  _ptrMusicSensorHandlers.reserve(_numberOfMusicNodes);
+  _ptrEncoderHandlers.reserve(_numberOfEncoders);
+
   _rootMenu = rootMenu;
   _currentMenu = _rootMenu;
 
@@ -64,10 +67,6 @@ void Controls::setConfigurableParameter(MenuItem* item) {
    _configurableParameter = ((MenuLeaf*)item)->getParameter();
   }
 }
-
-// void Controls::updateDisplay() {
-//   _displayHandler->displayMenu(_currentMenu);
-// }
 
 void Controls::selectNextChild() {
   if (_currentMenu->selectNextChild()) {

@@ -13,11 +13,13 @@ private:
   AudioSynthWaveform* _waveform1;
   AudioSynthWaveform* _waveform2;
   AudioSynthNoisePink* _noisePink;
+  AudioEffectEnvelope* _envelope;
 
 public:
   TestMusicNode(AudioSynthWaveform &nodeWaveform1,
                 AudioSynthWaveform &nodeWaveform2,
-                AudioSynthNoisePink &nodeNoisePink);
+                AudioSynthNoisePink &nodeNoisePink,
+                AudioEffectEnvelope &nodeEnvelope);
   void noteOn();
   void noteOff();
   void setVelocity(int velocity);
@@ -27,8 +29,10 @@ public:
   void setWf1Amplitude(float value);
   void setWf2Amplitude(float value);
   void setPinkAmplitude(float value);
-
-  void printAmps();
+  void setAttack(int value);
+  void setDecay(int value);
+  void setSustain(float value);
+  void setRelease(int value);
 };
 
 #endif //TestMusicNode_h_
