@@ -25,12 +25,12 @@ public:
     _setterFunction = setterFunction;
   };
 
-  void increase() {
+  virtual void increase() {
     StatefulParameter::increase();
     _setterFunction(_value);
   };
 
-  void decrease() {
+  virtual void decrease() {
     StatefulParameter::decrease();
     _setterFunction(_value);
   };
