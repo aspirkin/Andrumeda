@@ -4,12 +4,16 @@
 #include <parameters/FloatParameter.h>
 #include <parameters/IntegerParameter.h>
 #include <parameters/StatelessParameter.h>
+#include <parameters/CyclicParameter.h>
 #include <menus/MenuBranch.h>
 #include <menus/MenuLeaf.h>
 #include <functional>
+#include <vector>
 
 Controls* _ptrControls;
 TestAudioSystem* _ptrAudioSystem;
+std::vector<String> waveformNames;
+std::vector<String> scaleNames;
 
 //TODO: Add switch parameter, implement logarithmic parameter scaling
 
@@ -18,6 +22,15 @@ void setup() {
 
   _ptrAudioSystem = new TestAudioSystem(8);
 
+  waveformNames.push_back("sine");
+  waveformNames.push_back("saw");
+  waveformNames.push_back("square");
+  waveformNames.push_back("triangle");
+
+  for (int i = 0; i < _ptrAudioSystem->getNumberOfScales(); i++)
+  {
+    scaleNames.push_back(_ptrAudioSystem->getScaleName(i));
+  }
   
   MenuLeaf* wf1Amplitude = new MenuLeaf(
     "waveform 1", new FloatParameter(
@@ -54,16 +67,32 @@ void setup() {
     std::bind(&TestAudioSystem::setRelease, _ptrAudioSystem, std::placeholders::_1),
     0, 50, 10000, 50, "ms"));
 
+  MenuLeaf* waveform1 = new MenuLeaf(
+    "o1 waveform", new CyclicParameter(
+    std::bind(&TestAudioSystem::setWaveform1, _ptrAudioSystem, std::placeholders::_1),
+    4, waveformNames));
+
+  MenuLeaf* waveform2 = new MenuLeaf(
+    "o2 waveform", new CyclicParameter(
+    std::bind(&TestAudioSystem::setWaveform2, _ptrAudioSystem, std::placeholders::_1),
+    4, waveformNames));
+
+  MenuLeaf* scale = new MenuLeaf(
+    "scale", new CyclicParameter(
+    std::bind(&TestAudioSystem::setScale, _ptrAudioSystem, std::placeholders::_1),
+    _ptrAudioSystem->getNumberOfScales(), scaleNames));
+
   MenuBranch* root = new MenuBranch("/");
   MenuBranch* synth = new MenuBranch("synth");
-  MenuBranch* synthOscillators = new MenuBranch("hot settings");
+  MenuBranch* synthOscillators = new MenuBranch("oscillators");
   MenuBranch* synthMixer = new MenuBranch("mixer");
   MenuBranch* synthADSR = new MenuBranch("ADSR");
 
   root->addChild(synth);
     synth->addChild(synthOscillators);
-      synthOscillators->addChild(attack);
-      synthOscillators->addChild(pinkNoiseAmplitude);
+      synthOscillators->addChild(scale);
+      synthOscillators->addChild(waveform1);
+      synthOscillators->addChild(waveform2);
     synth->addChild(synthMixer);
       synthMixer->addChild(wf1Amplitude);
       synthMixer->addChild(wf2Amplitude);

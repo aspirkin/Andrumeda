@@ -4,7 +4,7 @@
 TestAudioSystem::TestAudioSystem(int numberOfMusicNodes) : AudioSystem(numberOfMusicNodes){
   setupSGTL5000();
   setupMixers();
-  setupWaveforms();
+  applyFrequencies();
   setupMusicNodes();
 }
 
@@ -73,31 +73,41 @@ void TestAudioSystem::setupMixers() {
   mixer11.gain(1, 1.00);
 }
 
-void TestAudioSystem::setupWaveforms() {
-  int i = 0;
-  waveform1.begin(0.5, NOTE_FREQS[KEY_NOTE + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform2.begin(0.5, NOTE_FREQS[KEY_NOTE + KEY_STEP + SCALE[i]], WAVEFORM_SAWTOOTH);
-  i = 1;
-  waveform3.begin(0.5, NOTE_FREQS[KEY_NOTE + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform4.begin(0.5, NOTE_FREQS[KEY_NOTE + KEY_STEP + SCALE[i]], WAVEFORM_SAWTOOTH);
-  i = 2;
-  waveform5.begin(0.5, NOTE_FREQS[KEY_NOTE + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform6.begin(0.5, NOTE_FREQS[KEY_NOTE + KEY_STEP + SCALE[i]], WAVEFORM_SAWTOOTH);
-  i = 3;
-  waveform7.begin(0.5, NOTE_FREQS[KEY_NOTE + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform8.begin(0.5, NOTE_FREQS[KEY_NOTE + KEY_STEP + SCALE[i]], WAVEFORM_SAWTOOTH);
-  i = 4;
-  waveform9.begin(0.5, NOTE_FREQS[KEY_NOTE + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform10.begin(0.5, NOTE_FREQS[KEY_NOTE + KEY_STEP + SCALE[i]], WAVEFORM_SAWTOOTH);
-  i = 5;
-  waveform11.begin(0.5, NOTE_FREQS[KEY_NOTE + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform12.begin(0.5, NOTE_FREQS[KEY_NOTE + KEY_STEP + SCALE[i]], WAVEFORM_SAWTOOTH);
-  i = 6;
-  waveform13.begin(0.5, NOTE_FREQS[KEY_NOTE + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform14.begin(0.5, NOTE_FREQS[KEY_NOTE + KEY_STEP + SCALE[i]], WAVEFORM_SAWTOOTH);
-  i = 7;
-  waveform15.begin(0.5, NOTE_FREQS[KEY_NOTE + SCALE[i]], WAVEFORM_SAWTOOTH);
-  waveform16.begin(0.5, NOTE_FREQS[KEY_NOTE + KEY_STEP + SCALE[i]], WAVEFORM_SAWTOOTH);
+void TestAudioSystem::applyFrequencies() {
+  for (int i = 0; i < _numberOfMusicNodes; i++)
+  {
+    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setFrequencies(
+      NOTE_FREQS[_keyNote + _scale->getStep(i)],
+      NOTE_FREQS[_keyNote + _coarseDetune + _scale->getStep(i)]
+    );
+  }
+}
+
+int TestAudioSystem::getNumberOfScales() {
+  return NUMBER_OF_SCALES;
+}
+
+String TestAudioSystem::getScaleName(int index) {
+  return SCALES[index]->getName();
+}
+
+void TestAudioSystem::setScale(int value) {
+  _scale = SCALES[value];
+  applyFrequencies();
+}
+
+void TestAudioSystem::setWaveform1(int value) {
+  for (int i = 0; i < _numberOfMusicNodes; i++)
+  {
+    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setWaveform1(value);
+  }
+}
+
+void TestAudioSystem::setWaveform2(int value) {
+  for (int i = 0; i < _numberOfMusicNodes; i++)
+  {
+    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setWaveform2(value);
+  }
 }
 
 void TestAudioSystem::setWaveform1Amplitude(float value) {

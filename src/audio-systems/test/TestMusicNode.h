@@ -26,13 +26,19 @@ public:
   void activate();
   void deactivate();
 
+  void setFrequencies(float frequency1, float frequency2);
+
   void setWf1Amplitude(float value);
   void setWf2Amplitude(float value);
   void setPinkAmplitude(float value);
+
   void setAttack(int value);
   void setDecay(int value);
   void setSustain(float value);
   void setRelease(int value);
+
+  void setWaveform1(int value);
+  void setWaveform2(int value);
 };
 
 #endif //TestMusicNode_h_

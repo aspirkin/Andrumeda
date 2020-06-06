@@ -47,7 +47,7 @@ void ST7735_DisplayHandler::drawMenuChildValue(MenuItem* item, int xPos, int yPo
   if (item->isMenu()) {
     display.print("->");
   } else {
-    display.print(((MenuLeaf*)item)->getParameter()->getValue());
+    display.print(((MenuLeaf*)item)->getParameter()->getValueString());
   }
 };
 

@@ -9,7 +9,7 @@ typedef std::function<void(int)> intSetterFunction;
 
 class IntegerParameter : public StatefulParameter
 {
-private:
+protected:
   intSetterFunction _setterFunction;
 
 public:
@@ -23,17 +23,22 @@ public:
     : StatefulParameter(limitBottom, initialValue, limitTop, step, units)
   {
     _setterFunction = setterFunction;
-  };
+    apply();
+  }
+
+  virtual void apply() {
+    _setterFunction(_value);
+  }
 
   virtual void increase() {
     StatefulParameter::increase();
-    _setterFunction(_value);
-  };
+    apply();
+  }
 
   virtual void decrease() {
     StatefulParameter::decrease();
-    _setterFunction(_value);
-  };
+    apply();
+  }
 
 };
 

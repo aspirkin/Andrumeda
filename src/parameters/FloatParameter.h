@@ -27,17 +27,22 @@ public:
   {
     _multiplier = multiplier;
     _setterFunction = setterFunction;
-  };
+    apply();
+  }
+
+  void apply() {
+    _setterFunction(_value * _multiplier);
+  }
 
   void increase() {
     StatefulParameter::increase();
-    _setterFunction(_value * _multiplier);
-  };
+    apply();
+  }
 
   void decrease() {
     StatefulParameter::decrease();
-    _setterFunction(_value * _multiplier);
-  };
+    apply();
+  }
 };
 
 #endif // FloatParameter_h_

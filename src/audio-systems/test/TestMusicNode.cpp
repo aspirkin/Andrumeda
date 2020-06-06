@@ -26,10 +26,22 @@ void TestMusicNode::activate() {}
 
 void TestMusicNode::deactivate() {}
 
+void TestMusicNode::setFrequencies(float frequency1, float frequency2) {
+  _waveform1->frequency(frequency1);
+  _waveform2->frequency(frequency2);
+}
+
+void TestMusicNode::setWaveform1(int value) {
+  _waveform1->begin(value);
+}
+
+void TestMusicNode::setWaveform2(int value) {
+  _waveform2->begin(value);
+}
+
 void TestMusicNode::setWf1Amplitude(float value) {
   _wf1Amp = value;
   _waveform1->amplitude(_wf1Amp);
-  //printAmps();
 }
 
 void TestMusicNode::setWf2Amplitude(float value) {

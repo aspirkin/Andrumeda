@@ -32,12 +32,8 @@ public:
     if (_value < _limitBottom) _value = _limitBottom;
   };
 
-  virtual int getValue() {
-    return _value;
-  };
-
-  virtual String getUnits() {
-    return _units;
+  virtual String getValueString() {
+    return (String)_value + _units;
   };
   
 };
