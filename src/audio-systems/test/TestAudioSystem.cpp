@@ -4,8 +4,8 @@
 TestAudioSystem::TestAudioSystem(int numberOfMusicNodes) : AudioSystem(numberOfMusicNodes){
   setupSGTL5000();
   setupMixers();
-  applyFrequencies();
   setupMusicNodes();
+  applyFrequencies();
 }
 
 void TestAudioSystem::setupMusicNodes() {
