@@ -29,6 +29,7 @@ private:
   };
   int _keyNote = 20;
   int _coarseDetune = 7;
+  int _fineDetune = 0;
   Scale* _scale = SCALES[0];
   void applyFrequencies();
   void setupMixers();
@@ -55,6 +56,8 @@ public:
   void setWaveform2(int value);
 
   void setScale(int value);
+  void setCoarseDetune(int value);
+  void setFineDetune(int value);
 };
 
 #endif //TestAudioSystem_h_

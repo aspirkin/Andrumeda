@@ -3,6 +3,7 @@
 #include <Controls.h>
 #include <parameters/FloatParameter.h>
 #include <parameters/IntegerParameter.h>
+#include <parameters/LogIntegerParameter.h>
 #include <parameters/StatelessParameter.h>
 #include <parameters/CyclicParameter.h>
 #include <menus/MenuBranch.h>
@@ -48,14 +49,14 @@ void setup() {
     0, 50, 100, 0.01, 5, "%"));
 
   MenuLeaf* attack = new MenuLeaf(
-    "attack", new IntegerParameter(
+    "attack", new LogIntegerParameter(
     std::bind(&TestAudioSystem::setAttack, _ptrAudioSystem, std::placeholders::_1),
-    0, 50, 10000, 50, "ms"));
+    0, 50, 10000, "ms"));
 
   MenuLeaf* decay = new MenuLeaf(
-    "decay", new IntegerParameter(
+    "decay", new LogIntegerParameter(
     std::bind(&TestAudioSystem::setDecay, _ptrAudioSystem, std::placeholders::_1),
-    0, 50, 10000, 50, "ms"));
+    0, 50, 10000, "ms"));
 
   MenuLeaf* sustain = new MenuLeaf(
     "sustain", new FloatParameter(
@@ -63,19 +64,29 @@ void setup() {
     0, 50, 100, 0.01, 5, "%"));
 
   MenuLeaf* release = new MenuLeaf(
-    "release", new IntegerParameter(
+    "release", new LogIntegerParameter(
     std::bind(&TestAudioSystem::setRelease, _ptrAudioSystem, std::placeholders::_1),
-    0, 50, 10000, 50, "ms"));
+    0, 50, 10000, "ms"));
+
+  MenuLeaf* coarseDetune = new MenuLeaf(
+    "detune", new IntegerParameter(
+    std::bind(&TestAudioSystem::setCoarseDetune, _ptrAudioSystem, std::placeholders::_1),
+    -24, 7, 24, 1, ""));
+
+  MenuLeaf* fineDetune = new MenuLeaf(
+    "fine detune", new IntegerParameter(
+    std::bind(&TestAudioSystem::setFineDetune, _ptrAudioSystem, std::placeholders::_1),
+    -100, 0, 100, 1, "cents"));
 
   MenuLeaf* waveform1 = new MenuLeaf(
     "o1 waveform", new CyclicParameter(
     std::bind(&TestAudioSystem::setWaveform1, _ptrAudioSystem, std::placeholders::_1),
-    4, waveformNames));
+    4, waveformNames, 1));
 
   MenuLeaf* waveform2 = new MenuLeaf(
     "o2 waveform", new CyclicParameter(
     std::bind(&TestAudioSystem::setWaveform2, _ptrAudioSystem, std::placeholders::_1),
-    4, waveformNames));
+    4, waveformNames, 1));
 
   MenuLeaf* scale = new MenuLeaf(
     "scale", new CyclicParameter(
@@ -93,6 +104,8 @@ void setup() {
       synthOscillators->addChild(scale);
       synthOscillators->addChild(waveform1);
       synthOscillators->addChild(waveform2);
+      synthOscillators->addChild(coarseDetune);
+      synthOscillators->addChild(fineDetune);
     synth->addChild(synthMixer);
       synthMixer->addChild(wf1Amplitude);
       synthMixer->addChild(wf2Amplitude);

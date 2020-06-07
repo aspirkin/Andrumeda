@@ -78,7 +78,7 @@ void TestAudioSystem::applyFrequencies() {
   {
     ((TestMusicNode*)_ptrSynthMusicNodes[i])->setFrequencies(
       NOTE_FREQS[_keyNote + _scale->getStep(i)],
-      NOTE_FREQS[_keyNote + _coarseDetune + _scale->getStep(i)]
+      NOTE_FREQS[_keyNote + _coarseDetune + _scale->getStep(i)] * pow(2.00, _fineDetune/1200.00)
     );
   }
 }
@@ -93,6 +93,16 @@ String TestAudioSystem::getScaleName(int index) {
 
 void TestAudioSystem::setScale(int value) {
   _scale = SCALES[value];
+  applyFrequencies();
+}
+
+void TestAudioSystem::setCoarseDetune(int value) {
+  _coarseDetune = value;
+  applyFrequencies();
+}
+
+void TestAudioSystem::setFineDetune(int value) {
+  _fineDetune = value;
   applyFrequencies();
 }
 
