@@ -3,9 +3,9 @@
 #include <Controls.h>
 #include <parameters/FloatParameter.h>
 #include <parameters/IntegerParameter.h>
-#include <parameters/LogIntegerParameter.h>
 #include <parameters/StatelessParameter.h>
 #include <parameters/CyclicParameter.h>
+#include <parameters/AdaptiveStepParameterDecorator.h>
 #include <menus/MenuBranch.h>
 #include <menus/MenuLeaf.h>
 #include <functional>
@@ -49,24 +49,24 @@ void setup() {
     0, 50, 100, 0.01, 5, "%"));
 
   MenuLeaf* attack = new MenuLeaf(
-    "attack", new LogIntegerParameter(
+    "attack", new AdaptiveStepParameterDecorator(new IntegerParameter(
     std::bind(&TestAudioSystem::setAttack, _ptrAudioSystem, std::placeholders::_1),
-    0, 50, 10000, "ms"));
+    0, 50, 10000, 1, "ms"), 0.1));
 
   MenuLeaf* decay = new MenuLeaf(
-    "decay", new LogIntegerParameter(
+    "decay", new AdaptiveStepParameterDecorator(new IntegerParameter(
     std::bind(&TestAudioSystem::setDecay, _ptrAudioSystem, std::placeholders::_1),
-    0, 50, 10000, "ms"));
+    0, 50, 10000, 1, "ms"), 0.1));
 
   MenuLeaf* sustain = new MenuLeaf(
     "sustain", new FloatParameter(
-    std::bind(&TestAudioSystem::setPinkNoiseAmplitude, _ptrAudioSystem, std::placeholders::_1),
+    std::bind(&TestAudioSystem::setSustain, _ptrAudioSystem, std::placeholders::_1),
     0, 50, 100, 0.01, 5, "%"));
 
   MenuLeaf* release = new MenuLeaf(
-    "release", new LogIntegerParameter(
+    "release", new AdaptiveStepParameterDecorator(new IntegerParameter(
     std::bind(&TestAudioSystem::setRelease, _ptrAudioSystem, std::placeholders::_1),
-    0, 50, 10000, "ms"));
+    0, 50, 10000, 1, "ms"), 0.1));
 
   MenuLeaf* coarseDetune = new MenuLeaf(
     "detune", new IntegerParameter(

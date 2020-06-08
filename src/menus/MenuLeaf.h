@@ -2,19 +2,19 @@
 #define MenuLeaf_h_
 
 #include <menus/MenuItem.h>
-#include <parameters/StatefulParameter.h>
+#include <parameters/AbstractStatefulParameter.h>
 
 class MenuLeaf : public MenuItem
 {
 protected:
-  StatefulParameter* _parameter;
+  AbstractStatefulParameter* _parameter;
 public:
-  MenuLeaf(String name, StatefulParameter* parameter) : MenuItem(name) {
+  MenuLeaf(String name, AbstractStatefulParameter* parameter) : MenuItem(name) {
     _parameter = parameter;
     _isMenu = false;
   };
 
-  StatefulParameter* getParameter() {return _parameter;};
+  AbstractStatefulParameter* getParameter() {return _parameter;};
 };
 
 #endif //MenuItem_h_
