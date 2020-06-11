@@ -15,8 +15,8 @@ Controls* _ptrControls;
 TestAudioSystem* _ptrAudioSystem;
 std::vector<String> waveformNames;
 std::vector<String> scaleNames;
-
-//TODO: Add switch parameter, implement logarithmic parameter scaling
+//TODO: Use std::map
+std::vector<String> sampleRateNames;
 
 void setup() {
   Serial.begin(115200);
@@ -28,10 +28,16 @@ void setup() {
   waveformNames.push_back("square");
   waveformNames.push_back("triangle");
 
-  for (int i = 0; i < _ptrAudioSystem->getNumberOfScales(); i++)
-  {
-    scaleNames.push_back(_ptrAudioSystem->getScaleName(i));
-  }
+  sampleRateNames.push_back("345 Hz");
+  sampleRateNames.push_back("689 Hz");
+  sampleRateNames.push_back("1378 Hz");
+  sampleRateNames.push_back("2756 Hz");
+  sampleRateNames.push_back("5513 Hz");
+  sampleRateNames.push_back("11025 Hz");
+  sampleRateNames.push_back("22050 Hz");
+  sampleRateNames.push_back("44100 Hz");
+
+  for (int i = 0; i < _ptrAudioSystem->getNumberOfScales(); i++) scaleNames.push_back(_ptrAudioSystem->getScaleName(i));
   
   MenuLeaf* wf1Amplitude = new MenuLeaf(
     "waveform 1", new FloatParameter(
@@ -80,24 +86,42 @@ void setup() {
 
   MenuLeaf* waveform1 = new MenuLeaf(
     "o1 waveform", new CyclicParameter(
-    std::bind(&TestAudioSystem::setWaveform1, _ptrAudioSystem, std::placeholders::_1),
-    4, waveformNames, 1));
+    std::bind(&TestAudioSystem::setWaveform1, _ptrAudioSystem, std::placeholders::_1), waveformNames, 1));
 
   MenuLeaf* waveform2 = new MenuLeaf(
     "o2 waveform", new CyclicParameter(
-    std::bind(&TestAudioSystem::setWaveform2, _ptrAudioSystem, std::placeholders::_1),
-    4, waveformNames, 1));
+    std::bind(&TestAudioSystem::setWaveform2, _ptrAudioSystem, std::placeholders::_1), waveformNames, 1));
 
   MenuLeaf* scale = new MenuLeaf(
     "scale", new CyclicParameter(
-    std::bind(&TestAudioSystem::setScale, _ptrAudioSystem, std::placeholders::_1),
-    _ptrAudioSystem->getNumberOfScales(), scaleNames));
+    std::bind(&TestAudioSystem::setScale, _ptrAudioSystem, std::placeholders::_1), scaleNames));
 
+  MenuLeaf* crushBits = new MenuLeaf(
+    "crush bits", new IntegerParameter(
+    std::bind(&TestAudioSystem::setBits, _ptrAudioSystem, std::placeholders::_1),
+    1, 16, 16, 1, " bits"));
+  
+  MenuLeaf* sampleRate = new MenuLeaf(
+    "sample rate", new CyclicParameter(
+    std::bind(&TestAudioSystem::setSampleRate, _ptrAudioSystem, std::placeholders::_1), sampleRateNames, 7));
+
+  MenuLeaf* delayFade = new MenuLeaf(
+    "fade", new FloatParameter(
+    std::bind(&TestAudioSystem::setDelayFade, _ptrAudioSystem, std::placeholders::_1),
+    5, 100, 100, 0.01, 5, "%"));
+  
+  MenuLeaf* delayTime = new MenuLeaf(
+    "delay", new IntegerParameter(
+    std::bind(&TestAudioSystem::setDelay, _ptrAudioSystem, std::placeholders::_1),
+    0, 0, 1000, 20, " ms"));
+  
   MenuBranch* root = new MenuBranch("/");
   MenuBranch* synth = new MenuBranch("synth");
   MenuBranch* synthOscillators = new MenuBranch("oscillators");
   MenuBranch* synthMixer = new MenuBranch("mixer");
   MenuBranch* synthADSR = new MenuBranch("ADSR");
+  // MenuBranch* filter = new MenuBranch("filter");
+  MenuBranch* effects = new MenuBranch("effects");
 
   root->addChild(synth);
     synth->addChild(synthOscillators);
@@ -115,6 +139,11 @@ void setup() {
       synthADSR->addChild(decay);
       synthADSR->addChild(sustain);
       synthADSR->addChild(release);
+  root->addChild(effects);
+    effects->addChild(crushBits);
+    effects->addChild(sampleRate);
+    effects->addChild(delayTime);
+    effects->addChild(delayFade);
 
   _ptrControls = new Controls(8, 2, root, new ST7735_DisplayHandler());
   _ptrControls->addMusicSensor(16);

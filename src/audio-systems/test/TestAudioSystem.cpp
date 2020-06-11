@@ -4,6 +4,7 @@
 TestAudioSystem::TestAudioSystem(int numberOfMusicNodes) : AudioSystem(numberOfMusicNodes){
   setupSGTL5000();
   setupMixers();
+  setupEffects();
   setupMusicNodes();
   applyFrequencies();
 }
@@ -24,6 +25,17 @@ void TestAudioSystem::setupSGTL5000() {
   sgtl5000_1.enable();
   sgtl5000_1.volume(0.5);
   sgtl5000_1.lineOutLevel(31);
+}
+
+void TestAudioSystem::setupEffects() {
+  bitcrusher.bits(16);
+  bitcrusher.sampleRate(44100.00);
+  
+  for (int i = 2; i < 8; i++)
+  {
+    delay1.disable(i);
+  }
+  delay1.delay(0, 0.00);
 }
 
 void TestAudioSystem::setupMixers() {
@@ -71,6 +83,13 @@ void TestAudioSystem::setupMixers() {
 
   mixer11.gain(0, 1.00);
   mixer11.gain(1, 1.00);
+
+  delayMixer.gain(0, 1.00);
+
+  reverbMixer.gain(0, 1.00);
+  reverbMixer.gain(1, 0.00);
+
+  OutputAmp.gain(1.00);
 }
 
 void TestAudioSystem::applyFrequencies() {
@@ -89,6 +108,22 @@ int TestAudioSystem::getNumberOfScales() {
 
 String TestAudioSystem::getScaleName(int index) {
   return SCALES[index]->getName();
+}
+
+void TestAudioSystem::setDelay(int value) {
+  delay1.delay(1, value * 1.00);
+}
+
+void TestAudioSystem::setDelayFade(float value) {
+  delayMixer.gain(3, 1.00 - value);
+}
+
+void TestAudioSystem::setBits(int value) {
+  bitcrusher.bits(value);
+}
+
+void TestAudioSystem::setSampleRate(int value) {
+  bitcrusher.sampleRate(44100.00 / pow(2.00, 7 - value));
 }
 
 void TestAudioSystem::setScale(int value) {

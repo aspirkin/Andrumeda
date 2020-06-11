@@ -33,6 +33,7 @@ private:
   Scale* _scale = SCALES[0];
   void applyFrequencies();
   void setupMixers();
+  void setupEffects();
   void setupSGTL5000();
   void setupMusicNodes();
 public:
@@ -58,6 +59,12 @@ public:
   void setScale(int value);
   void setCoarseDetune(int value);
   void setFineDetune(int value);
+
+  void setBits(int value);
+  void setSampleRate(int value);
+
+  void setDelay(int value);
+  void setDelayFade(float value);
 };
 
 #endif //TestAudioSystem_h_

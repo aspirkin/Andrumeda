@@ -11,8 +11,8 @@ private:
   std::vector<String> _valueNames;
 
 public:
-  CyclicParameter(intSetterFunction setterFunction, int range, std::vector<String> valueNames, int initialValue = 0) :
-  IntegerParameter(setterFunction, 0, initialValue, range - 1) {
+  CyclicParameter(intSetterFunction setterFunction, std::vector<String> valueNames, int initialValue = 0) :
+  IntegerParameter(setterFunction, 0, initialValue, valueNames.size() - 1) {
     _valueNames = valueNames;
     apply();
   }
