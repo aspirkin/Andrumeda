@@ -54,18 +54,18 @@ void TestMusicNode::setPinkAmplitude(float value) {
   _noisePink->amplitude(_pinkAmp);
 }
 
-void TestMusicNode::setAttack(int value) {
-  _envelope->attack(1.00 * value);
+void TestMusicNode::setAttack(float value) {
+  _envelope->attack(value);
 }
 
-void TestMusicNode::setDecay(int value) {
-  _envelope->decay(1.00 * value);
+void TestMusicNode::setDecay(float value) {
+  _envelope->decay(value);
 }
 
 void TestMusicNode::setSustain(float value) {
   _envelope->sustain(value);
 }
 
-void TestMusicNode::setRelease(int value) {
-  _envelope->release(1.00 * value);
+void TestMusicNode::setRelease(float value) {
+  _envelope->release(value);
 }

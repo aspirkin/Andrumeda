@@ -1,51 +1,32 @@
 #ifndef StatefulParameter_h_
 #define StatefulParameter_h_
 
-#include <parameters/AbstractStatefulParameter.h>
+#include <parameters/AbstractParameter.h>
 #include <WString.h>
+#include <functional>
 
-class StatefulParameter : public AbstractStatefulParameter
+typedef std::function<void(int)> SetterFunction;
+
+class StatefulParameter : public AbstractParameter
 {
 protected:
-  int _value;
-  int _limitTop;
-  int _limitBottom;
-  int _step;
   String _units;
+  bool _isCyclic;
+  SetterFunction _setterFunction;
+
+  virtual void handleValueOverTop() {};
+  virtual void handleValueBelowBottom() {};
+  virtual void apply() {};
 
 public:
-  StatefulParameter(int limitBottom, int initialValue, int limitTop, int step = 1, String units = "") : AbstractStatefulParameter() {
-    _value = initialValue;
-    _limitBottom = limitBottom;
-    _limitTop = limitTop;
-    _step = step;
+  StatefulParameter(SetterFunction setterFunction,  bool isCyclic = false, String units = "") : AbstractParameter() {
     _units = units;
+    _isCyclic = isCyclic;
+    _setterFunction = setterFunction;
   };
-
-  virtual void apply() {};
-  
-  virtual void increase() {
-    _value += _step;
-    if (_value > _limitTop) _value = _limitTop;
-  };
-
-  virtual void decrease() {
-    _value -= _step;
-    if (_value < _limitBottom) _value = _limitBottom;
-  };
-
-  virtual String getValueString() {
-    return (String)_value + _units;
-  };
-
-  int getValue() {
-    return _value;
-  }
-
-  void setStep(int step) {
-    _step = step;
-  }
-  
+  virtual void increase() {};
+  virtual void decrease() {};
+  virtual String getValueString() {return "";};
 };
 
 #endif  //StatefulParameter_h_

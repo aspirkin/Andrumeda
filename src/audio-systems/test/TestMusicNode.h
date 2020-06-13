@@ -32,10 +32,10 @@ public:
   void setWf2Amplitude(float value);
   void setPinkAmplitude(float value);
 
-  void setAttack(int value);
-  void setDecay(int value);
+  void setAttack(float value);
+  void setDecay(float value);
   void setSustain(float value);
-  void setRelease(int value);
+  void setRelease(float value);
 
   void setWaveform1(int value);
   void setWaveform2(int value);

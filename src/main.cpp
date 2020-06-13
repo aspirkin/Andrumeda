@@ -1,119 +1,119 @@
 #include <Arduino.h>
 #include <audio-systems/test/TestAudioSystem.h>
 #include <Controls.h>
-#include <parameters/FloatParameter.h>
-#include <parameters/IntegerParameter.h>
 #include <parameters/StatelessParameter.h>
-#include <parameters/CyclicParameter.h>
-#include <parameters/AdaptiveStepParameterDecorator.h>
+#include <parameters/RangeParameter.h>
+#include <parameters/MapParameter.h>
 #include <menus/MenuBranch.h>
 #include <menus/MenuLeaf.h>
 #include <functional>
 #include <vector>
+#include <map>
+
+typedef std::map<int, String> ValuesMap;
 
 Controls* _ptrControls;
 TestAudioSystem* _ptrAudioSystem;
-std::vector<String> waveformNames;
-std::vector<String> scaleNames;
-//TODO: Use std::map
-std::vector<String> sampleRateNames;
+ValuesMap _waveformsMap;
+ValuesMap _scalesMap;
+ValuesMap _sampleRatesMap;
 
 void setup() {
   Serial.begin(115200);
 
   _ptrAudioSystem = new TestAudioSystem(8);
 
-  waveformNames.push_back("sine");
-  waveformNames.push_back("saw");
-  waveformNames.push_back("square");
-  waveformNames.push_back("triangle");
+  _waveformsMap.insert(std::pair<int, String>(0, "sine"));
+  _waveformsMap.insert(std::pair<int, String>(1, "saw"));
+  _waveformsMap.insert(std::pair<int, String>(2, "square"));
+  _waveformsMap.insert(std::pair<int, String>(3, "triangle"));
 
-  sampleRateNames.push_back("345 Hz");
-  sampleRateNames.push_back("689 Hz");
-  sampleRateNames.push_back("1378 Hz");
-  sampleRateNames.push_back("2756 Hz");
-  sampleRateNames.push_back("5513 Hz");
-  sampleRateNames.push_back("11025 Hz");
-  sampleRateNames.push_back("22050 Hz");
-  sampleRateNames.push_back("44100 Hz");
+  _sampleRatesMap.insert(std::pair<int, String>(0, "345"));
+  _sampleRatesMap.insert(std::pair<int, String>(1, "689"));
+  _sampleRatesMap.insert(std::pair<int, String>(2, "1378"));
+  _sampleRatesMap.insert(std::pair<int, String>(3, "2756"));
+  _sampleRatesMap.insert(std::pair<int, String>(4, "5513"));
+  _sampleRatesMap.insert(std::pair<int, String>(5, "11025"));
+  _sampleRatesMap.insert(std::pair<int, String>(6, "22050"));
+  _sampleRatesMap.insert(std::pair<int, String>(7, "44100"));
 
-  for (int i = 0; i < _ptrAudioSystem->getNumberOfScales(); i++) scaleNames.push_back(_ptrAudioSystem->getScaleName(i));
+  for (int i = 0; i < _ptrAudioSystem->getNumberOfScales(); i++) _scalesMap.insert(std::pair<int, String>(i, _ptrAudioSystem->getScaleName(i)));
   
   MenuLeaf* wf1Amplitude = new MenuLeaf(
-    "waveform 1", new FloatParameter(
+    "waveform 1", new RangeParameter(
     std::bind(&TestAudioSystem::setWaveform1Amplitude, _ptrAudioSystem, std::placeholders::_1),
-    0, 50, 100, 0.01, 5, "%"));
+    0, 50, 100, 5, 0.00, false, "%"));
 
   MenuLeaf* wf2Amplitude = new MenuLeaf(
-    "waveform 2", new FloatParameter(
+    "waveform 2", new RangeParameter(
     std::bind(&TestAudioSystem::setWaveform2Amplitude, _ptrAudioSystem, std::placeholders::_1),
-    0, 50, 100, 0.01, 5, "%"));
+    0, 50, 100, 5, 0.00, false, "%"));
 
   MenuLeaf* pinkNoiseAmplitude = new MenuLeaf(
-    "pink noise", new FloatParameter(
+    "pink noise", new RangeParameter(
     std::bind(&TestAudioSystem::setPinkNoiseAmplitude, _ptrAudioSystem, std::placeholders::_1),
-    0, 50, 100, 0.01, 5, "%"));
+    0, 50, 100, 5, 0.00, false, "%"));
 
   MenuLeaf* attack = new MenuLeaf(
-    "attack", new AdaptiveStepParameterDecorator(new IntegerParameter(
+    "attack", new RangeParameter(
     std::bind(&TestAudioSystem::setAttack, _ptrAudioSystem, std::placeholders::_1),
-    0, 50, 10000, 1, "ms"), 0.1));
+    0, 50, 10000, 1, 0.10, false, "ms"));
 
   MenuLeaf* decay = new MenuLeaf(
-    "decay", new AdaptiveStepParameterDecorator(new IntegerParameter(
+    "decay", new RangeParameter(
     std::bind(&TestAudioSystem::setDecay, _ptrAudioSystem, std::placeholders::_1),
-    0, 50, 10000, 1, "ms"), 0.1));
+    0, 50, 10000, 1, 0.10, false, "ms"));
 
   MenuLeaf* sustain = new MenuLeaf(
-    "sustain", new FloatParameter(
+    "sustain", new RangeParameter(
     std::bind(&TestAudioSystem::setSustain, _ptrAudioSystem, std::placeholders::_1),
-    0, 50, 100, 0.01, 5, "%"));
+    0, 50, 100, 5, 0.00, false, "%"));
 
   MenuLeaf* release = new MenuLeaf(
-    "release", new AdaptiveStepParameterDecorator(new IntegerParameter(
+    "release", new RangeParameter(
     std::bind(&TestAudioSystem::setRelease, _ptrAudioSystem, std::placeholders::_1),
-    0, 50, 10000, 1, "ms"), 0.1));
+    0, 50, 10000, 1, 0.10, false, "ms"));
 
   MenuLeaf* coarseDetune = new MenuLeaf(
-    "detune", new IntegerParameter(
+    "detune", new RangeParameter(
     std::bind(&TestAudioSystem::setCoarseDetune, _ptrAudioSystem, std::placeholders::_1),
-    -24, 7, 24, 1, ""));
+    -24, 7, 24, 1));
 
   MenuLeaf* fineDetune = new MenuLeaf(
-    "fine detune", new IntegerParameter(
+    "fine detune", new RangeParameter(
     std::bind(&TestAudioSystem::setFineDetune, _ptrAudioSystem, std::placeholders::_1),
-    -100, 0, 100, 1, "cents"));
+    -100, 0, 100, 1, 0.00, false, "cents"));
 
   MenuLeaf* waveform1 = new MenuLeaf(
-    "o1 waveform", new CyclicParameter(
-    std::bind(&TestAudioSystem::setWaveform1, _ptrAudioSystem, std::placeholders::_1), waveformNames, 1));
+    "o1 waveform", new MapParameter(
+    std::bind(&TestAudioSystem::setWaveform1, _ptrAudioSystem, std::placeholders::_1), _waveformsMap, 1, true));
 
   MenuLeaf* waveform2 = new MenuLeaf(
-    "o2 waveform", new CyclicParameter(
-    std::bind(&TestAudioSystem::setWaveform2, _ptrAudioSystem, std::placeholders::_1), waveformNames, 1));
+    "o2 waveform", new MapParameter(
+    std::bind(&TestAudioSystem::setWaveform2, _ptrAudioSystem, std::placeholders::_1), _waveformsMap, 1, true));
 
   MenuLeaf* scale = new MenuLeaf(
-    "scale", new CyclicParameter(
-    std::bind(&TestAudioSystem::setScale, _ptrAudioSystem, std::placeholders::_1), scaleNames));
+    "scale", new MapParameter(
+    std::bind(&TestAudioSystem::setScale, _ptrAudioSystem, std::placeholders::_1), _scalesMap, 0, true));
 
   MenuLeaf* crushBits = new MenuLeaf(
-    "crush bits", new IntegerParameter(
+    "crush bits", new RangeParameter(
     std::bind(&TestAudioSystem::setBits, _ptrAudioSystem, std::placeholders::_1),
-    1, 16, 16, 1, " bits"));
+    1, 16, 16, 1, 0.00, false, " bits"));
   
   MenuLeaf* sampleRate = new MenuLeaf(
-    "sample rate", new CyclicParameter(
-    std::bind(&TestAudioSystem::setSampleRate, _ptrAudioSystem, std::placeholders::_1), sampleRateNames, 7));
+    "sample rate", new MapParameter(
+    std::bind(&TestAudioSystem::setSampleRate, _ptrAudioSystem, std::placeholders::_1), _sampleRatesMap, 7, false, " Hz"));
 
   MenuLeaf* delayFade = new MenuLeaf(
-    "fade", new FloatParameter(
+    "fade", new RangeParameter(
     std::bind(&TestAudioSystem::setDelayFade, _ptrAudioSystem, std::placeholders::_1),
-    5, 100, 100, 0.01, 5, "%"));
+    5, 100, 100, 5, 0.00, false, "%"));
   
   MenuLeaf* delayTime = new MenuLeaf(
-    "delay", new IntegerParameter(
+    "delay", new RangeParameter(
     std::bind(&TestAudioSystem::setDelay, _ptrAudioSystem, std::placeholders::_1),
-    0, 0, 1000, 20, " ms"));
+    0, 0, 1000, 20, 0.05, false, " ms"));
   
   MenuBranch* root = new MenuBranch("/");
   MenuBranch* synth = new MenuBranch("synth");

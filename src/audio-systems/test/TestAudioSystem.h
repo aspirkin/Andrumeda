@@ -44,13 +44,13 @@ public:
   void activateSampler();
   void activateSynth();
 
-  void setWaveform1Amplitude(float value);
-  void setWaveform2Amplitude(float value);
-  void setPinkNoiseAmplitude(float value);
+  void setWaveform1Amplitude(int value);
+  void setWaveform2Amplitude(int value);
+  void setPinkNoiseAmplitude(int value);
 
   void setAttack(int value);
   void setDecay(int value);
-  void setSustain(float value);
+  void setSustain(int value);
   void setRelease(int value);
 
   void setWaveform1(int value);
@@ -64,7 +64,7 @@ public:
   void setSampleRate(int value);
 
   void setDelay(int value);
-  void setDelayFade(float value);
+  void setDelayFade(int value);
 };
 
 #endif //TestAudioSystem_h_

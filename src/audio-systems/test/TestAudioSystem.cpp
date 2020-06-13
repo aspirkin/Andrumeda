@@ -114,8 +114,8 @@ void TestAudioSystem::setDelay(int value) {
   delay1.delay(1, value * 1.00);
 }
 
-void TestAudioSystem::setDelayFade(float value) {
-  delayMixer.gain(3, 1.00 - value);
+void TestAudioSystem::setDelayFade(int value) {
+  delayMixer.gain(3, 1.00 - value * 0.01);
 }
 
 void TestAudioSystem::setBits(int value) {
@@ -155,51 +155,51 @@ void TestAudioSystem::setWaveform2(int value) {
   }
 }
 
-void TestAudioSystem::setWaveform1Amplitude(float value) {
+void TestAudioSystem::setWaveform1Amplitude(int value) {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
-    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setWf1Amplitude(value);
+    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setWf1Amplitude(value * 0.01);
   }
 }
 
-void TestAudioSystem::setWaveform2Amplitude(float value) {
+void TestAudioSystem::setWaveform2Amplitude(int value) {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
-    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setWf2Amplitude(value);
+    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setWf2Amplitude(value * 0.01);
   }
 }
 
-void TestAudioSystem::setPinkNoiseAmplitude(float value) {
+void TestAudioSystem::setPinkNoiseAmplitude(int value) {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
-    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setPinkAmplitude(value);
+    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setPinkAmplitude(value * 0.01);
   }
 }
 void TestAudioSystem::setAttack(int value) {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
-    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setAttack(value);
+    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setAttack(value * 1.00);
   }
 }
 
 void TestAudioSystem::setDecay(int value) {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
-    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setDecay(value);
+    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setDecay(value * 1.00);
   }
 }
 
-void TestAudioSystem::setSustain(float value) {
+void TestAudioSystem::setSustain(int value) {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
-    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setSustain(value);
+    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setSustain(value * 0.01);
   }
 }
 
 void TestAudioSystem::setRelease(int value) {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
-    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setRelease(value);
+    ((TestMusicNode*)_ptrSynthMusicNodes[i])->setRelease(value * 1.00);
   }
 }
 
