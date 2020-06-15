@@ -96,8 +96,13 @@ void setup() {
     "scale", new MapParameter(
     std::bind(&TestAudioSystem::setScale, _ptrAudioSystem, std::placeholders::_1), _scalesMap, 0, true));
 
-  MenuLeaf* crushBits = new MenuLeaf(
-    "crush bits", new RangeParameter(
+  MenuLeaf* bitcrusherAmount = new MenuLeaf(
+    "amount", new RangeParameter(
+    std::bind(&TestAudioSystem::setBitcrusherAmount, _ptrAudioSystem, std::placeholders::_1),
+    0, 0, 100, 5, 0.00, false, "%"));
+
+  MenuLeaf* bits = new MenuLeaf(
+    "bits", new RangeParameter(
     std::bind(&TestAudioSystem::setBits, _ptrAudioSystem, std::placeholders::_1),
     1, 16, 16, 1, 0.00, false, " bits"));
   
@@ -111,21 +116,46 @@ void setup() {
     5, 100, 100, 5, 0.00, false, "%"));
   
   MenuLeaf* delayTime = new MenuLeaf(
-    "delay", new RangeParameter(
+    "time", new RangeParameter(
     std::bind(&TestAudioSystem::setDelay, _ptrAudioSystem, std::placeholders::_1),
     0, 0, 1000, 20, 0.05, false, " ms"));
-  
+
+  MenuLeaf* reverbAmount = new MenuLeaf(
+    "amount", new RangeParameter(
+    std::bind(&TestAudioSystem::setReverbAmount, _ptrAudioSystem, std::placeholders::_1),
+    0, 0, 100, 5, 0.00, false, "%"));
+
+  MenuLeaf* roomsize = new MenuLeaf(
+    "room size", new RangeParameter(
+    std::bind(&TestAudioSystem::setRoomsize, _ptrAudioSystem, std::placeholders::_1),
+    0, 50, 100, 5, 0.00, false, "%"));
+
+  MenuLeaf* damping = new MenuLeaf(
+    "damping", new RangeParameter(
+    std::bind(&TestAudioSystem::setDamping, _ptrAudioSystem, std::placeholders::_1),
+    0, 50, 100, 5, 0.00, false, "%"));
+
+  MenuLeaf* volume = new MenuLeaf(
+    "volume", new RangeParameter(
+    std::bind(&TestAudioSystem::setVolume, _ptrAudioSystem, std::placeholders::_1),
+    0, 50, 100, 5, 0.00, false, "%"));
+
   MenuBranch* root = new MenuBranch("/");
+  MenuBranch* general = new MenuBranch("general");
   MenuBranch* synth = new MenuBranch("synth");
   MenuBranch* synthOscillators = new MenuBranch("oscillators");
   MenuBranch* synthMixer = new MenuBranch("mixer");
   MenuBranch* synthADSR = new MenuBranch("ADSR");
-  // MenuBranch* filter = new MenuBranch("filter");
   MenuBranch* effects = new MenuBranch("effects");
+  MenuBranch* bitcrusher = new MenuBranch("bitcrusher");
+  MenuBranch* delay = new MenuBranch("delay");
+  MenuBranch* reverb = new MenuBranch("reverb");
 
+  root->addChild(general);
+    general->addChild(volume);
+    general->addChild(scale);
   root->addChild(synth);
     synth->addChild(synthOscillators);
-      synthOscillators->addChild(scale);
       synthOscillators->addChild(waveform1);
       synthOscillators->addChild(waveform2);
       synthOscillators->addChild(coarseDetune);
@@ -140,10 +170,17 @@ void setup() {
       synthADSR->addChild(sustain);
       synthADSR->addChild(release);
   root->addChild(effects);
-    effects->addChild(crushBits);
-    effects->addChild(sampleRate);
-    effects->addChild(delayTime);
-    effects->addChild(delayFade);
+    effects->addChild(bitcrusher);
+      bitcrusher->addChild(bitcrusherAmount);
+      bitcrusher->addChild(bits);
+      bitcrusher->addChild(sampleRate);
+    effects->addChild(delay);
+      delay->addChild(delayTime);
+      delay->addChild(delayFade);
+    effects->addChild(reverb);
+      reverb->addChild(reverbAmount);
+      reverb->addChild(roomsize);
+      reverb->addChild(damping);
 
   _ptrControls = new Controls(8, 2, root, new ST7735_DisplayHandler());
   _ptrControls->addMusicSensor(16);

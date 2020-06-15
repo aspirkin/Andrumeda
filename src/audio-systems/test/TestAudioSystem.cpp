@@ -28,9 +28,6 @@ void TestAudioSystem::setupSGTL5000() {
 }
 
 void TestAudioSystem::setupEffects() {
-  bitcrusher.bits(16);
-  bitcrusher.sampleRate(44100.00);
-  
   for (int i = 2; i < 8; i++)
   {
     delay1.disable(i);
@@ -85,6 +82,7 @@ void TestAudioSystem::setupMixers() {
   mixer11.gain(1, 1.00);
 
   delayMixer.gain(0, 1.00);
+  delayMixer.gain(1, 0.00);
 
   reverbMixer.gain(0, 1.00);
   reverbMixer.gain(1, 0.00);
@@ -118,12 +116,29 @@ void TestAudioSystem::setDelayFade(int value) {
   delayMixer.gain(3, 1.00 - value * 0.01);
 }
 
+void TestAudioSystem::setBitcrusherAmount(int value) {
+  delayMixer.gain(0, 1.00 - value * 0.01);
+  delayMixer.gain(1, value * 0.01);
+}
+
 void TestAudioSystem::setBits(int value) {
-  bitcrusher.bits(value);
+  bitcrusher1.bits(value);
 }
 
 void TestAudioSystem::setSampleRate(int value) {
-  bitcrusher.sampleRate(44100.00 / pow(2.00, 7 - value));
+  bitcrusher1.sampleRate(44100.00 / pow(2.00, 7 - value));
+}
+
+void TestAudioSystem::setReverbAmount(int value) {
+  reverbMixer.gain(0, 1.00 - value * 0.01);
+  reverbMixer.gain(1, value * 0.01);
+}
+void TestAudioSystem::setRoomsize(int value) {
+  freeverb.roomsize(value * 0.01);
+}
+
+void TestAudioSystem::setDamping(int value) {
+  freeverb.damping(value * 0.01);
 }
 
 void TestAudioSystem::setScale(int value) {
@@ -201,6 +216,10 @@ void TestAudioSystem::setRelease(int value) {
   {
     ((TestMusicNode*)_ptrSynthMusicNodes[i])->setRelease(value * 1.00);
   }
+}
+
+void TestAudioSystem::setVolume(int value) {
+  OutputAmp.gain(value * 0.01);
 }
 
 void TestAudioSystem::activateSampler() {};

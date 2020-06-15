@@ -50,8 +50,8 @@ AudioEffectEnvelope      envelope3;      //xy=434,321
 AudioEffectEnvelope      envelope4;      //xy=440,428
 AudioMixer4              mixer10;        //xy=624,594
 AudioMixer4              mixer9;         //xy=634,266
-AudioMixer4              mixer11;        //xy=785,416
-AudioEffectBitcrusher    bitcrusher;    //xy=931,417
+AudioMixer4              mixer11;        //xy=756,414
+AudioEffectBitcrusher    bitcrusher1;    //xy=911,435
 AudioMixer4              delayMixer;         //xy=1090,431
 AudioEffectDelay         delay1;         //xy=1090,595
 AudioEffectFreeverb      freeverb;      //xy=1241,583
@@ -100,16 +100,17 @@ AudioConnection          patchCord39(envelope3, 0, mixer9, 2);
 AudioConnection          patchCord40(envelope4, 0, mixer9, 3);
 AudioConnection          patchCord41(mixer10, 0, mixer11, 1);
 AudioConnection          patchCord42(mixer9, 0, mixer11, 0);
-AudioConnection          patchCord43(mixer11, bitcrusher);
-AudioConnection          patchCord44(bitcrusher, 0, delayMixer, 0);
-AudioConnection          patchCord45(delayMixer, delay1);
-AudioConnection          patchCord46(delay1, 0, reverbMixer, 0);
-AudioConnection          patchCord47(delay1, 0, freeverb, 0);
-AudioConnection          patchCord48(delay1, 1, delayMixer, 3);
-AudioConnection          patchCord49(freeverb, 0, reverbMixer, 1);
-AudioConnection          patchCord50(reverbMixer, OutputAmp);
-AudioConnection          patchCord51(OutputAmp, 0, i2s1, 0);
-AudioConnection          patchCord52(OutputAmp, 0, i2s1, 1);
+AudioConnection          patchCord43(mixer11, bitcrusher1);
+AudioConnection          patchCord44(mixer11, 0, delayMixer, 0);
+AudioConnection          patchCord45(bitcrusher1, 0, delayMixer, 1);
+AudioConnection          patchCord46(delayMixer, delay1);
+AudioConnection          patchCord47(delay1, 0, reverbMixer, 0);
+AudioConnection          patchCord48(delay1, 0, freeverb, 0);
+AudioConnection          patchCord49(delay1, 1, delayMixer, 3);
+AudioConnection          patchCord50(freeverb, 0, reverbMixer, 1);
+AudioConnection          patchCord51(reverbMixer, OutputAmp);
+AudioConnection          patchCord52(OutputAmp, 0, i2s1, 0);
+AudioConnection          patchCord53(OutputAmp, 0, i2s1, 1);
 AudioControlSGTL5000     sgtl5000_1;     //xy=1663,615
 // GUItool: end automatically generated code
 

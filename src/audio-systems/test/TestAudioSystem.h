@@ -44,6 +44,8 @@ public:
   void activateSampler();
   void activateSynth();
 
+  void setVolume(int value);
+
   void setWaveform1Amplitude(int value);
   void setWaveform2Amplitude(int value);
   void setPinkNoiseAmplitude(int value);
@@ -60,11 +62,16 @@ public:
   void setCoarseDetune(int value);
   void setFineDetune(int value);
 
+  void setBitcrusherAmount(int value);
   void setBits(int value);
   void setSampleRate(int value);
 
   void setDelay(int value);
   void setDelayFade(int value);
+
+  void setReverbAmount(int value);
+  void setRoomsize(int value);
+  void setDamping(int value);
 };
 
 #endif //TestAudioSystem_h_
