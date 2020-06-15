@@ -51,13 +51,15 @@ AudioEffectEnvelope      envelope4;      //xy=440,428
 AudioMixer4              mixer10;        //xy=624,594
 AudioMixer4              mixer9;         //xy=634,266
 AudioMixer4              mixer11;        //xy=756,414
-AudioEffectBitcrusher    bitcrusher1;    //xy=911,435
-AudioMixer4              delayMixer;         //xy=1090,431
-AudioEffectDelay         delay1;         //xy=1090,595
-AudioEffectFreeverb      freeverb;      //xy=1241,583
-AudioMixer4              reverbMixer;         //xy=1389,569
-AudioAmplifier           OutputAmp;           //xy=1536,569
-AudioOutputI2S           i2s1;           //xy=1668,568
+AudioFilterBiquad        biquad1;        //xy=908,446
+AudioMixer4              mixer12;        //xy=1087,431
+AudioEffectBitcrusher    bitcrusher1;    //xy=1242,461
+AudioMixer4              delayMixer;         //xy=1428,449
+AudioEffectDelay         delay1;         //xy=1428,613
+AudioEffectFreeverb      freeverb;      //xy=1579,601
+AudioMixer4              reverbMixer;         //xy=1727,587
+AudioAmplifier           OutputAmp;           //xy=1874,587
+AudioOutputI2S           i2s1;           //xy=2006,586
 AudioConnection          patchCord1(pink8, 0, mixer8, 2);
 AudioConnection          patchCord2(pink7, 0, mixer7, 2);
 AudioConnection          patchCord3(pink6, 0, mixer6, 2);
@@ -100,18 +102,21 @@ AudioConnection          patchCord39(envelope3, 0, mixer9, 2);
 AudioConnection          patchCord40(envelope4, 0, mixer9, 3);
 AudioConnection          patchCord41(mixer10, 0, mixer11, 1);
 AudioConnection          patchCord42(mixer9, 0, mixer11, 0);
-AudioConnection          patchCord43(mixer11, bitcrusher1);
-AudioConnection          patchCord44(mixer11, 0, delayMixer, 0);
-AudioConnection          patchCord45(bitcrusher1, 0, delayMixer, 1);
-AudioConnection          patchCord46(delayMixer, delay1);
-AudioConnection          patchCord47(delay1, 0, reverbMixer, 0);
-AudioConnection          patchCord48(delay1, 0, freeverb, 0);
-AudioConnection          patchCord49(delay1, 1, delayMixer, 3);
-AudioConnection          patchCord50(freeverb, 0, reverbMixer, 1);
-AudioConnection          patchCord51(reverbMixer, OutputAmp);
-AudioConnection          patchCord52(OutputAmp, 0, i2s1, 0);
-AudioConnection          patchCord53(OutputAmp, 0, i2s1, 1);
-AudioControlSGTL5000     sgtl5000_1;     //xy=1663,615
+AudioConnection          patchCord43(mixer11, biquad1);
+AudioConnection          patchCord44(mixer11, 0, mixer12, 0);
+AudioConnection          patchCord45(biquad1, 0, mixer12, 1);
+AudioConnection          patchCord46(mixer12, 0, delayMixer, 0);
+AudioConnection          patchCord47(mixer12, bitcrusher1);
+AudioConnection          patchCord48(bitcrusher1, 0, delayMixer, 1);
+AudioConnection          patchCord49(delayMixer, delay1);
+AudioConnection          patchCord50(delay1, 0, reverbMixer, 0);
+AudioConnection          patchCord51(delay1, 0, freeverb, 0);
+AudioConnection          patchCord52(delay1, 1, delayMixer, 3);
+AudioConnection          patchCord53(freeverb, 0, reverbMixer, 1);
+AudioConnection          patchCord54(reverbMixer, OutputAmp);
+AudioConnection          patchCord55(OutputAmp, 0, i2s1, 0);
+AudioConnection          patchCord56(OutputAmp, 0, i2s1, 1);
+AudioControlSGTL5000     sgtl5000_1;     //xy=2001,633
 // GUItool: end automatically generated code
 
 #endif //AudioObjects_h_

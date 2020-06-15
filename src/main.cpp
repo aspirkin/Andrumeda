@@ -17,6 +17,7 @@ TestAudioSystem* _ptrAudioSystem;
 ValuesMap _waveformsMap;
 ValuesMap _scalesMap;
 ValuesMap _sampleRatesMap;
+ValuesMap _filterModesMap;
 
 void setup() {
   Serial.begin(115200);
@@ -36,6 +37,11 @@ void setup() {
   _sampleRatesMap.insert(std::pair<int, String>(5, "11025"));
   _sampleRatesMap.insert(std::pair<int, String>(6, "22050"));
   _sampleRatesMap.insert(std::pair<int, String>(7, "44100"));
+
+  _filterModesMap.insert(std::pair<int, String>(0, "high pass"));
+  _filterModesMap.insert(std::pair<int, String>(1, "low pass"));
+  _filterModesMap.insert(std::pair<int, String>(2, "band pass"));
+  _filterModesMap.insert(std::pair<int, String>(3, "notch"));
 
   for (int i = 0; i < _ptrAudioSystem->getNumberOfScales(); i++) _scalesMap.insert(std::pair<int, String>(i, _ptrAudioSystem->getScaleName(i)));
   
@@ -140,6 +146,78 @@ void setup() {
     std::bind(&TestAudioSystem::setVolume, _ptrAudioSystem, std::placeholders::_1),
     0, 50, 100, 5, 0.00, false, "%"));
 
+  MenuLeaf* keyNote = new MenuLeaf(
+    "key note", new RangeParameter(
+    std::bind(&TestAudioSystem::setKeyNote, _ptrAudioSystem, std::placeholders::_1),
+    0, 20, 87, 1));
+
+  //  FILTER PARAMS
+  MenuLeaf* filterAmount = new MenuLeaf(
+    "amount", new RangeParameter(
+    std::bind(&TestAudioSystem::setFilterAmount, _ptrAudioSystem, std::placeholders::_1),
+    0, 0, 100, 5, 0.00, false, "%"));
+
+  //  STAGE 1
+  MenuLeaf* filterStage1Frequency = new MenuLeaf(
+    "frequency", new RangeParameter(
+    std::bind(&TestAudioSystem::setFilterFrequency, _ptrAudioSystem, 0, std::placeholders::_1),
+    400, 500, 20000, 50, 0.05, false, " Hz"));
+
+  MenuLeaf* filterStage1Q = new MenuLeaf(
+    "Q", new RangeParameter(
+    std::bind(&TestAudioSystem::setFilterQ, _ptrAudioSystem, 0, std::placeholders::_1),
+    5, 50, 70, 5, 0.00, false, "", "0."));
+
+  MenuLeaf* filterStage1Mode = new MenuLeaf(
+    "mode", new MapParameter(
+    std::bind(&TestAudioSystem::setFilterMode, _ptrAudioSystem, 0, std::placeholders::_1), _filterModesMap, 0, true));
+
+  //  STAGE 2
+  MenuLeaf* filterStage2Frequency = new MenuLeaf(
+    "frequency", new RangeParameter(
+    std::bind(&TestAudioSystem::setFilterFrequency, _ptrAudioSystem, 1, std::placeholders::_1),
+    400, 500, 20000, 50, 0.05, false, " Hz"));
+
+  MenuLeaf* filterStage2Q = new MenuLeaf(
+    "Q", new RangeParameter(
+    std::bind(&TestAudioSystem::setFilterQ, _ptrAudioSystem, 1, std::placeholders::_1),
+    5, 50, 70, 5, 0.00, false, "", "0."));
+
+  MenuLeaf* filterStage2Mode = new MenuLeaf(
+    "mode", new MapParameter(
+    std::bind(&TestAudioSystem::setFilterMode, _ptrAudioSystem, 1, std::placeholders::_1), _filterModesMap, 0, true));
+
+  //  STAGE 3
+  MenuLeaf* filterStage3Frequency = new MenuLeaf(
+    "frequency", new RangeParameter(
+    std::bind(&TestAudioSystem::setFilterFrequency, _ptrAudioSystem, 2, std::placeholders::_1),
+    400, 500, 20000, 50, 0.05, false, " Hz"));
+
+  MenuLeaf* filterStage3Q = new MenuLeaf(
+    "Q", new RangeParameter(
+    std::bind(&TestAudioSystem::setFilterQ, _ptrAudioSystem, 2, std::placeholders::_1),
+    5, 50, 70, 5, 0.00, false, "", "0."));
+
+  MenuLeaf* filterStage3Mode = new MenuLeaf(
+    "mode", new MapParameter(
+    std::bind(&TestAudioSystem::setFilterMode, _ptrAudioSystem, 2, std::placeholders::_1), _filterModesMap, 0, true));
+
+  //  STAGE 4
+  MenuLeaf* filterStage4Frequency = new MenuLeaf(
+    "frequency", new RangeParameter(
+    std::bind(&TestAudioSystem::setFilterFrequency, _ptrAudioSystem, 3, std::placeholders::_1),
+    400, 500, 20000, 50, 0.05, false, " Hz"));
+
+  MenuLeaf* filterStage4Q = new MenuLeaf(
+    "Q", new RangeParameter(
+    std::bind(&TestAudioSystem::setFilterQ, _ptrAudioSystem, 3, std::placeholders::_1),
+    5, 50, 70, 5, 0.00, false, "", "0."));
+
+  MenuLeaf* filterStage4Mode = new MenuLeaf(
+    "mode", new MapParameter(
+    std::bind(&TestAudioSystem::setFilterMode, _ptrAudioSystem, 3, std::placeholders::_1), _filterModesMap, 0, true));
+
+
   MenuBranch* root = new MenuBranch("/");
   MenuBranch* general = new MenuBranch("general");
   MenuBranch* synth = new MenuBranch("synth");
@@ -147,12 +225,18 @@ void setup() {
   MenuBranch* synthMixer = new MenuBranch("mixer");
   MenuBranch* synthADSR = new MenuBranch("ADSR");
   MenuBranch* effects = new MenuBranch("effects");
+  MenuBranch* filter = new MenuBranch("filter");
+  MenuBranch* stage1 = new MenuBranch("stage 1");
+  MenuBranch* stage2 = new MenuBranch("stage 2");
+  MenuBranch* stage3 = new MenuBranch("stage 3");
+  MenuBranch* stage4 = new MenuBranch("stage 4");
   MenuBranch* bitcrusher = new MenuBranch("bitcrusher");
   MenuBranch* delay = new MenuBranch("delay");
   MenuBranch* reverb = new MenuBranch("reverb");
 
   root->addChild(general);
     general->addChild(volume);
+    general->addChild(keyNote);
     general->addChild(scale);
   root->addChild(synth);
     synth->addChild(synthOscillators);
@@ -170,6 +254,24 @@ void setup() {
       synthADSR->addChild(sustain);
       synthADSR->addChild(release);
   root->addChild(effects);
+    effects->addChild(filter);
+      filter->addChild(filterAmount);
+      filter->addChild(stage1);
+        stage1->addChild(filterStage1Frequency);
+        stage1->addChild(filterStage1Q);
+        stage1->addChild(filterStage1Mode);
+      filter->addChild(stage2);
+        stage2->addChild(filterStage2Frequency);
+        stage2->addChild(filterStage2Q);
+        stage2->addChild(filterStage2Mode);
+      filter->addChild(stage3);
+        stage3->addChild(filterStage3Frequency);
+        stage3->addChild(filterStage3Q);
+        stage3->addChild(filterStage3Mode);
+      filter->addChild(stage4);
+        stage4->addChild(filterStage4Frequency);
+        stage4->addChild(filterStage4Q);
+        stage4->addChild(filterStage4Mode);
     effects->addChild(bitcrusher);
       bitcrusher->addChild(bitcrusherAmount);
       bitcrusher->addChild(bits);

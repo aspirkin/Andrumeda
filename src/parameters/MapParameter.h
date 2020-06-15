@@ -33,7 +33,7 @@ public:
   MapParameter(
     SetterFunction setterFunction,
     ValuesMap values,
-    int initialIndex,
+    int initialIndex = 0,
     bool isCyclic = false,
     String units = ""
     ) : StatefulParameter(setterFunction, isCyclic, units)

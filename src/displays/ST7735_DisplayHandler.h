@@ -25,7 +25,7 @@ private:
   const int _menuPathColor = RED;
 
   const int _menuChildrenXPos = 0;
-  const int _menuChildrenYPos = 12;
+  const int _menuChildrenYPos = 20;
   const int _menuChildrenYStep = 10;
   const int _menuChildrenColor = WHITE;
   const int _menuChildrenSelectedColor = YELLOW;

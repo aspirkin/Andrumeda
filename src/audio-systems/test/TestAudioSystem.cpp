@@ -81,6 +81,9 @@ void TestAudioSystem::setupMixers() {
   mixer11.gain(0, 1.00);
   mixer11.gain(1, 1.00);
 
+  mixer12.gain(0, 1.00);
+  mixer12.gain(1, 0.00);
+
   delayMixer.gain(0, 1.00);
   delayMixer.gain(1, 0.00);
 
@@ -106,6 +109,46 @@ int TestAudioSystem::getNumberOfScales() {
 
 String TestAudioSystem::getScaleName(int index) {
   return SCALES[index]->getName();
+}
+
+void TestAudioSystem::applyFilter(int stage) {
+  switch (_filterModes[stage])
+  {
+  case 0:
+    biquad1.setHighpass(stage, 1.00 * _filterFrequencies[stage], 0.01 * _filterQs[stage]);
+    break;
+  case 1:
+    biquad1.setLowpass(stage, 1.00 * _filterFrequencies[stage], 0.01 * _filterQs[stage]);
+    break;
+  case 2:
+    biquad1.setBandpass(stage, 1.00 * _filterFrequencies[stage], 0.01 * _filterQs[stage]);
+    break;
+  case 3:
+    biquad1.setNotch(stage, 1.00 * _filterFrequencies[stage], 0.01 * _filterQs[stage]);
+    break;
+  default:
+    break;
+  }
+}
+
+void TestAudioSystem::setFilterMode(int stage, int value) {
+  _filterModes[stage] = value;
+  applyFilter(stage);
+}
+
+void TestAudioSystem::setFilterFrequency(int stage, int value) {
+  _filterFrequencies[stage] = value;
+  applyFilter(stage);
+}
+
+void TestAudioSystem::setFilterQ(int stage, int value) {
+  _filterQs[stage] = value;
+  applyFilter(stage);
+}
+
+void TestAudioSystem::setFilterAmount(int value) {
+  mixer12.gain(0, 1.00 - value * 0.01);
+  mixer12.gain(1, value * 0.01);
 }
 
 void TestAudioSystem::setDelay(int value) {
@@ -139,6 +182,10 @@ void TestAudioSystem::setRoomsize(int value) {
 
 void TestAudioSystem::setDamping(int value) {
   freeverb.damping(value * 0.01);
+}
+
+void TestAudioSystem::setKeyNote(int value) {
+  _keyNote = value;
 }
 
 void TestAudioSystem::setScale(int value) {

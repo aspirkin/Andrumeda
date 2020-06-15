@@ -15,6 +15,7 @@ protected:
   int _limitBottom;
   int _step;
   float _stepAdaptiveness;
+  String _prefix;
 
   void handleValueOverTop() {
     if (_isCyclic) _value = _limitBottom; else _value = _limitTop;
@@ -44,7 +45,8 @@ public:
     int step = 1,
     float stepAdaptiveness = 0.00, 
     bool isCyclic = false,
-    String units = ""
+    String units = "",
+    String prefix = ""
     ) : StatefulParameter(setterFunction, isCyclic, units)
   {
     _value = initialValue;
@@ -52,6 +54,7 @@ public:
     _limitBottom = limitBottom;
     _step = step;
     _stepAdaptiveness = stepAdaptiveness;
+    _prefix = prefix;
     apply();
   }
 
@@ -70,7 +73,7 @@ public:
   }
 
   String getValueString() {
-    return String(_value) + _units;
+    return _prefix + String(_value) + _units;
   }
 
 };
