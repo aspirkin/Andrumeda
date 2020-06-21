@@ -186,6 +186,7 @@ void TestAudioSystem::setDamping(int value) {
 
 void TestAudioSystem::setKeyNote(int value) {
   _keyNote = value;
+  applyFrequencies();
 }
 
 void TestAudioSystem::setScale(int value) {

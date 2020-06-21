@@ -13,6 +13,14 @@ int AudioSystem::getNumberOfMusicNodes() {
   return _numberOfMusicNodes;
 }
 
+int AudioSystem::getNumberOfNotes() {
+  return NUMBER_OF_NOTES;
+}
+
+String AudioSystem::getNoteName(int index) {
+  return NOTE_NAMES[index];
+}
+
 void AudioSystem::activateSampler() {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {

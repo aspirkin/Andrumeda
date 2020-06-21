@@ -3,7 +3,7 @@
 #include <Controls.h>
 #include <parameters/StatelessParameter.h>
 #include <parameters/RangeParameter.h>
-#include <parameters/MapParameter.h>
+#include <parameters/VectorParameter.h>
 #include <menus/MenuBranch.h>
 #include <menus/MenuLeaf.h>
 #include <functional>
@@ -14,37 +14,21 @@ typedef std::map<int, String> ValuesMap;
 
 Controls* _ptrControls;
 TestAudioSystem* _ptrAudioSystem;
-ValuesMap _waveformsMap;
-ValuesMap _scalesMap;
-ValuesMap _sampleRatesMap;
-ValuesMap _filterModesMap;
+std::vector<String> _waveforms = {"sine", "saw", "square", "triangle"};
+std::vector<String> _scales;
+std::vector<String> _sampleRates = {"345", "689", "1378", "2756", "5513", "11025", "22050", "44100"};
+std::vector<String> _filterModes = {"high pass", "low pass", "band pass", "notch"};
+std::vector<String> _noteNames;
 
 void setup() {
   Serial.begin(115200);
 
   _ptrAudioSystem = new TestAudioSystem(8);
 
-  _waveformsMap.insert(std::pair<int, String>(0, "sine"));
-  _waveformsMap.insert(std::pair<int, String>(1, "saw"));
-  _waveformsMap.insert(std::pair<int, String>(2, "square"));
-  _waveformsMap.insert(std::pair<int, String>(3, "triangle"));
-
-  _sampleRatesMap.insert(std::pair<int, String>(0, "345"));
-  _sampleRatesMap.insert(std::pair<int, String>(1, "689"));
-  _sampleRatesMap.insert(std::pair<int, String>(2, "1378"));
-  _sampleRatesMap.insert(std::pair<int, String>(3, "2756"));
-  _sampleRatesMap.insert(std::pair<int, String>(4, "5513"));
-  _sampleRatesMap.insert(std::pair<int, String>(5, "11025"));
-  _sampleRatesMap.insert(std::pair<int, String>(6, "22050"));
-  _sampleRatesMap.insert(std::pair<int, String>(7, "44100"));
-
-  _filterModesMap.insert(std::pair<int, String>(0, "high pass"));
-  _filterModesMap.insert(std::pair<int, String>(1, "low pass"));
-  _filterModesMap.insert(std::pair<int, String>(2, "band pass"));
-  _filterModesMap.insert(std::pair<int, String>(3, "notch"));
-
-  for (int i = 0; i < _ptrAudioSystem->getNumberOfScales(); i++) _scalesMap.insert(std::pair<int, String>(i, _ptrAudioSystem->getScaleName(i)));
+  for (int i = 0; i < _ptrAudioSystem->getNumberOfScales(); i++) _scales.push_back(_ptrAudioSystem->getScaleName(i));
   
+  for (int i = 0; i < _ptrAudioSystem->getNumberOfNotes(); i++) _noteNames.push_back(_ptrAudioSystem->getNoteName(i));
+
   MenuLeaf* wf1Amplitude = new MenuLeaf(
     "waveform 1", new RangeParameter(
     std::bind(&TestAudioSystem::setWaveform1Amplitude, _ptrAudioSystem, std::placeholders::_1),
@@ -91,16 +75,16 @@ void setup() {
     -100, 0, 100, 1, 0.00, false, "cents"));
 
   MenuLeaf* waveform1 = new MenuLeaf(
-    "o1 waveform", new MapParameter(
-    std::bind(&TestAudioSystem::setWaveform1, _ptrAudioSystem, std::placeholders::_1), _waveformsMap, 1, true));
+    "o1 waveform", new VectorParameter(
+    std::bind(&TestAudioSystem::setWaveform1, _ptrAudioSystem, std::placeholders::_1), _waveforms, 1, true));
 
   MenuLeaf* waveform2 = new MenuLeaf(
-    "o2 waveform", new MapParameter(
-    std::bind(&TestAudioSystem::setWaveform2, _ptrAudioSystem, std::placeholders::_1), _waveformsMap, 1, true));
+    "o2 waveform", new VectorParameter(
+    std::bind(&TestAudioSystem::setWaveform2, _ptrAudioSystem, std::placeholders::_1), _waveforms, 1, true));
 
   MenuLeaf* scale = new MenuLeaf(
-    "scale", new MapParameter(
-    std::bind(&TestAudioSystem::setScale, _ptrAudioSystem, std::placeholders::_1), _scalesMap, 0, true));
+    "scale", new VectorParameter(
+    std::bind(&TestAudioSystem::setScale, _ptrAudioSystem, std::placeholders::_1), _scales, 0, true));
 
   MenuLeaf* bitcrusherAmount = new MenuLeaf(
     "amount", new RangeParameter(
@@ -113,8 +97,8 @@ void setup() {
     1, 16, 16, 1, 0.00, false, " bits"));
   
   MenuLeaf* sampleRate = new MenuLeaf(
-    "sample rate", new MapParameter(
-    std::bind(&TestAudioSystem::setSampleRate, _ptrAudioSystem, std::placeholders::_1), _sampleRatesMap, 7, false, " Hz"));
+    "sample rate", new VectorParameter(
+    std::bind(&TestAudioSystem::setSampleRate, _ptrAudioSystem, std::placeholders::_1), _sampleRates, 7, false, " Hz"));
 
   MenuLeaf* delayFade = new MenuLeaf(
     "fade", new RangeParameter(
@@ -147,9 +131,8 @@ void setup() {
     0, 50, 100, 5, 0.00, false, "%"));
 
   MenuLeaf* keyNote = new MenuLeaf(
-    "key note", new RangeParameter(
-    std::bind(&TestAudioSystem::setKeyNote, _ptrAudioSystem, std::placeholders::_1),
-    0, 20, 87, 1));
+    "key note", new VectorParameter(
+    std::bind(&TestAudioSystem::setKeyNote, _ptrAudioSystem, std::placeholders::_1), _noteNames, 20));
 
   //  FILTER PARAMS
   MenuLeaf* filterAmount = new MenuLeaf(
@@ -169,8 +152,8 @@ void setup() {
     5, 50, 70, 5, 0.00, false, "", "0."));
 
   MenuLeaf* filterStage1Mode = new MenuLeaf(
-    "mode", new MapParameter(
-    std::bind(&TestAudioSystem::setFilterMode, _ptrAudioSystem, 0, std::placeholders::_1), _filterModesMap, 0, true));
+    "mode", new VectorParameter(
+    std::bind(&TestAudioSystem::setFilterMode, _ptrAudioSystem, 0, std::placeholders::_1), _filterModes, 0, true));
 
   //  STAGE 2
   MenuLeaf* filterStage2Frequency = new MenuLeaf(
@@ -184,8 +167,8 @@ void setup() {
     5, 50, 70, 5, 0.00, false, "", "0."));
 
   MenuLeaf* filterStage2Mode = new MenuLeaf(
-    "mode", new MapParameter(
-    std::bind(&TestAudioSystem::setFilterMode, _ptrAudioSystem, 1, std::placeholders::_1), _filterModesMap, 0, true));
+    "mode", new VectorParameter(
+    std::bind(&TestAudioSystem::setFilterMode, _ptrAudioSystem, 1, std::placeholders::_1), _filterModes, 0, true));
 
   //  STAGE 3
   MenuLeaf* filterStage3Frequency = new MenuLeaf(
@@ -199,8 +182,8 @@ void setup() {
     5, 50, 70, 5, 0.00, false, "", "0."));
 
   MenuLeaf* filterStage3Mode = new MenuLeaf(
-    "mode", new MapParameter(
-    std::bind(&TestAudioSystem::setFilterMode, _ptrAudioSystem, 2, std::placeholders::_1), _filterModesMap, 0, true));
+    "mode", new VectorParameter(
+    std::bind(&TestAudioSystem::setFilterMode, _ptrAudioSystem, 2, std::placeholders::_1), _filterModes, 0, true));
 
   //  STAGE 4
   MenuLeaf* filterStage4Frequency = new MenuLeaf(
@@ -214,8 +197,8 @@ void setup() {
     5, 50, 70, 5, 0.00, false, "", "0."));
 
   MenuLeaf* filterStage4Mode = new MenuLeaf(
-    "mode", new MapParameter(
-    std::bind(&TestAudioSystem::setFilterMode, _ptrAudioSystem, 3, std::placeholders::_1), _filterModesMap, 0, true));
+    "mode", new VectorParameter(
+    std::bind(&TestAudioSystem::setFilterMode, _ptrAudioSystem, 3, std::placeholders::_1), _filterModes, 0, true));
 
 
   MenuBranch* root = new MenuBranch("/");
