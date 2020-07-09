@@ -70,15 +70,29 @@ void Controls::setConfigurableParameter(MenuItem* item) {
 
 void Controls::selectNextChild() {
   if (_currentMenu->selectNextChild()) {
+    if (_currentMenu->getCurrentChildIndex() == 0 && _currentMenu != _rootMenu) {
+      ((MenuBranch*)_currentMenu->getParent())->selectNextChild();
+      _currentMenu = (MenuBranch*)((MenuBranch*)_currentMenu->getParent())->getCurrentChild();
+      _currentMenu->setFirstChildCurrent();
+      _displayHandler->displayMenu(_currentMenu);
+    } else {
+      _displayHandler->redisplayMenuChildren();
+    }
     setConfigurableParameter(_currentMenu->getCurrentChild());
-    _displayHandler->redisplayMenuChildren();
   }
 }
 
 void Controls::selectPreviousChild() {
   if (_currentMenu->selectPreviousChild()) {
+    if ((_currentMenu->getCurrentChildIndex() == _currentMenu->getNumberOfChildren() - 1) && _currentMenu != _rootMenu) {
+      ((MenuBranch*)_currentMenu->getParent())->selectPreviousChild();
+      _currentMenu = (MenuBranch*)((MenuBranch*)_currentMenu->getParent())->getCurrentChild();
+      _currentMenu->setLastChildCurrent();
+      _displayHandler->displayMenu(_currentMenu);
+    } else {
+      _displayHandler->redisplayMenuChildren();
+    }
     setConfigurableParameter(_currentMenu->getCurrentChild());
-    _displayHandler->redisplayMenuChildren();
   }
 }
 

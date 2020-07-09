@@ -1,17 +1,33 @@
 #include <displays/ST7735_DisplayHandler.h>
 #include <displays/ST7735_144_128x128_greenTab_Display.h>
 
-void ST7735_DisplayHandler::drawMenuPath(MenuBranch* menu) {
+String ST7735_DisplayHandler::getMenuPath(MenuBranch* menu) {
   String result = "/";
   MenuBranch* printingMenu = menu;
   while (printingMenu->getParent() != nullptr) {
     result ="/" + printingMenu->getName() + result;
     printingMenu = (MenuBranch*)(printingMenu->getParent());
   }
+  return result;
+}
+
+void ST7735_DisplayHandler::drawMenuPath() {
   display.setCursor(_initXPos + _menuPathXPos, _initYPos + _menuPathYPos);
   display.setTextColor(_menuPathColor);
   display.setTextSize(_menuPathTextSize);
-  display.print(result);
+  display.print(getMenuPath(_currentMenu));
+
+  if (_currentMenu->getParent() != nullptr) {
+    display.setCursor(_initXPos + _previousMenuPathXPos, _initYPos + _previousMenuPathYPos);
+    display.setTextColor(_previousMenuPathColor);
+    display.setTextSize(_previousMenuPathTextSize);
+    display.print(getMenuPath(((MenuBranch*)((MenuBranch*)_currentMenu->getParent())->getPreviousChild())));
+    
+    display.setCursor(_initXPos + _nextMenuPathXPos, _initYPos + _nextMenuPathYPos);
+    display.setTextColor(_nextMenuPathColor);
+    display.setTextSize(_nextMenuPathTextSize);
+    display.print(getMenuPath(((MenuBranch*)((MenuBranch*)_currentMenu->getParent())->getNextChild())));
+  }
 }
 
 void ST7735_DisplayHandler::drawMenuChildren(MenuBranch* menu) {
@@ -52,7 +68,6 @@ void ST7735_DisplayHandler::drawMenuChildValue(MenuItem* item, int xPos, int yPo
 };
 
 void ST7735_DisplayHandler::redisplayMenuChildren() {
-  //display.fillRect(_initXPos+_menuChildrenXPos, _initYPos+_menuChildrenYPos, )
   drawMenuChildren(_currentMenu);
 };
 
@@ -68,6 +83,6 @@ ST7735_DisplayHandler::ST7735_DisplayHandler(){
 void ST7735_DisplayHandler::displayMenu(MenuBranch* menu) {
   _currentMenu = menu;
   display.fillScreen(_backgroundColor);
-  drawMenuPath(_currentMenu);
+  drawMenuPath();
   drawMenuChildren(_currentMenu);
 };

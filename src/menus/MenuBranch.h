@@ -22,7 +22,26 @@ public:
   };
 
   MenuItem* getChild(int index) {return _children[index];};
+
   int getNumberOfChildren() {return _children.size();};
+
+  MenuItem* getPreviousChild() {
+    if (_children.size() == 0) return nullptr;
+    if (_currentChildIndex == 0) {
+      return getChild((int)_children.size() - 1);
+    } else {
+      return getChild(_currentChildIndex - 1);
+    }
+  }
+
+  MenuItem* getNextChild() {
+    if (_children.size() == 0) return nullptr;
+    if (_currentChildIndex == (int)_children.size() - 1) {
+      return getChild(0);
+    } else {
+      return getChild(_currentChildIndex + 1);
+    }
+  }
 
   MenuItem* getCurrentChild() {
     if (_children.size() == 0) return nullptr;
@@ -30,6 +49,10 @@ public:
   };
 
   int getCurrentChildIndex() {return _currentChildIndex;};
+
+  void setFirstChildCurrent() {_currentChildIndex = 0;};
+
+  void setLastChildCurrent() {_currentChildIndex = (int)_children.size() - 1;};
 
   bool selectNextChild() {
     if (_children.size() == 0) return false;

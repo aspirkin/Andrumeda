@@ -20,9 +20,19 @@ private:
   const int _backgroundColor = BLACK;
 
   const int _menuPathXPos = 0;
-  const int _menuPathYPos = 0;
+  const int _menuPathYPos = 10;
   const int _menuPathTextSize = 1;
   const int _menuPathColor = RED;
+
+  const int _previousMenuPathXPos = 0;
+  const int _previousMenuPathYPos = 0;
+  const int _previousMenuPathTextSize = 1;
+  const int _previousMenuPathColor = MAGENTA;
+
+  const int _nextMenuPathXPos = 0;
+  const int _nextMenuPathYPos = 120;
+  const int _nextMenuPathTextSize = 1;
+  const int _nextMenuPathColor = MAGENTA;
 
   const int _menuChildrenXPos = 0;
   const int _menuChildrenYPos = 20;
@@ -40,7 +50,8 @@ private:
   MenuBranch* _currentMenu;
   MenuItem* _currentChild;
 
-  void drawMenuPath(MenuBranch* menu);
+  String getMenuPath(MenuBranch* menu);
+  void drawMenuPath();
   void drawMenuChildren(MenuBranch* menu);
   void drawMenuChild(MenuItem* item, int xPos, int yPos, bool isSelected);
   void drawMenuChildValue(MenuItem* item, int xPos, int yPos, bool isSelected);
