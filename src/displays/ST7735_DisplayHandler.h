@@ -20,7 +20,8 @@ private:
   const int _backgroundColor = BLACK;
 
   const int _menuPathXPos = 0;
-  const int _menuPathYPos = 10;
+  const int _menuPathYPos = 20;
+  const int _rootMenuPathYPos = 10;
   const int _menuPathTextSize = 1;
   const int _menuPathColor = RED;
 
@@ -30,12 +31,13 @@ private:
   const int _previousMenuPathColor = MAGENTA;
 
   const int _nextMenuPathXPos = 0;
-  const int _nextMenuPathYPos = 120;
+  const int _nextMenuPathYOffset = 10;
   const int _nextMenuPathTextSize = 1;
   const int _nextMenuPathColor = MAGENTA;
 
   const int _menuChildrenXPos = 0;
-  const int _menuChildrenYPos = 20;
+  const int _menuChildrenYPos = 30;
+  const int _rootMenuChildrenYPos = 20;
   const int _menuChildrenYStep = 10;
   const int _menuChildrenColor = WHITE;
   const int _menuChildrenSelectedColor = YELLOW;
@@ -51,15 +53,15 @@ private:
   MenuItem* _currentChild;
 
   String getMenuPath(MenuBranch* menu);
-  void drawMenuPath();
-  void drawMenuChildren(MenuBranch* menu);
+  void drawMenuPath(bool isRoot = false);
+  void drawMenuChildren(MenuBranch* menu, bool isRoot = false);
   void drawMenuChild(MenuItem* item, int xPos, int yPos, bool isSelected);
   void drawMenuChildValue(MenuItem* item, int xPos, int yPos, bool isSelected);
 
 public:
   ST7735_DisplayHandler();
-  void displayMenu(MenuBranch* menu);
-  void redisplayMenuChildren();
+  void displayMenu(MenuBranch* menu, bool isRoot = false);
+  void redisplayMenuChildren(bool isRoot = false);
   void redisplaySelectedChildValue();
 };
 

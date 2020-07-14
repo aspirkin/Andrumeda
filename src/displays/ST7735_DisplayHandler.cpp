@@ -2,36 +2,45 @@
 #include <displays/ST7735_144_128x128_greenTab_Display.h>
 
 String ST7735_DisplayHandler::getMenuPath(MenuBranch* menu) {
-  String result = "/";
+  String result = " -";
   MenuBranch* printingMenu = menu;
   while (printingMenu->getParent() != nullptr) {
-    result ="/" + printingMenu->getName() + result;
+    result =" - " + printingMenu->getName() + result;
     printingMenu = (MenuBranch*)(printingMenu->getParent());
   }
   return result;
 }
 
-void ST7735_DisplayHandler::drawMenuPath() {
-  display.setCursor(_initXPos + _menuPathXPos, _initYPos + _menuPathYPos);
+void ST7735_DisplayHandler::drawMenuPath(bool isRoot) {
+  if (isRoot) {
+    display.setCursor(_initXPos + _menuPathXPos, _initYPos + _rootMenuPathYPos);
+  } else {
+    display.setCursor(_initXPos + _menuPathXPos, _initYPos + _menuPathYPos);
+  }
   display.setTextColor(_menuPathColor);
   display.setTextSize(_menuPathTextSize);
   display.print(getMenuPath(_currentMenu));
 
-  if (_currentMenu->getParent() != nullptr) {
+  if (!isRoot) {
     display.setCursor(_initXPos + _previousMenuPathXPos, _initYPos + _previousMenuPathYPos);
     display.setTextColor(_previousMenuPathColor);
     display.setTextSize(_previousMenuPathTextSize);
+    display.print("^");
     display.print(getMenuPath(((MenuBranch*)((MenuBranch*)_currentMenu->getParent())->getPreviousChild())));
-    
-    display.setCursor(_initXPos + _nextMenuPathXPos, _initYPos + _nextMenuPathYPos);
+    display.print(" ^");
+
+    display.setCursor(_initXPos + _nextMenuPathXPos, _initYPos + _menuChildrenYPos + _currentMenu->getNumberOfChildren()*_menuChildrenYStep + _nextMenuPathYOffset);
     display.setTextColor(_nextMenuPathColor);
     display.setTextSize(_nextMenuPathTextSize);
+    display.print("v");
     display.print(getMenuPath(((MenuBranch*)((MenuBranch*)_currentMenu->getParent())->getNextChild())));
+    display.print(" v");
   }
 }
 
-void ST7735_DisplayHandler::drawMenuChildren(MenuBranch* menu) {
-  int yPos = _initYPos + _menuChildrenYPos;
+void ST7735_DisplayHandler::drawMenuChildren(MenuBranch* menu, bool isRoot) {
+  int yPos = _initYPos;
+  if (isRoot) yPos += _rootMenuChildrenYPos; else yPos += _menuChildrenYPos;
   bool isSelected;
   Serial.println(menu->getNumberOfChildren());
   for (int i = 0; i < menu->getNumberOfChildren(); i++)
@@ -67,8 +76,8 @@ void ST7735_DisplayHandler::drawMenuChildValue(MenuItem* item, int xPos, int yPo
   }
 };
 
-void ST7735_DisplayHandler::redisplayMenuChildren() {
-  drawMenuChildren(_currentMenu);
+void ST7735_DisplayHandler::redisplayMenuChildren(bool isRoot) {
+  drawMenuChildren(_currentMenu, isRoot);
 };
 
 void ST7735_DisplayHandler::redisplaySelectedChildValue() {
@@ -80,9 +89,9 @@ ST7735_DisplayHandler::ST7735_DisplayHandler(){
   display.initR(INITR_144GREENTAB);
 };
 
-void ST7735_DisplayHandler::displayMenu(MenuBranch* menu) {
+void ST7735_DisplayHandler::displayMenu(MenuBranch* menu, bool isRoot) {
   _currentMenu = menu;
   display.fillScreen(_backgroundColor);
-  drawMenuPath();
-  drawMenuChildren(_currentMenu);
+  drawMenuChildren(_currentMenu, isRoot);
+  drawMenuPath(isRoot);
 };

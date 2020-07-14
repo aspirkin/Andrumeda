@@ -11,7 +11,7 @@ Controls::Controls(int numberOfMusicNodes, int numberOfEncoders, MenuBranch* roo
   _currentMenu = _rootMenu;
 
   _displayHandler = displayHandler;
-  _displayHandler->displayMenu(_currentMenu);
+  _displayHandler->displayMenu(_currentMenu, _currentMenu == _rootMenu);
 }
 
 void Controls::addNavigationEncoder(int pinS, int pinA, int pinB){
@@ -76,7 +76,7 @@ void Controls::selectNextChild() {
       _currentMenu->setFirstChildCurrent();
       _displayHandler->displayMenu(_currentMenu);
     } else {
-      _displayHandler->redisplayMenuChildren();
+      _displayHandler->redisplayMenuChildren(_currentMenu == _rootMenu);
     }
     setConfigurableParameter(_currentMenu->getCurrentChild());
   }
@@ -90,7 +90,7 @@ void Controls::selectPreviousChild() {
       _currentMenu->setLastChildCurrent();
       _displayHandler->displayMenu(_currentMenu);
     } else {
-      _displayHandler->redisplayMenuChildren();
+      _displayHandler->redisplayMenuChildren(_currentMenu == _rootMenu);
     }
     setConfigurableParameter(_currentMenu->getCurrentChild());
   }
@@ -110,7 +110,7 @@ void Controls::enterCurrentChild() {
   if (_currentMenu->getCurrentChild() == nullptr) return;
   if (_currentMenu->getCurrentChild()->isMenu()) {
     _currentMenu = (MenuBranch*) _currentMenu->getCurrentChild();
-    _displayHandler->displayMenu(_currentMenu);
+    _displayHandler->displayMenu(_currentMenu, _currentMenu == _rootMenu);
     setConfigurableParameter(_currentMenu->getCurrentChild());
   }
 }
@@ -118,7 +118,7 @@ void Controls::enterCurrentChild() {
 void Controls::escapeToParent() {
   if (_currentMenu != _rootMenu) {
     _currentMenu = (MenuBranch*) _currentMenu->getParent();
-    _displayHandler->displayMenu(_currentMenu);
+    _displayHandler->displayMenu(_currentMenu, _currentMenu == _rootMenu);
     setConfigurableParameter(_currentMenu->getCurrentChild());
   }
 }

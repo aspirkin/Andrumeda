@@ -7,13 +7,13 @@ class AbstractDisplayHandler {
 protected:
   // virtual void redraw();
   virtual String getMenuPath(MenuBranch* menu);
-  virtual void drawMenuPath();
-  virtual void drawMenuChildren(MenuBranch* menu);
+  virtual void drawMenuPath(bool isRoot = false);
+  virtual void drawMenuChildren(MenuBranch* menu, bool isRoot = false);
   virtual void drawMenuChild(MenuItem* item,int xPos, int yPos, bool isSelected);
   virtual void drawMenuChildValue(MenuItem* item, int xPos, int yPos, bool isSelected);
 public:
-  virtual void displayMenu(MenuBranch* menu) {};
-  virtual void redisplayMenuChildren() {};
+  virtual void displayMenu(MenuBranch* menu, bool isRoot = false) {};
+  virtual void redisplayMenuChildren(bool isRoot = false) {};
   virtual void redisplaySelectedChildValue() {};
 };
 
