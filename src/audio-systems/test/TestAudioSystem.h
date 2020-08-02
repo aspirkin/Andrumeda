@@ -9,6 +9,22 @@
 class TestAudioSystem : public AudioSystem
 {
 private:
+  AudioMixer4* _nodesMixer1;
+  AudioMixer4* _nodesMixer2;
+  AudioMixer4* _nodesOutputMixer;
+
+  AudioFilterBiquad* _biquad;
+  AudioMixer4* _filterMixer;
+  AudioEffectBitcrusher* _bitcrusher;
+  AudioMixer4* _delayMixer;
+  AudioEffectDelay* _delay;
+  AudioEffectFreeverb* _freeverb;
+  AudioMixer4* _reverbMixer;
+  AudioAmplifier* _outputAmp;
+  AudioOutputI2S* _i2s1;
+  AudioControlSGTL5000* _sgtl5000;
+  AudioConnection* _audioConnections[24];
+
   static const int NUMBER_OF_SCALES = 9;
   Scale* SCALES[NUMBER_OF_SCALES] = {
     new Scale("major",      new int[9]{0, 2, 4, 5, 7, 9, 11, 12, 14}),

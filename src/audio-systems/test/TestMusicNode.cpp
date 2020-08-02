@@ -1,15 +1,25 @@
 #include <audio-systems/test/TestMusicNode.h>
 
-TestMusicNode::TestMusicNode(AudioSynthWaveform &nodeWaveform1,
-                             AudioSynthWaveform &nodeWaveform2,
-                             AudioSynthNoisePink &nodeNoisePink,
-                             AudioEffectEnvelope &nodeEnvelope) : MusicNode(){
-  _waveform1 = &nodeWaveform1;
-  _waveform2 = &nodeWaveform2;
-  _noisePink = &nodeNoisePink;
-  _envelope = &nodeEnvelope;
+TestMusicNode::TestMusicNode() : MusicNode(){
+  _waveform1 = new AudioSynthWaveform();
+  _waveform2 = new AudioSynthWaveform();
+  _noisePink = new AudioSynthNoisePink();
+  _envelope = new AudioEffectEnvelope();
+  _mixer = new AudioMixer4();
+  _mixer->gain(0, 1.00);
+  _mixer->gain(1, 1.00);
+  _mixer->gain(2, 1.00);
+
+  _audioConnections[0] = new AudioConnection(*_waveform1, 0, *_mixer, 0);
+  _audioConnections[1] = new AudioConnection(*_waveform2, 0, *_mixer, 1);
+  _audioConnections[2] = new AudioConnection(*_noisePink, 0, *_mixer, 2);
+  _audioConnections[3] = new AudioConnection(*_mixer, 0, *_envelope, 0);
 
   noteOff();
+}
+
+AudioEffectEnvelope* TestMusicNode::getOutput() {
+  return _envelope;
 }
 
 void TestMusicNode::noteOn() {

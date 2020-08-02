@@ -14,12 +14,12 @@ private:
   AudioSynthWaveform* _waveform2;
   AudioSynthNoisePink* _noisePink;
   AudioEffectEnvelope* _envelope;
+  AudioMixer4* _mixer;
+  AudioConnection* _audioConnections[4];
 
 public:
-  TestMusicNode(AudioSynthWaveform &nodeWaveform1,
-                AudioSynthWaveform &nodeWaveform2,
-                AudioSynthNoisePink &nodeNoisePink,
-                AudioEffectEnvelope &nodeEnvelope);
+  TestMusicNode();
+  AudioEffectEnvelope * getOutput();
   void noteOn();
   void noteOff();
   void setVelocity(int velocity);

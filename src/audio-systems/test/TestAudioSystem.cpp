@@ -1,7 +1,38 @@
 #include <audio-systems/test/TestAudioSystem.h>
-#include <audio-systems/test/AudioObjects.h>
 
 TestAudioSystem::TestAudioSystem(int numberOfMusicNodes) : AudioSystem(numberOfMusicNodes){
+  _biquad = new AudioFilterBiquad();
+  _filterMixer = new AudioMixer4();
+  _bitcrusher = new AudioEffectBitcrusher();
+  _delayMixer = new AudioMixer4();
+  _delay = new AudioEffectDelay();
+  _freeverb = new AudioEffectFreeverb();
+  _reverbMixer = new AudioMixer4();
+  _outputAmp = new AudioAmplifier();
+  _i2s1 = new AudioOutputI2S();
+  _sgtl5000 = new AudioControlSGTL5000();
+
+  _nodesMixer1 = new AudioMixer4();
+  _nodesMixer2 = new AudioMixer4();
+  _nodesOutputMixer = new AudioMixer4();
+
+  _audioConnections[0] = new AudioConnection(*_nodesMixer1, 0, *_nodesOutputMixer, 0);
+  _audioConnections[1] = new AudioConnection(*_nodesMixer2, 0, *_nodesOutputMixer, 1);
+  _audioConnections[2] = new AudioConnection(*_nodesOutputMixer, 0, *_filterMixer, 0);
+  _audioConnections[3] = new AudioConnection(*_nodesOutputMixer, 0, *_biquad, 0);
+  _audioConnections[4] = new AudioConnection(*_biquad, 0, *_filterMixer, 1);
+  _audioConnections[5] = new AudioConnection(*_filterMixer, 0, *_bitcrusher, 0);
+  _audioConnections[6] = new AudioConnection(*_filterMixer, 0, *_delayMixer, 0);
+  _audioConnections[7] = new AudioConnection(*_bitcrusher, 0, *_delayMixer, 1);
+  _audioConnections[8] = new AudioConnection(*_delayMixer, 0, *_delay, 0);
+  _audioConnections[9] = new AudioConnection(*_delay, 1, *_delayMixer, 3);
+  _audioConnections[10] = new AudioConnection(*_delay, 0, *_reverbMixer, 0);
+  _audioConnections[11] = new AudioConnection(*_delay, 0, *_freeverb, 0);
+  _audioConnections[12] = new AudioConnection(*_freeverb, 0, *_reverbMixer, 1);
+  _audioConnections[13] = new AudioConnection(*_reverbMixer, 0, *_outputAmp, 0);
+  _audioConnections[14] = new AudioConnection(*_outputAmp, 0, *_i2s1, 0);
+  _audioConnections[15] = new AudioConnection(*_outputAmp, 0, *_i2s1, 1);
+
   setupSGTL5000();
   setupMixers();
   setupEffects();
@@ -10,87 +41,61 @@ TestAudioSystem::TestAudioSystem(int numberOfMusicNodes) : AudioSystem(numberOfM
 }
 
 void TestAudioSystem::setupMusicNodes() {
-  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform1, waveform2, pink1, envelope1));
-  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform3, waveform4, pink2, envelope2));
-  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform5, waveform6, pink3, envelope3));
-  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform7, waveform8, pink4, envelope4));
-  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform9, waveform10, pink5, envelope5));
-  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform11, waveform12, pink6, envelope6));
-  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform13, waveform14, pink7, envelope7));
-  _ptrSynthMusicNodes.push_back(new TestMusicNode(waveform15, waveform16, pink8, envelope8));
+  TestMusicNode* currentNode;
+  for (int i = 0; i < 4; i++)
+  {
+    currentNode = new TestMusicNode();
+    _ptrSynthMusicNodes.push_back(currentNode);
+    _audioConnections[16 + i] = new AudioConnection(*currentNode->getOutput(), 0, *_nodesMixer1, i);
+  }
+  for (int i = 0; i < 4; i++)
+  {
+    currentNode = new TestMusicNode();
+    _ptrSynthMusicNodes.push_back(currentNode);
+    _audioConnections[20 + i] = new AudioConnection(*currentNode->getOutput(), 0, *_nodesMixer2, i);
+  }
+  
 }
 
 void TestAudioSystem::setupSGTL5000() {
   AudioMemory(512);
-  sgtl5000_1.enable();
-  sgtl5000_1.volume(0.5);
-  sgtl5000_1.lineOutLevel(31);
+  _sgtl5000->enable();
+  _sgtl5000->volume(0.5);
+  _sgtl5000->lineOutLevel(31);
 }
 
 void TestAudioSystem::setupEffects() {
   for (int i = 2; i < 8; i++)
   {
-    delay1.disable(i);
+    _delay->disable(i);
   }
-  delay1.delay(0, 0.00);
+  _delay->delay(0, 0.00);
 }
 
 void TestAudioSystem::setupMixers() {
-  mixer1.gain(0, 1.00);
-  mixer1.gain(1, 1.00);
-  mixer1.gain(2, 1.00);
+  _nodesMixer1->gain(0, 1.00);
+  _nodesMixer1->gain(1, 1.00);
+  _nodesMixer1->gain(2, 1.00);
+  _nodesMixer1->gain(3, 1.00);
 
-  mixer2.gain(0, 1.00);
-  mixer2.gain(1, 1.00);
-  mixer2.gain(2, 1.00);
+  _nodesMixer2->gain(0, 1.00);
+  _nodesMixer2->gain(1, 1.00);
+  _nodesMixer2->gain(2, 1.00);
+  _nodesMixer2->gain(3, 1.00);
 
-  mixer3.gain(0, 1.00);
-  mixer3.gain(1, 1.00);
-  mixer3.gain(2, 1.00);
+  _nodesOutputMixer->gain(0, 1.00);
+  _nodesOutputMixer->gain(1, 1.00);
 
-  mixer4.gain(0, 1.00);
-  mixer4.gain(1, 1.00);
-  mixer4.gain(2, 1.00);
+  _filterMixer->gain(0, 1.00);
+  _filterMixer->gain(1, 0.00);
 
-  mixer5.gain(0, 1.00);
-  mixer5.gain(1, 1.00);
-  mixer5.gain(2, 1.00);
+  _delayMixer->gain(0, 1.00);
+  _delayMixer->gain(1, 0.00);
 
-  mixer6.gain(0, 1.00);
-  mixer6.gain(1, 1.00);
-  mixer6.gain(2, 1.00);
+  _reverbMixer->gain(0, 1.00);
+  _reverbMixer->gain(1, 0.00);
 
-  mixer7.gain(0, 1.00);
-  mixer7.gain(1, 1.00);
-  mixer7.gain(2, 1.00);
-
-  mixer8.gain(0, 1.00);
-  mixer8.gain(1, 1.00);
-  mixer8.gain(2, 1.00);
-
-  mixer9.gain(0, 1.00);
-  mixer9.gain(1, 1.00);
-  mixer9.gain(2, 1.00);
-  mixer9.gain(3, 1.00);
-
-  mixer10.gain(0, 1.00);
-  mixer10.gain(1, 1.00);
-  mixer10.gain(2, 1.00);
-  mixer10.gain(3, 1.00);
-
-  mixer11.gain(0, 1.00);
-  mixer11.gain(1, 1.00);
-
-  mixer12.gain(0, 1.00);
-  mixer12.gain(1, 0.00);
-
-  delayMixer.gain(0, 1.00);
-  delayMixer.gain(1, 0.00);
-
-  reverbMixer.gain(0, 1.00);
-  reverbMixer.gain(1, 0.00);
-
-  OutputAmp.gain(1.00);
+  _outputAmp->gain(1.00);
 }
 
 void TestAudioSystem::applyFrequencies() {
@@ -115,16 +120,16 @@ void TestAudioSystem::applyFilter(int stage) {
   switch (_filterModes[stage])
   {
   case 0:
-    biquad1.setHighpass(stage, 1.00 * _filterFrequencies[stage], 0.01 * _filterQs[stage]);
+    _biquad->setHighpass(stage, 1.00 * _filterFrequencies[stage], 0.01 * _filterQs[stage]);
     break;
   case 1:
-    biquad1.setLowpass(stage, 1.00 * _filterFrequencies[stage], 0.01 * _filterQs[stage]);
+    _biquad->setLowpass(stage, 1.00 * _filterFrequencies[stage], 0.01 * _filterQs[stage]);
     break;
   case 2:
-    biquad1.setBandpass(stage, 1.00 * _filterFrequencies[stage], 0.01 * _filterQs[stage]);
+    _biquad->setBandpass(stage, 1.00 * _filterFrequencies[stage], 0.01 * _filterQs[stage]);
     break;
   case 3:
-    biquad1.setNotch(stage, 1.00 * _filterFrequencies[stage], 0.01 * _filterQs[stage]);
+    _biquad->setNotch(stage, 1.00 * _filterFrequencies[stage], 0.01 * _filterQs[stage]);
     break;
   default:
     break;
@@ -147,41 +152,41 @@ void TestAudioSystem::setFilterQ(int stage, int value) {
 }
 
 void TestAudioSystem::setFilterAmount(int value) {
-  mixer12.gain(0, 1.00 - value * 0.01);
-  mixer12.gain(1, value * 0.01);
+  _filterMixer->gain(0, 1.00 - value * 0.01);
+  _filterMixer->gain(1, value * 0.01);
 }
 
 void TestAudioSystem::setDelay(int value) {
-  delay1.delay(1, value * 1.00);
+  _delay->delay(1, value * 1.00);
 }
 
 void TestAudioSystem::setDelayFade(int value) {
-  delayMixer.gain(3, 1.00 - value * 0.01);
+  _delayMixer->gain(3, 1.00 - value * 0.01);
 }
 
 void TestAudioSystem::setBitcrusherAmount(int value) {
-  delayMixer.gain(0, 1.00 - value * 0.01);
-  delayMixer.gain(1, value * 0.01);
+  _delayMixer->gain(0, 1.00 - value * 0.01);
+  _delayMixer->gain(1, value * 0.01);
 }
 
 void TestAudioSystem::setBits(int value) {
-  bitcrusher1.bits(value);
+  _bitcrusher->bits(value);
 }
 
 void TestAudioSystem::setSampleRate(int value) {
-  bitcrusher1.sampleRate(44100.00 / pow(2.00, 7 - value));
+  _bitcrusher->sampleRate(44100.00 / pow(2.00, 7 - value));
 }
 
 void TestAudioSystem::setReverbAmount(int value) {
-  reverbMixer.gain(0, 1.00 - value * 0.01);
-  reverbMixer.gain(1, value * 0.01);
+  _reverbMixer->gain(0, 1.00 - value * 0.01);
+  _reverbMixer->gain(1, value * 0.01);
 }
 void TestAudioSystem::setRoomsize(int value) {
-  freeverb.roomsize(value * 0.01);
+  _freeverb->roomsize(value * 0.01);
 }
 
 void TestAudioSystem::setDamping(int value) {
-  freeverb.damping(value * 0.01);
+  _freeverb->damping(value * 0.01);
 }
 
 void TestAudioSystem::setKeyNote(int value) {
@@ -267,7 +272,7 @@ void TestAudioSystem::setRelease(int value) {
 }
 
 void TestAudioSystem::setVolume(int value) {
-  OutputAmp.gain(value * 0.01);
+  _outputAmp->gain(value * 0.01);
 }
 
 void TestAudioSystem::activateSampler() {};
