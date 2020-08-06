@@ -1,6 +1,8 @@
 #ifndef MusicNode_h_
 #define MusicNode_h_
 
+#include <Audio.h>
+
 class MusicNode
 {
 protected:
@@ -11,7 +13,8 @@ public:
   virtual void noteOff();
   virtual void setVelocity(int velocity);
   virtual void activate();
-  virtual void deactivate();
+  virtual void deactivate() {};
+  virtual AudioStream* getOutput();
 };
 
 #endif //MusicNode_h_

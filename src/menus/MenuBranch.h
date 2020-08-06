@@ -27,20 +27,26 @@ public:
 
   MenuItem* getPreviousChild() {
     if (_children.size() == 0) return nullptr;
-    if (_currentChildIndex == 0) {
-      return getChild((int)_children.size() - 1);
-    } else {
-      return getChild(_currentChildIndex - 1);
-    }
+
+    int previousChildIndex = _currentChildIndex;
+    do {
+      previousChildIndex--;
+      if ((previousChildIndex) < 0) previousChildIndex = _children.size() - 1;
+    } 
+    while (getChild(previousChildIndex)->isHidden());
+    return getChild(previousChildIndex);
   }
 
   MenuItem* getNextChild() {
     if (_children.size() == 0) return nullptr;
-    if (_currentChildIndex == (int)_children.size() - 1) {
-      return getChild(0);
-    } else {
-      return getChild(_currentChildIndex + 1);
-    }
+
+    int nextChildIndex = _currentChildIndex;
+    do {
+      nextChildIndex++;
+      if ((nextChildIndex + 1) > (int)_children.size()) nextChildIndex = 0;
+    } 
+    while (getChild(nextChildIndex)->isHidden());
+    return getChild(nextChildIndex);
   }
 
   MenuItem* getCurrentChild() {
@@ -56,15 +62,25 @@ public:
 
   bool selectNextChild() {
     if (_children.size() == 0) return false;
-    _currentChildIndex++;
-    if ((_currentChildIndex + 1) > (int)_children.size()) _currentChildIndex = 0;
+
+    do {
+      _currentChildIndex++;
+      if ((_currentChildIndex + 1) > (int)_children.size()) _currentChildIndex = 0;
+    } 
+    while (getChild(_currentChildIndex)->isHidden());
+    
     return true;
   };
 
   bool selectPreviousChild() {
     if (_children.size() == 0) return false;
-    _currentChildIndex--;
-    if (_currentChildIndex < 0) _currentChildIndex = _children.size() - 1;
+
+    do {
+      _currentChildIndex--;
+      if (_currentChildIndex < 0) _currentChildIndex = _children.size() - 1;
+    } 
+    while (getChild(_currentChildIndex)->isHidden());
+    
     return true;
   };
 };

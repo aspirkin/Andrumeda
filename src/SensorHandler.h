@@ -2,7 +2,7 @@
 #define Sensor_h_
 
 #include <ControllerHandler.h>
-#include <audio-systems/MusicNode.h>
+#include <audio-system/MusicNode.h>
 #include <Arduino.h>
 
 class SensorHandler : public ControllerHandler
@@ -11,6 +11,7 @@ protected:
   int _pin;
   int _value;
   MusicNode* _synthNode;
+  MusicNode* _simpleNode;
 
   int _cooldownCounter = 0;
   int _valueTop = 0;
@@ -21,7 +22,8 @@ protected:
 public:
   SensorHandler(int pin);
   void update();
-  void setNode(MusicNode* node);
+  void setSynthNode(MusicNode* node);
+  void setSimpleNode(MusicNode* node);
 };
 
 #endif //Sensor_h_

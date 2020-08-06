@@ -22,7 +22,7 @@ private:
   const int _menuPathXPos = 0;
   const int _menuPathYPos = 20;
   const int _rootMenuPathYPos = 10;
-  const int _menuPathTextSize = 1;
+  const int _menuPathTextSize = 2;
   const int _menuPathColor = RED;
 
   const int _previousMenuPathXPos = 0;
@@ -31,14 +31,15 @@ private:
   const int _previousMenuPathColor = MAGENTA;
 
   const int _nextMenuPathXPos = 0;
-  const int _nextMenuPathYOffset = 10;
+  const int _nextMenuPathYPos = 118;
   const int _nextMenuPathTextSize = 1;
   const int _nextMenuPathColor = MAGENTA;
 
   const int _menuChildrenXPos = 0;
-  const int _menuChildrenYPos = 30;
+  const int _menuChildrenYPos = 50;
   const int _rootMenuChildrenYPos = 20;
   const int _menuChildrenYStep = 10;
+  const int _menuChildrenTextSize = 1;
   const int _menuChildrenColor = WHITE;
   const int _menuChildrenSelectedColor = YELLOW;
 

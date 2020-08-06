@@ -1,10 +1,9 @@
-#ifndef TestMusicNode_h_
-#define TestMusicNode_h_
+#ifndef AdditiveMusicNode_h_
+#define AdditiveMusicNode_h_
 
-#include <audio-systems/MusicNode.h>
-#include <Audio.h>
+#include <audio-system/MusicNode.h>
 
-class TestMusicNode : public MusicNode
+class AdditiveMusicNode : public MusicNode
 {
 private:
   float _wf1Amp = 0.5;
@@ -18,8 +17,8 @@ private:
   AudioConnection* _audioConnections[4];
 
 public:
-  TestMusicNode();
-  AudioEffectEnvelope * getOutput();
+  AdditiveMusicNode();
+  AudioStream* getOutput();
   void noteOn();
   void noteOff();
   void setVelocity(int velocity);
@@ -41,4 +40,4 @@ public:
   void setWaveform2(int value);
 };
 
-#endif //TestMusicNode_h_
+#endif //AdditiveMusicNode_h_

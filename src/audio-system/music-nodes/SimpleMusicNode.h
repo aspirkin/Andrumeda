@@ -1,8 +1,9 @@
 #ifndef SimpleMusicNode_h_
 #define SimpleMusicNode_h_
 
-#include <audio-systems/MusicNode.h>
-#include <Audio.h>
+#include <audio-system/MusicNode.h>
+
+enum synthModes {FM, AM, RING};
 
 class SimpleMusicNode : public MusicNode
 {
@@ -17,31 +18,33 @@ private:
   AudioEffectMultiply* _multiplyAM;
   AudioMixer4* _mixerAM;
   AudioEffectEnvelope* _envelope;
-  AudioMixer4* _outputMixer;
-  AudioConnection* _audioConnections[14];
+  AudioConnection* _audioConnections[12];
+
+  int _synthMode;
+  float _sineAmp = 1.00;
+  float _sawAmp = 1.00;
 
 public:
   SimpleMusicNode();
-  AudioMixer4 * getOutput();
+  AudioStream * getOutput();
   void noteOn();
   void noteOff();
   void setVelocity(int velocity);
   void activate();
   void deactivate();
 
-  // void setFrequencies(float frequency1, float frequency2);
+  void setFrequency(float value);
+  void setSineAmplitude(float value);
+  void setSawtoothAmplitude(float value);
 
-  // void setWf1Amplitude(float value);
-  // void setWf2Amplitude(float value);
-  // void setPinkAmplitude(float value);
+  void setModulationMode(int mode);
+  void setModulatorFrequency(float value);
+  void setModulatorAmplitude(float value);
 
-  // void setAttack(float value);
-  // void setDecay(float value);
-  // void setSustain(float value);
-  // void setRelease(float value);
-
-  // void setWaveform1(int value);
-  // void setWaveform2(int value);
+  void setAttack(float value);
+  void setDecay(float value);
+  void setSustain(float value);
+  void setRelease(float value);
 };
 
 #endif  //SimpleMusicNode_h_

@@ -19,6 +19,7 @@ public:
   MenuItem* getParent() {return _parent;};
 
   bool isMenu() {return _isMenu;};
+  bool isHidden() {return _isHidden;};
   void hide() {_isHidden = true;};
   void unHide() {_isHidden = false;};
 };

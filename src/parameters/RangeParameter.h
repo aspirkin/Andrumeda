@@ -15,7 +15,7 @@ protected:
   int _limitBottom;
   int _step;
   float _stepAdaptiveness;
-  String _prefix;
+  int _fractionalDigitsNumber;
 
   void handleValueOverTop() {
     if (_isCyclic) _value = _limitBottom; else _value = _limitTop;
@@ -46,7 +46,7 @@ public:
     float stepAdaptiveness = 0.00, 
     bool isCyclic = false,
     String units = "",
-    String prefix = ""
+    int fractionalDigitsNumber = 0
     ) : StatefulParameter(setterFunction, isCyclic, units)
   {
     _value = initialValue;
@@ -54,7 +54,7 @@ public:
     _limitBottom = limitBottom;
     _step = step;
     _stepAdaptiveness = stepAdaptiveness;
-    _prefix = prefix;
+    _fractionalDigitsNumber = fractionalDigitsNumber;
     apply();
   }
 
@@ -73,7 +73,15 @@ public:
   }
 
   String getValueString() {
-    return _prefix + String(_value) + _units;
+    String numericalResult = String(_value/(pow(10, _fractionalDigitsNumber)));
+    if (_fractionalDigitsNumber < 2) {
+      numericalResult.remove(numericalResult.length() - 1);
+      if (_fractionalDigitsNumber < 1) {
+        numericalResult.remove(numericalResult.length() - 2, 2);
+      }
+    }
+
+    return numericalResult + _units;
   }
 
 };
