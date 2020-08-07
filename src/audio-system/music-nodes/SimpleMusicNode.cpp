@@ -27,18 +27,9 @@ SimpleMusicNode::SimpleMusicNode() : MusicNode() {
   
   _dcAM->amplitude(0.5);
   _sineOsc->begin(WAVEFORM_SINE);
-  // _sineOsc->amplitude(_sineAmp);
   _sawtoothOsc->begin(WAVEFORM_SAWTOOTH);
-  // _sawtoothOsc->amplitude(_sawAmp);
   _oscMixer->gain(0, 0.5);
   _oscMixer->gain(1, 0.5);
-  // _mixerAM->gain(0, 1);
-  // _mixerAM->gain(1, 0);
-  // _sineModulatorOsc->amplitude(0.5);
-  // _sineModulatorOsc->begin(WAVEFORM_SINE);
-  // _fmQuantity->gain(0.00);
-  // _mixerDcMod->gain(0, 1);
-  // _mixerDcMod->gain(1, 1);
 
   deactivate();
 }
@@ -91,8 +82,15 @@ void SimpleMusicNode::setSawtoothAmplitude(float value) {
 }
 
 void SimpleMusicNode::setModulatorAmplitude(float value) {
+  _modAmp = value;
   switch(_synthMode){
     case AM:
+      _sineModulatorOsc->amplitude(0.5);
+      _mixerAM->gain(1, 1 - value*4);
+      _mixerAM->gain(0, value*4);
+    break;
+    case AM_FM:
+      _fmQuantity->gain(_modAmp * 2);
       _sineModulatorOsc->amplitude(0.5);
       _mixerAM->gain(1, 1 - value*4);
       _mixerAM->gain(0, value*4);
@@ -129,29 +127,29 @@ void SimpleMusicNode::setModulationMode(int mode) {
     case 0 : _synthMode = FM;    break;
     case 1 : _synthMode = AM;    break;
     case 2 : _synthMode = RING;  break;
+    case 3 : _synthMode = AM_FM;  break;
   }
 
   switch(_synthMode){
     case FM:
       _fmQuantity->gain(1.00);
-      // _mixerAM->gain(0, 0 );
-      // _mixerAM->gain(1, 1);
       _mixerDcMod->gain(0, 0);
       _mixerDcMod->gain(1, 0);
     break;
     case AM:
       _fmQuantity->gain(0.00);
-      // _mixerAM->gain(0, 1 );
-      // _mixerAM->gain(1, 0);
+      _mixerDcMod->gain(0, 1);
+      _mixerDcMod->gain(1, 1);
+    break;
+    case AM_FM:
       _mixerDcMod->gain(0, 1);
       _mixerDcMod->gain(1, 1);
     break;
     case RING:
       _fmQuantity->gain(0.00);
-      // _mixerAM->gain(0, 1 );
-      // _mixerAM->gain(1, 0);
       _mixerDcMod->gain(0, 0);
       _mixerDcMod->gain(1, 1);
     break;
   }
+  setModulatorAmplitude(_modAmp);
 }

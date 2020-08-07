@@ -3,7 +3,7 @@
 
 #include <audio-system/MusicNode.h>
 
-enum synthModes {FM, AM, RING};
+enum synthModes {FM, AM, RING, AM_FM};
 
 class SimpleMusicNode : public MusicNode
 {
@@ -23,6 +23,7 @@ private:
   int _synthMode;
   float _sineAmp = 1.00;
   float _sawAmp = 1.00;
+  float _modAmp = 1.00;
 
 public:
   SimpleMusicNode();

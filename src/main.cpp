@@ -18,7 +18,7 @@ std::vector<String> _waveforms = {"sine", "saw", "square", "triangle"};
 std::vector<String> _sampleRates = {"345", "689", "1378", "2756", "5513", "11025", "22050", "44100"};
 std::vector<String> _filterModes = {"high pass", "low pass", "band pass", "notch"};
 std::vector<String> _modeNames = {"additive", "simple"};
-std::vector<String> _modulationModes = {"FM", "AM", "RING"};
+std::vector<String> _modulationModes = {"FM", "AM", "RING", "AM+FM"};
 std::vector<String> _noteNames;
 std::vector<String> _scales;
 
@@ -51,12 +51,12 @@ MenuBranch* setupMenu(AudioSystem* audioSystem) {
   MenuLeaf* modulatorFrequency = new MenuLeaf(
     "frequency", new RangeParameter(
     std::bind(&AudioSystem::setModulatorFrequency, _ptrAudioSystem, std::placeholders::_1),
-    10, 10, 5000, 1, 0.10, false, "Hz", 1));
+    10, 10, 10000, 1, 0.10, false, "Hz", 1));
 
   MenuLeaf* modulatorAmplitude  = new MenuLeaf(
     "amplitude", new RangeParameter(
     std::bind(&AudioSystem::setModulatorAmplitude, _ptrAudioSystem, std::placeholders::_1),
-    0, 50, 100, 5, 0.00, false, "%"));
+    0, 50, 100, 1, 0.00, false, "%"));
 
   MenuLeaf* sineAmplitude  = new MenuLeaf(
     "sine", new RangeParameter(
@@ -268,8 +268,6 @@ void setup() {
   _ptrControls->addMusicSensor(37);
   _ptrControls->addNavigationEncoder(2, 1, 0);
   _ptrControls->addConfigurationEncoder(8, 7, 6);
-  // _ptrControls->addCommonEncoder(5, 4, 3);
-  // _ptrControls->addCommonEncoder(27, 26, 25);
 
   for (int i = 0; i < 8; i++)
   {
@@ -280,9 +278,9 @@ void setup() {
 }
 
 void loop() {
-  Serial.print("memory: ");
-  Serial.print(AudioMemoryUsage());
-  Serial.print("; cpu: ");
-  Serial.println(AudioProcessorUsage());
+  // Serial.print("memory: ");
+  // Serial.print(AudioMemoryUsage());
+  // Serial.print("; cpu: ");
+  // Serial.println(AudioProcessorUsage());
   _ptrControls->update();
 }

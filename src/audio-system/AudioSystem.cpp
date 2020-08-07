@@ -391,6 +391,12 @@ void AudioSystem::activateAdditiveSynth() {
     _ptrSimpleMusicNodes[i]->deactivate();
     _ptrAdditiveMusicNodes[i]->activate();
   }
+
+  _nodesOutputMixer->gain(0, 1);
+  _nodesOutputMixer->gain(1, 1);
+  _nodesOutputMixer->gain(2, 0);
+  _nodesOutputMixer->gain(3, 0);
+
   for (int i = 0; i < (int)_ptrSimpleMenuBranches.size(); i++) _ptrSimpleMenuBranches[i]->hide();
   for (int i = 0; i < (int)_ptrAdditiveMenuBranches.size(); i++) _ptrAdditiveMenuBranches[i]->unHide();
 }
@@ -401,6 +407,12 @@ void AudioSystem::activateSimpleSynth() {
     _ptrAdditiveMusicNodes[i]->deactivate();
     _ptrSimpleMusicNodes[i]->activate();
   }
+
+  _nodesOutputMixer->gain(0, 0);
+  _nodesOutputMixer->gain(1, 0);
+  _nodesOutputMixer->gain(2, 1);
+  _nodesOutputMixer->gain(3, 1);
+  
   for (int i = 0; i < (int)_ptrAdditiveMenuBranches.size(); i++) _ptrAdditiveMenuBranches[i]->hide();
   for (int i = 0; i < (int)_ptrSimpleMenuBranches.size(); i++) _ptrSimpleMenuBranches[i]->unHide();
 }
