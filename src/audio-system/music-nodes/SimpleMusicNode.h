@@ -41,6 +41,7 @@ public:
   void setModulationMode(int mode);
   void setModulatorFrequency(float value);
   void setModulatorAmplitude(float value);
+  void applyModulatorAmplitude();
 
   void setAttack(float value);
   void setDecay(float value);

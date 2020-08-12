@@ -34,10 +34,6 @@ SimpleMusicNode::SimpleMusicNode() : MusicNode() {
   deactivate();
 }
 
-AudioStream* SimpleMusicNode::getOutput() {
-  return _envelope;
-}
-
 void SimpleMusicNode::noteOn() {
   if (_isActive) {
     _sineOsc->amplitude(_sineAmp);
@@ -62,64 +58,27 @@ void SimpleMusicNode::deactivate() {
   _sawtoothOsc->amplitude(0.00);
 }
 
-void SimpleMusicNode::setFrequency(float value) {
-  _sineOsc->frequency(value);
-  _sawtoothOsc->frequency(value);
-}
-
-void SimpleMusicNode::setModulatorFrequency(float value) {
-  _sineModulatorOsc->frequency(value);
-}
-
-void SimpleMusicNode::setSineAmplitude(float value) {
-  _sineAmp = value;
-  _sineOsc->amplitude(_sineAmp);
-}
-
-void SimpleMusicNode::setSawtoothAmplitude(float value) {
-  _sawAmp = value;
-  _sawtoothOsc->amplitude(_sawAmp);
-}
-
-void SimpleMusicNode::setModulatorAmplitude(float value) {
-  _modAmp = value;
+void SimpleMusicNode::applyModulatorAmplitude() {
   switch(_synthMode){
     case AM:
       _sineModulatorOsc->amplitude(0.5);
-      _mixerAM->gain(1, 1 - value*4);
-      _mixerAM->gain(0, value*4);
+      _mixerAM->gain(1, 1 - _modAmp*4);
+      _mixerAM->gain(0, _modAmp*4);
     break;
     case AM_FM:
       _fmQuantity->gain(_modAmp * 2);
       _sineModulatorOsc->amplitude(0.5);
-      _mixerAM->gain(1, 1 - value*4);
-      _mixerAM->gain(0, value*4);
+      _mixerAM->gain(1, 1 - _modAmp*4);
+      _mixerAM->gain(0, _modAmp*4);
     break;
     case RING:
-      _mixerAM->gain(1, 1 - value*4);
-      _mixerAM->gain(0, value*4);
+      _mixerAM->gain(1, 1 - _modAmp*4);
+      _mixerAM->gain(0, _modAmp*4);
     break;
     default:
-      _sineModulatorOsc->amplitude(value);
+      _sineModulatorOsc->amplitude(_modAmp);
     break;
   }
-  
-}
-
-void SimpleMusicNode::setAttack(float value) {
-  _envelope->attack(value);
-}
-
-void SimpleMusicNode::setDecay(float value) {
-  _envelope->decay(value);
-}
-
-void SimpleMusicNode::setSustain(float value) {
-  _envelope->sustain(value);
-}
-
-void SimpleMusicNode::setRelease(float value) {
-  _envelope->release(value);
 }
 
 void SimpleMusicNode::setModulationMode(int mode) {
@@ -151,5 +110,48 @@ void SimpleMusicNode::setModulationMode(int mode) {
       _mixerDcMod->gain(1, 1);
     break;
   }
-  setModulatorAmplitude(_modAmp);
+  applyModulatorAmplitude();
+}
+
+AudioStream* SimpleMusicNode::getOutput() {
+  return _envelope;
+}
+
+void SimpleMusicNode::setFrequency(float value) {
+  _sineOsc->frequency(value);
+  _sawtoothOsc->frequency(value);
+}
+
+void SimpleMusicNode::setModulatorFrequency(float value) {
+  _sineModulatorOsc->frequency(value);
+}
+
+void SimpleMusicNode::setSineAmplitude(float value) {
+  _sineAmp = value;
+  _sineOsc->amplitude(_sineAmp);
+}
+
+void SimpleMusicNode::setSawtoothAmplitude(float value) {
+  _sawAmp = value;
+  _sawtoothOsc->amplitude(_sawAmp);
+}
+
+void SimpleMusicNode::setModulatorAmplitude(float value) {
+  _modAmp = value;  
+}
+
+void SimpleMusicNode::setAttack(float value) {
+  _envelope->attack(value);
+}
+
+void SimpleMusicNode::setDecay(float value) {
+  _envelope->decay(value);
+}
+
+void SimpleMusicNode::setSustain(float value) {
+  _envelope->sustain(value);
+}
+
+void SimpleMusicNode::setRelease(float value) {
+  _envelope->release(value);
 }
