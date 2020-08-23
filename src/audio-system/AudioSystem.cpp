@@ -2,8 +2,7 @@
 
 AudioSystem::AudioSystem(int numberOfMusicNodes) {
   _numberOfMusicNodes = numberOfMusicNodes;
-  _ptrAdditiveMusicNodes.reserve(_numberOfMusicNodes);
-  _ptrSimpleMusicNodes.reserve(_numberOfMusicNodes);
+  _ptrSynthMusicNodes.reserve(_numberOfMusicNodes);
   
   _biquad = new AudioFilterBiquad();
   _filterMixer = new AudioMixer4();
@@ -18,14 +17,14 @@ AudioSystem::AudioSystem(int numberOfMusicNodes) {
 
   _nodesMixer1 = new AudioMixer4();
   _nodesMixer2 = new AudioMixer4();
-  _nodesMixer3 = new AudioMixer4();
-  _nodesMixer4 = new AudioMixer4();
+  // _nodesMixer3 = new AudioMixer4();
+  // _nodesMixer4 = new AudioMixer4();
   _nodesOutputMixer = new AudioMixer4();
 
   _audioConnections[0] = new AudioConnection(*_nodesMixer1, 0, *_nodesOutputMixer, 0);
   _audioConnections[1] = new AudioConnection(*_nodesMixer2, 0, *_nodesOutputMixer, 1);
-  _audioConnections[2] = new AudioConnection(*_nodesMixer3, 0, *_nodesOutputMixer, 2);
-  _audioConnections[3] = new AudioConnection(*_nodesMixer4, 0, *_nodesOutputMixer, 3);
+  // _audioConnections[2] = new AudioConnection(*_nodesMixer3, 0, *_nodesOutputMixer, 2);
+  // _audioConnections[3] = new AudioConnection(*_nodesMixer4, 0, *_nodesOutputMixer, 3);
   _audioConnections[4] = new AudioConnection(*_nodesOutputMixer, 0, *_filterMixer, 0);
   _audioConnections[5] = new AudioConnection(*_nodesOutputMixer, 0, *_biquad, 0);
   _audioConnections[6] = new AudioConnection(*_biquad, 0, *_filterMixer, 1);
@@ -50,66 +49,60 @@ AudioSystem::AudioSystem(int numberOfMusicNodes) {
 void AudioSystem::setModulationMode(int value) {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
-    ((SimpleMusicNode*)_ptrSimpleMusicNodes[i])->setModulationMode(value);
+    ((SynthMusicNode*)_ptrSynthMusicNodes[i])->setModulationMode(value);
   }
 }
 
-void AudioSystem::setModulatorFrequency(int value) {
+void AudioSystem::setModulationWaveform(int value) {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
-    ((SimpleMusicNode*)_ptrSimpleMusicNodes[i])->setModulatorFrequency(value * 0.10);
+    ((SynthMusicNode*)_ptrSynthMusicNodes[i])->setModulationWaveform(value);
   }
 }
 
-void AudioSystem::setModulatorAmplitude(int value) {
+void AudioSystem::setModulationFrequency(int value) {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
-    ((SimpleMusicNode*)_ptrSimpleMusicNodes[i])->setModulatorAmplitude(value * 0.01);
+    ((SynthMusicNode*)_ptrSynthMusicNodes[i])->setModulationFrequency(value * 0.10);
   }
 }
 
-void AudioSystem::setSineAmplitude(int value) {
+void AudioSystem::setModulationAmplitude(int value) {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
-    ((SimpleMusicNode*)_ptrSimpleMusicNodes[i])->setSineAmplitude(value * 0.01);
-  }
-}
-
-void AudioSystem::setSawtoothAmplitude(int value) {
-  for (int i = 0; i < _numberOfMusicNodes; i++)
-  {
-    ((SimpleMusicNode*)_ptrSimpleMusicNodes[i])->setSawtoothAmplitude(value * 0.01);
+    ((SynthMusicNode*)_ptrSynthMusicNodes[i])->setModulationAmplitude(value * 0.01);
   }
 }
 
 void AudioSystem::setupMusicNodes() {
-  AdditiveMusicNode* testNode;
+  SynthMusicNode* synthNode;
   for (int i = 0; i < 4; i++)
   {
-    testNode = new AdditiveMusicNode();
-    _ptrAdditiveMusicNodes.push_back(testNode);
-    _audioConnections[18 + i] = new AudioConnection(*testNode->getOutput(), 0, *_nodesMixer1, i);
+    synthNode = new SynthMusicNode();
+    _ptrSynthMusicNodes.push_back(synthNode);
+    _audioConnections[18 + i] = new AudioConnection(*synthNode->getOutput(), 0, *_nodesMixer1, i);
   }
   for (int i = 0; i < 4; i++)
   {
-    testNode = new AdditiveMusicNode();
-    _ptrAdditiveMusicNodes.push_back(testNode);
-    _audioConnections[22 + i] = new AudioConnection(*testNode->getOutput(), 0, *_nodesMixer2, i);
+    synthNode = new SynthMusicNode();
+    _ptrSynthMusicNodes.push_back(synthNode);
+    _audioConnections[22 + i] = new AudioConnection(*synthNode->getOutput(), 0, *_nodesMixer2, i);
   }
   
-  SimpleMusicNode* simpleNode;
-  for (int i = 0; i < 4; i++)
-  {
-    simpleNode = new SimpleMusicNode();
-    _ptrSimpleMusicNodes.push_back(simpleNode);
-    _audioConnections[26 + i] = new AudioConnection(*simpleNode->getOutput(), 0, *_nodesMixer3, i);
-  }
-  for (int i = 0; i < 4; i++)
-  {
-    simpleNode = new SimpleMusicNode();
-    _ptrSimpleMusicNodes.push_back(simpleNode);
-    _audioConnections[30 + i] = new AudioConnection(*simpleNode->getOutput(), 0, *_nodesMixer4, i);
-  }
+  //  TODO Change to sampler nodes
+  // SimpleMusicNode* simpleNode;
+  // for (int i = 0; i < 4; i++)
+  // {
+  //   simpleNode = new SimpleMusicNode();
+  //   _ptrSimpleMusicNodes.push_back(simpleNode);
+  //   _audioConnections[26 + i] = new AudioConnection(*simpleNode->getOutput(), 0, *_nodesMixer3, i);
+  // }
+  // for (int i = 0; i < 4; i++)
+  // {
+  //   simpleNode = new SimpleMusicNode();
+  //   _ptrSimpleMusicNodes.push_back(simpleNode);
+  //   _audioConnections[30 + i] = new AudioConnection(*simpleNode->getOutput(), 0, *_nodesMixer4, i);
+  // }
   
 }
 
@@ -139,15 +132,15 @@ void AudioSystem::setupMixers() {
   _nodesMixer2->gain(2, 1.00);
   _nodesMixer2->gain(3, 1.00);
 
-  _nodesMixer3->gain(0, 1.00);
-  _nodesMixer3->gain(1, 1.00);
-  _nodesMixer3->gain(2, 1.00);
-  _nodesMixer3->gain(3, 1.00);
+  // _nodesMixer3->gain(0, 1.00);
+  // _nodesMixer3->gain(1, 1.00);
+  // _nodesMixer3->gain(2, 1.00);
+  // _nodesMixer3->gain(3, 1.00);
 
-  _nodesMixer4->gain(0, 1.00);
-  _nodesMixer4->gain(1, 1.00);
-  _nodesMixer4->gain(2, 1.00);
-  _nodesMixer4->gain(3, 1.00);
+  // _nodesMixer4->gain(0, 1.00);
+  // _nodesMixer4->gain(1, 1.00);
+  // _nodesMixer4->gain(2, 1.00);
+  // _nodesMixer4->gain(3, 1.00);
 
   _nodesOutputMixer->gain(0, 1.00);
   _nodesOutputMixer->gain(1, 1.00);
@@ -169,20 +162,13 @@ void AudioSystem::setupMixers() {
 void AudioSystem::applyFrequencies() {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
-    ((AdditiveMusicNode*)_ptrAdditiveMusicNodes[i])->setFrequencies(
-      NOTE_FREQS[_keyNote + _scale->getStep(i)],
-      NOTE_FREQS[_keyNote + _coarseDetune + _scale->getStep(i)] * pow(2.00, _fineDetune/1200.00)
-    );
-
-    ((SimpleMusicNode*)_ptrSimpleMusicNodes[i])->setFrequency(NOTE_FREQS[_keyNote + _scale->getStep(i)]);
+    ((SynthMusicNode*)_ptrSynthMusicNodes[i])->setOscillator1Frequency(NOTE_FREQS[_keyNote + _scale->getStep(i)]);
+    ((SynthMusicNode*)_ptrSynthMusicNodes[i])->setOscillator2Frequency(NOTE_FREQS[_keyNote + _coarseDetune + _scale->getStep(i)] * pow(2.00, _fineDetune/1200.00));
   }
 }
-MusicNode* AudioSystem::getAdditiveNode(int index) {
-  return (_ptrAdditiveMusicNodes[index]);
-}
 
-MusicNode* AudioSystem::getSimpleNode(int index) {
-  return (_ptrSimpleMusicNodes[index]);
+MusicNode* AudioSystem::getSynthNode(int index) {
+  return (_ptrSynthMusicNodes[index]);
 }
 
 int AudioSystem::getNumberOfMusicNodes() {
@@ -283,18 +269,32 @@ void AudioSystem::setKeyNote(int value) {
   applyFrequencies();
 }
 
-void AudioSystem:: setMode(int value) {
-  switch (value)
-  {
-  case 0: activateAdditiveSynth(); break;
-  case 1: activateSimpleSynth(); break;
-  default: break;
-  }
-}
+// void AudioSystem:: setMode(int value) {
+//   switch (value)
+//   {
+//   case 0: activateAdditiveSynth(); break;
+//   case 1: activateSimpleSynth(); break;
+//   default: break;
+//   }
+// }
 
 void AudioSystem:: setScale(int value) {
   _scale = SCALES[value];
   applyFrequencies();
+}
+
+void AudioSystem::setOscillator1Waveform(int value) {
+  for (int i = 0; i < _numberOfMusicNodes; i++)
+  {
+    ((SynthMusicNode*)_ptrSynthMusicNodes[i])->setOscillator1Waveform(value);
+  }
+}
+
+void AudioSystem::setOscillator2Waveform(int value) {
+  for (int i = 0; i < _numberOfMusicNodes; i++)
+  {
+    ((SynthMusicNode*)_ptrSynthMusicNodes[i])->setOscillator2Waveform(value);
+  }
 }
 
 void AudioSystem::setCoarseDetune(int value) {
@@ -307,69 +307,51 @@ void AudioSystem::setFineDetune(int value) {
   applyFrequencies();
 }
 
-void AudioSystem::setWaveform1(int value) {
+void AudioSystem::setOscillator1Amplitude(int value) {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
-    ((AdditiveMusicNode*)_ptrAdditiveMusicNodes[i])->setWaveform1(value);
+    ((SynthMusicNode*)_ptrSynthMusicNodes[i])->setOscillator1Amplitude(value * 0.01);
   }
 }
 
-void AudioSystem::setWaveform2(int value) {
+void AudioSystem::setOscillator2Amplitude(int value) {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
-    ((AdditiveMusicNode*)_ptrAdditiveMusicNodes[i])->setWaveform2(value);
-  }
-}
-
-void AudioSystem::setWaveform1Amplitude(int value) {
-  for (int i = 0; i < _numberOfMusicNodes; i++)
-  {
-    ((AdditiveMusicNode*)_ptrAdditiveMusicNodes[i])->setWf1Amplitude(value * 0.01);
-  }
-}
-
-void AudioSystem::setWaveform2Amplitude(int value) {
-  for (int i = 0; i < _numberOfMusicNodes; i++)
-  {
-    ((AdditiveMusicNode*)_ptrAdditiveMusicNodes[i])->setWf2Amplitude(value * 0.01);
+    ((SynthMusicNode*)_ptrSynthMusicNodes[i])->setOscillator2Amplitude(value * 0.01);
   }
 }
 
 void AudioSystem::setPinkNoiseAmplitude(int value) {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
-    ((AdditiveMusicNode*)_ptrAdditiveMusicNodes[i])->setPinkAmplitude(value * 0.01);
+    ((SynthMusicNode*)_ptrSynthMusicNodes[i])->setPinkNoiseAmplitude(value * 0.01);
   }
 }
 void AudioSystem::setAttack(int value) {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
-    ((AdditiveMusicNode*)_ptrAdditiveMusicNodes[i])->setAttack(value * 1.00);
-    ((SimpleMusicNode*)_ptrSimpleMusicNodes[i])->setAttack(value * 1.00);    
+    ((SynthMusicNode*)_ptrSynthMusicNodes[i])->setAttack(value * 1.00);
   }
 }
 
 void AudioSystem::setDecay(int value) {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
-    ((AdditiveMusicNode*)_ptrAdditiveMusicNodes[i])->setDecay(value * 1.00);
-    ((SimpleMusicNode*)_ptrSimpleMusicNodes[i])->setDecay(value * 1.00);    
+    ((SynthMusicNode*)_ptrSynthMusicNodes[i])->setDecay(value * 1.00);
   }
 }
 
 void AudioSystem::setSustain(int value) {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
-    ((AdditiveMusicNode*)_ptrAdditiveMusicNodes[i])->setSustain(value * 0.01);
-    ((SimpleMusicNode*)_ptrSimpleMusicNodes[i])->setSustain(value * 0.01);    
+    ((SynthMusicNode*)_ptrSynthMusicNodes[i])->setSustain(value * 0.01);
   }
 }
 
 void AudioSystem::setRelease(int value) {
   for (int i = 0; i < _numberOfMusicNodes; i++)
   {
-    ((AdditiveMusicNode*)_ptrAdditiveMusicNodes[i])->setRelease(value * 1.00);
-    ((SimpleMusicNode*)_ptrSimpleMusicNodes[i])->setRelease(value * 1.00);    
+    ((SynthMusicNode*)_ptrSynthMusicNodes[i])->setRelease(value * 1.00);
   }
 }
 
@@ -377,42 +359,42 @@ void AudioSystem::setVolume(int value) {
   _outputAmp->gain(value * 0.01);
 }
 
-void AudioSystem::addAdditiveMenuBranch(MenuBranch* branch) {
-  _ptrAdditiveMenuBranches.push_back(branch);
-}
+// void AudioSystem::addAdditiveMenuBranch(MenuBranch* branch) {
+//   _ptrAdditiveMenuBranches.push_back(branch);
+// }
 
-void AudioSystem::addSimpleMenuBranch(MenuBranch* branch) {
-  _ptrSimpleMenuBranches.push_back(branch);
-}
+// void AudioSystem::addSimpleMenuBranch(MenuBranch* branch) {
+//   _ptrSimpleMenuBranches.push_back(branch);
+// }
 
-void AudioSystem::activateAdditiveSynth() {
-  for (int i = 0; i < _numberOfMusicNodes; i++)
-  {
-    _ptrSimpleMusicNodes[i]->deactivate();
-    _ptrAdditiveMusicNodes[i]->activate();
-  }
+// void AudioSystem::activateAdditiveSynth() {
+//   for (int i = 0; i < _numberOfMusicNodes; i++)
+//   {
+//     _ptrSimpleMusicNodes[i]->deactivate();
+//     _ptrAdditiveMusicNodes[i]->activate();
+//   }
 
-  _nodesOutputMixer->gain(0, 1);
-  _nodesOutputMixer->gain(1, 1);
-  _nodesOutputMixer->gain(2, 0);
-  _nodesOutputMixer->gain(3, 0);
+//   _nodesOutputMixer->gain(0, 1);
+//   _nodesOutputMixer->gain(1, 1);
+//   _nodesOutputMixer->gain(2, 0);
+//   _nodesOutputMixer->gain(3, 0);
 
-  for (int i = 0; i < (int)_ptrSimpleMenuBranches.size(); i++) _ptrSimpleMenuBranches[i]->hide();
-  for (int i = 0; i < (int)_ptrAdditiveMenuBranches.size(); i++) _ptrAdditiveMenuBranches[i]->unHide();
-}
+//   for (int i = 0; i < (int)_ptrSimpleMenuBranches.size(); i++) _ptrSimpleMenuBranches[i]->hide();
+//   for (int i = 0; i < (int)_ptrAdditiveMenuBranches.size(); i++) _ptrAdditiveMenuBranches[i]->unHide();
+// }
 
-void AudioSystem::activateSimpleSynth() {
-  for (int i = 0; i < _numberOfMusicNodes; i++)
-  {
-    _ptrAdditiveMusicNodes[i]->deactivate();
-    _ptrSimpleMusicNodes[i]->activate();
-  }
+// void AudioSystem::activateSimpleSynth() {
+//   for (int i = 0; i < _numberOfMusicNodes; i++)
+//   {
+//     _ptrAdditiveMusicNodes[i]->deactivate();
+//     _ptrSimpleMusicNodes[i]->activate();
+//   }
 
-  _nodesOutputMixer->gain(0, 0);
-  _nodesOutputMixer->gain(1, 0);
-  _nodesOutputMixer->gain(2, 1);
-  _nodesOutputMixer->gain(3, 1);
+//   _nodesOutputMixer->gain(0, 0);
+//   _nodesOutputMixer->gain(1, 0);
+//   _nodesOutputMixer->gain(2, 1);
+//   _nodesOutputMixer->gain(3, 1);
   
-  for (int i = 0; i < (int)_ptrAdditiveMenuBranches.size(); i++) _ptrAdditiveMenuBranches[i]->hide();
-  for (int i = 0; i < (int)_ptrSimpleMenuBranches.size(); i++) _ptrSimpleMenuBranches[i]->unHide();
-}
+//   for (int i = 0; i < (int)_ptrAdditiveMenuBranches.size(); i++) _ptrAdditiveMenuBranches[i]->hide();
+//   for (int i = 0; i < (int)_ptrSimpleMenuBranches.size(); i++) _ptrSimpleMenuBranches[i]->unHide();
+// }

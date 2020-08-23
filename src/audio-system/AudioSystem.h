@@ -1,8 +1,7 @@
 #ifndef AudioSystem_h_
 #define AudioSystem_h_
 
-#include <audio-system/music-nodes/AdditiveMusicNode.h>
-#include <audio-system/music-nodes/SimpleMusicNode.h>
+#include <audio-system/music-nodes/SynthMusicNode.h>
 #include <audio-system/Scale.h>
 #include <menus/MenuBranch.h>
 #include <WString.h>
@@ -11,10 +10,7 @@
 class AudioSystem
 {
 private:
-  std::vector <MusicNode*> _ptrAdditiveMusicNodes;
-  std::vector <MusicNode*> _ptrSimpleMusicNodes;
-  std::vector <MenuBranch*> _ptrAdditiveMenuBranches;
-  std::vector <MenuBranch*> _ptrSimpleMenuBranches;
+  std::vector <MusicNode*> _ptrSynthMusicNodes;
   int _numberOfMusicNodes;
 
   const static int NUMBER_OF_NOTES = 88;
@@ -38,8 +34,8 @@ private:
 
   AudioMixer4* _nodesMixer1;
   AudioMixer4* _nodesMixer2;
-  AudioMixer4* _nodesMixer3;
-  AudioMixer4* _nodesMixer4;
+  // AudioMixer4* _nodesMixer3;
+  // AudioMixer4* _nodesMixer4;
   AudioMixer4* _nodesOutputMixer;
 
   AudioFilterBiquad* _biquad;
@@ -52,7 +48,7 @@ private:
   AudioAmplifier* _outputAmp;
   AudioOutputI2S* _i2s1;
   AudioControlSGTL5000* _sgtl5000;
-  AudioConnection* _audioConnections[34];
+  AudioConnection* _audioConnections[26];
 
   static const int NUMBER_OF_SCALES = 9;
   Scale* SCALES[NUMBER_OF_SCALES] = {
@@ -60,7 +56,7 @@ private:
     new Scale("minor",      new int[9]{0, 2, 3, 5, 7, 8, 10, 12, 14}),
     new Scale("maj pent",   new int[9]{0, 2, 5, 7, 10, 12, 14, 17, 19}),
     new Scale("min pent",   new int[9]{0, 3, 5, 7, 10, 12, 15, 17, 19}),
-    new Scale("phrygian",   new int[9]{0, 2, 3, 5, 7, 9, 10, 12, 14}),
+    new Scale("phrygian",   new int[9]{0, 1, 2, 5, 7, 8, 9, 12, 14}),
     new Scale("doric",      new int[9]{0, 2, 3, 5, 7, 9, 10, 12, 14}),
     new Scale("mixolyd.",   new int[9]{0, 2, 3, 5, 7, 9, 10, 12, 14}),
     new Scale("lydian",     new int[9]{0, 1, 3, 5, 6, 8, 10, 12, 13}),
@@ -87,17 +83,16 @@ public:
   int getNumberOfNotes();
   String getNoteName(int index);
   String getScaleName(int index);
-  MusicNode* getAdditiveNode(int index);
-  MusicNode* getSimpleNode(int index);
+  MusicNode* getSynthNode(int index);
 
   AudioSystem(int numberOfMusicNodes);
-  void activateAdditiveSynth();
-  void activateSimpleSynth();
-  void addAdditiveMenuBranch(MenuBranch* branch);
-  void addSimpleMenuBranch(MenuBranch* branch);
+  // void activateAdditiveSynth();
+  // void activateSimpleSynth();
+  // void addAdditiveMenuBranch(MenuBranch* branch);
+  // void addSimpleMenuBranch(MenuBranch* branch);
 
   //  COMMON
-  void setMode(int value);
+  // void setMode(int value);
   void setVolume(int value);
   void setScale(int value);
   void setKeyNote(int value);
@@ -107,24 +102,20 @@ public:
   void setSustain(int value);
   void setRelease(int value);
 
-  //  SIMPLE SYNTH
-  void setModulationMode(int value);
-  void setModulatorFrequency(int value);
-  void setModulatorAmplitude(int value);
-
-  void setSineAmplitude(int value);
-  void setSawtoothAmplitude(int value);
-
-  //  ADDITIVE SYNTH
-  void setWaveform1Amplitude(int value);
-  void setWaveform2Amplitude(int value);
-  void setPinkNoiseAmplitude(int value);
-
-  void setWaveform1(int value);
-  void setWaveform2(int value);
-
+  //  SYNTH
+  void setOscillator1Waveform(int value);
+  void setOscillator2Waveform(int value);
   void setCoarseDetune(int value);
   void setFineDetune(int value);
+
+  void setOscillator1Amplitude(int value);
+  void setOscillator2Amplitude(int value);
+  void setPinkNoiseAmplitude(int value);
+
+  void setModulationMode(int value);
+  void setModulationWaveform(int value);
+  void setModulationFrequency(int value);
+  void setModulationAmplitude(int value);
 
   //  EFFECTS
   void setFilterAmount(int value);

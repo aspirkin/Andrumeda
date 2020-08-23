@@ -20,7 +20,6 @@ void SensorHandler::update() {
       if (_valueTop == 0)
       {
         _synthNode->noteOn();
-        _simpleNode->noteOn();
         _cooldownCounter = SENSOR_COOLDOWN_LIMIT;
       }
       if (_value > _valueTop)
@@ -33,7 +32,6 @@ void SensorHandler::update() {
     {
       _valueTop = 0;
       _synthNode->noteOff();
-      _simpleNode->noteOff();
       _cooldownCounter = SENSOR_COOLDOWN_LIMIT;
     }
   }
@@ -48,8 +46,4 @@ void SensorHandler::update() {
 
 void SensorHandler::setSynthNode(MusicNode * node) {
   _synthNode = node;
-}
-
-void SensorHandler::setSimpleNode(MusicNode * node) {
-  _simpleNode = node;
 }

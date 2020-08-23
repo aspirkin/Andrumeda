@@ -11,7 +11,6 @@ protected:
   int _pin;
   int _value;
   MusicNode* _synthNode;
-  MusicNode* _simpleNode;
 
   int _cooldownCounter = 0;
   int _valueTop = 0;
@@ -23,7 +22,6 @@ public:
   SensorHandler(int pin);
   void update();
   void setSynthNode(MusicNode* node);
-  void setSimpleNode(MusicNode* node);
 };
 
 #endif //Sensor_h_
