@@ -1,7 +1,8 @@
 #ifndef ST7735_144_128x128_greenTab_Display_h_
 #define ST7735_144_128x128_greenTab_Display_h_
 
-#include <Adafruit_ST7735.h>
+#include <TFT.h>
+// #include <Adafruit_ST7735.h>
 
 const int TFT_CS = 12;
 const int TFT_DC = 17;

@@ -90,7 +90,7 @@ void ST7735_DisplayHandler::redisplaySelectedChildValue() {
 };
 
 ST7735_DisplayHandler::ST7735_DisplayHandler(){
-  display.initR(INITR_144GREENTAB);
+  display.initR(INITR_GREENTAB);
 };
 
 void ST7735_DisplayHandler::displayMenu(MenuBranch* menu, bool isRoot) {
